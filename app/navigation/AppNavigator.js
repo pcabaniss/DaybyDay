@@ -2,13 +2,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
-import AccountScreen from "../screens/AccountScreen";
 import ListingEditScreen from "../screens/ListingEditScreen";
-import FeedNavigator from "./FeedNavigator";
 import AccountNavigator from "./AccountNavigator";
 import NewListingButton from "./NewListingButton";
 import colors from "../config/colors";
-import WeekCalendar from "../components/calendar/WeekCalendar";
+import CalendarNavigator from "./CalendarNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +21,7 @@ const AppNavigator = () => (
   >
     <Tab.Screen
       name="Calendar"
-      component={WeekCalendar}
+      component={CalendarNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons

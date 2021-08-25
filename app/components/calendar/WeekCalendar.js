@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   Button,
+  SafeAreaView,
 } from "react-native";
 // @ts-expect-error
 import { Agenda } from "react-native-calendars";
@@ -21,8 +22,8 @@ const timeToString = (time) => {
   return date.toISOString().split("T")[0];
 };
 
-const WeekCalendar = () => {
-  const [items, setItems] = useState([]);
+const WeekCalendar = ({ navigation }) => {
+  const [items, setItems] = useState({});
 
   const loadItems = (day) => {
     const now = moment();
@@ -90,7 +91,7 @@ const WeekCalendar = () => {
                 name={"pencil"}
                 size={20}
                 color={colors.red}
-                onPress={() => Alert.alert("Button Pressed!")}
+                onPress={() => navigation.navigate("Add")}
               />
             </View>
           </TouchableOpacity>
@@ -110,7 +111,7 @@ const WeekCalendar = () => {
                 name={"pencil"}
                 size={20}
                 color={colors.red}
-                onPress={() => Alert.alert("Button Pressed!")}
+                onPress={() => navigation.navigate("Add")}
               />
             </View>
           </TouchableOpacity>
@@ -136,37 +137,39 @@ const WeekCalendar = () => {
   const now = moment();
 
   return (
-    <Agenda
-      style={styles.agenda}
-      items={items}
-      loadItemsForMonth={loadItems}
-      selected={now.day}
-      renderItem={renderItem}
-      renderEmptyDate={renderEmptyDate}
-      rowHasChanged={rowHasChanged}
-      showClosingKnob={true}
-      markingType={"period"}
-      markedDates={{
-        "2021-08-08": { textColor: "#43515c" },
-        "2021-08-09": { textColor: "#43515c" },
-        "2021-08-14": {
-          startingDay: true,
-          endingDay: true,
-          color: colors.danger,
-        },
-        "2021-08-21": { startingDay: true, color: colors.blue },
-        "2021-08-22": { endingDay: true, color: colors.medium },
-        "2021-08-24": { startingDay: true, color: colors.medium },
-        "2021-08-25": { color: colors.medium },
-        "2021-08-26": { endingDay: true, color: colors.medium },
-      }}
-      monthFormat={"MMM" + "  yyyy"}
-      theme={{
-        calendarBackground: colors.background,
-        agendaKnobColor: colors.medium,
-      }}
-      hideExtraDays={false}
-    />
+    <SafeAreaView style={styles.safe}>
+      <Agenda
+        style={styles.agenda}
+        items={items}
+        loadItemsForMonth={loadItems}
+        selected={now.day}
+        renderItem={renderItem}
+        renderEmptyDate={renderEmptyDate}
+        rowHasChanged={rowHasChanged}
+        showClosingKnob={true}
+        markingType={"period"}
+        markedDates={{
+          "2021-08-08": { textColor: "#43515c" },
+          "2021-08-09": { textColor: "#43515c" },
+          "2021-08-14": {
+            startingDay: true,
+            endingDay: true,
+            color: colors.danger,
+          },
+          "2021-08-21": { startingDay: true, color: colors.blue },
+          "2021-08-22": { endingDay: true, color: colors.medium },
+          "2021-08-24": { startingDay: true, color: colors.medium },
+          "2021-08-25": { color: colors.medium },
+          "2021-08-26": { endingDay: true, color: colors.medium },
+        }}
+        monthFormat={"MMM" + "  yyyy"}
+        theme={{
+          calendarBackground: colors.background,
+          agendaKnobColor: colors.medium,
+        }}
+        hideExtraDays={false}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -192,6 +195,9 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30,
+  },
+  safe: {
+    flex: 1,
   },
 });
 

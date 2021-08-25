@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Button, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -12,10 +12,8 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import colors from "../config/colors";
-import FormImagePicker from "../components/forms/FormImagePicker";
 import Screen from "../components/Screen";
 import listingsApi from "../api/listings";
-import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
 
 //This screen needs to be a searchable database of businesses that are
@@ -24,10 +22,11 @@ import UploadScreen from "./UploadScreen";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).max(10000).label("Price"),
-  description: Yup.string().label("Description"),
-  category: Yup.object().required().nullable().label("Category"),
-  images: Yup.array().min(1, "Please select at least one image."),
+  timeStart: Yup.string().nullable().label("StartTime"),
+  timeFinish: Yup.string().nullable().label("FinishTime"),
+  description: Yup.string().required().label("Description"),
+  category: Yup.object().nullable().label("Category"),
+  repeating: Yup.object().nullable().label("Repeating"),
 });
 
 const categories = [
@@ -69,15 +68,54 @@ const categories = [
   },
 ];
 
+const isRepeating = [
+  {
+    label: "Never",
+    value: 0,
+  },
+  { label: "Daily", value: 1 },
+  {
+    label: "Every other day",
+    value: 2,
+  },
+  {
+    label: "Weekly",
+    value: 3,
+  },
+  {
+    label: "Biweekly",
+    value: 4,
+  },
+  {
+    label: "Monthly",
+    value: 5,
+  },
+  {
+    label: "Yearly",
+    value: 6,
+  },
+  {
+    label: "Custom",
+    value: 7,
+  },
+];
+
 function ListingEditScreen() {
-  const [date, setDate] = useState(new Date());
+  const [dateStart, setStartDate] = useState(new Date());
+  const [dateEnd, setEndDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onChangeStart = (event, selectedDate) => {
+    const startDate = selectedDate;
     setShow(Platform.OS === "ios");
-    setDate(currentDate);
+    setStartDate(startDate);
+    dateStart.setDate(startDate);
+  };
+  const onChangeEnd = (event, selectedDate) => {
+    const endDate = selectedDate;
+    setShow(Platform.OS === "ios");
+    setEndDate(endDate);
   };
 
   const showMode = (currentMode) => {
@@ -93,20 +131,20 @@ function ListingEditScreen() {
     showMode("time");
   };
 
-  const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (listing, { resetForm }) => {
     setProgress(0);
     setUploadVisible(true);
-    const result = await listingsApi.addListing(
-      { ...listing, location },
-      (progress) => setProgress(progress)
+    console.log(listing);
+    const result = await listingsApi.addListing({ ...listing }, (progress) =>
+      setProgress(progress)
     );
 
-    if (!result.ok) {
+    if (result.ok) {
       setUploadVisible(false);
+      console.log("Could not save listing. Error: " + result.originalError);
       return alert("Could not save listing.");
     }
 
@@ -123,43 +161,41 @@ function ListingEditScreen() {
       <Form
         initialValues={{
           title: "",
-          price: "",
+          timeStart: dateStart.toTimeString(),
+          timeFinish: dateEnd.toString(),
           description: "",
           category: null,
-          images: [],
+          repeating: null,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormField maxLength={255} name="title" placeholder="Title" />
         <View style={styles.date}>
+          <Text style={styles.text}>Start: </Text>
           <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
+            testID="timeStart"
+            name="timeStart"
+            value={dateStart}
             mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeStart}
             style={styles.picker}
           />
+          <Text style={styles.text}>Finish: </Text>
           <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
+            testID="timeFinish"
+            name="timeFinish"
+            value={dateEnd}
             mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeEnd}
+            textColor={colors.black}
             style={styles.picker}
           />
         </View>
-        <Picker
-          items={categories}
-          name="category"
-          numberOfColumns={3}
-          placeholder="Category"
-          PickerItemComponent={CategoryPickerItem}
-          width="50%"
-        />
         <FormField
           maxLength={255}
           multiline
@@ -167,7 +203,24 @@ function ListingEditScreen() {
           numberOfLines={3}
           placeholder="Description"
         />
-        <SubmitButton title="Post" />
+        <View style={styles.twoPickers}>
+          <Picker
+            items={categories}
+            name="category"
+            numberOfColumns={3}
+            placeholder="Category"
+            PickerItemComponent={CategoryPickerItem}
+            width="48%"
+          />
+          <Picker
+            items={isRepeating}
+            name="repeating"
+            numberOfColumns={1}
+            placeholder="Repeating"
+            width="48%"
+          />
+        </View>
+        <SubmitButton title="Add" />
       </Form>
     </Screen>
   );
@@ -182,12 +235,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
+    alignItems: "center",
+
     padding: 10,
     width: "100%",
     height: 50,
   },
   picker: {
-    width: "50%",
+    width: "23%",
+    backgroundColor: "white",
+    borderWidth: 3,
+    borderColor: "black",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  twoPickers: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontWeight: "bold",
   },
 });
 export default ListingEditScreen;

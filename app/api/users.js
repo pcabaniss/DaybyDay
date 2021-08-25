@@ -1,10 +1,9 @@
 import client from "./client";
-import firebase from "firebase";
-
+import { firebase } from "../auth/firebaseConfig";
 //const register = (userInfo) => client.post("/users", userInfo);
 const register = (userInfo) => (
   client.post("/users", userInfo),
-  firebase
+  firebase.default
     .auth()
     .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
     .catch(function (error) {

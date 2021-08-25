@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
-import firebase from "firebase";
+import { firebase } from "../auth/firebaseConfig";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import usersApi from "../api/users";
@@ -36,14 +36,15 @@ function RegisterScreen() {
     const { data: authToken } = await loginApi.request(
       userInfo.email,
       userInfo.password,
-      console.log("Got data for " + userInfo.email)
+      userInfo.name,
+      console.log("Got data for " + userInfo.name)
     );
     if (!authToken) {
       console.log("Error: " + error);
       return;
     }
     auth.logIn(authToken);
-    firebase
+    firebase.default
       .auth()
       .signInWithEmailAndPassword(userInfo.email, userInfo.password)
       .catch(function (error) {
@@ -58,6 +59,9 @@ function RegisterScreen() {
         }
         console.log(error);
       });
+    firebase.default.auth().currentUser.updateProfile({
+      displayName: userInfo.name,
+    });
     console.log("Successfully logged in!");
   };
 

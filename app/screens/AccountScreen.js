@@ -55,7 +55,7 @@ function AccountScreen({ navigation }) {
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title={user.name}
+          title={user.displayName}
           subTitle={user.email}
           image={require("../assets/mosh.jpg")}
           onPress={() => navigation.navigate("Profile")}

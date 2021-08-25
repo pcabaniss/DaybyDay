@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
+import { firebase } from "./firebaseConfig";
 
 const key = "authToken";
 const setToken = async (authToken) => {
@@ -14,7 +15,7 @@ const getToken = async () => {
   try {
     return await SecureStore.getItemAsync(key);
   } catch (error) {
-    console.log("Error fething auth token", error);
+    console.log("Error fetching auth token", error);
   }
 };
 

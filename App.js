@@ -1,35 +1,17 @@
 import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
+import { StyleSheet } from "react-native";
 
 import navigationTheme from "./app/navigation/NavigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
 import OfflineNotice from "./app/components/OfflineNotice";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
+
+import { firebase } from "./app/auth/firebaseConfig";
 import authStorage from "./app/auth/storage";
-import firebase from "firebase/app";
-import ListingScreen from "./app/screens/ListingScreen";
-import RegisterScreen from "./app/screens/RegisterScreen";
-import ListingEditScreen from "./app/screens/ListingEditScreen";
-import { SafeAreaView, View, StyleSheet } from "react-native";
-import WeekCalendar from "./app/components/calendar/WeekCalendar";
 import colors from "./app/config/colors";
-
-const config = {
-  apiKey: "AIzaSyDc-1slfARS2h3Xr6ExyyisYZqirL3wmiI",
-  authDomain: "slate-e5529.firebaseapp.com",
-  projectId: "slate-e5529",
-  databaseUrl: "https://slate-e5529-default-rtdb.firebaseio.com/",
-  storageBucket: "slate-e5529.appspot.com",
-  messagingSenderId: "431024329793",
-  appId: "1:431024329793:web:c91cdcaad645c70a5da2c0",
-  measurementId: "G-E4TJ4XKTZW",
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(config);
-}
 
 export default function App() {
   const [user, setUser] = useState();
@@ -37,7 +19,13 @@ export default function App() {
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();
-    if (user) setUser(user);
+    firebase.default.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setUser(user);
+      } else {
+        console.log("User not verified");
+      }
+    });
   };
 
   if (!isReady)

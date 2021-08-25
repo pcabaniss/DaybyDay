@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Image } from "react-native";
-import firebase from "firebase";
+import { firebase } from "../auth/firebaseConfig";
 import * as Yup from "yup";
 
 import authApi from "../api/auth";
@@ -27,7 +27,7 @@ function LoginScreen(props) {
 
   const handleSubmit = async ({ email, password }) => {
     const result = await authApi.login(email, password);
-    firebase
+    firebase.default
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(function (error) {
