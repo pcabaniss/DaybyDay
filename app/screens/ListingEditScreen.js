@@ -106,12 +106,13 @@ function ListingEditScreen() {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
-  const onChangeStart = (event, selectedDate) => {
+  const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");
     setStartDate(startDate);
-    dateStart.setDate(startDate);
+    console.log("Changed date to: " + startDate);
   };
+
   const onChangeEnd = (event, selectedDate) => {
     const endDate = selectedDate;
     setShow(Platform.OS === "ios");
@@ -137,7 +138,8 @@ function ListingEditScreen() {
   const handleSubmit = async (listing, { resetForm }) => {
     setProgress(0);
     setUploadVisible(true);
-    console.log(listing);
+    listing.timeStart = dateStart.toString();
+    listing.timeFinish = dateEnd.toString();
     const result = await listingsApi.addListing({ ...listing }, (progress) =>
       setProgress(progress)
     );
@@ -148,7 +150,7 @@ function ListingEditScreen() {
       return alert("Could not save listing.");
     }
 
-    resetForm();
+    //resetForm();
   };
 
   return (
@@ -161,8 +163,8 @@ function ListingEditScreen() {
       <Form
         initialValues={{
           title: "",
-          timeStart: dateStart.toTimeString(),
-          timeFinish: dateEnd.toString(),
+          timeStart: "",
+          timeFinish: "",
           description: "",
           category: null,
           repeating: null,
@@ -174,7 +176,6 @@ function ListingEditScreen() {
         <View style={styles.date}>
           <Text style={styles.text}>Start: </Text>
           <DateTimePicker
-            testID="timeStart"
             name="timeStart"
             value={dateStart}
             mode={"time"}
@@ -185,7 +186,6 @@ function ListingEditScreen() {
           />
           <Text style={styles.text}>Finish: </Text>
           <DateTimePicker
-            testID="timeFinish"
             name="timeFinish"
             value={dateEnd}
             mode={"time"}

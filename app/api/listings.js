@@ -4,6 +4,11 @@ const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
 
+const user = firebase.default.auth().currentUser.email;
+const email = user.replace(".", "-");
+const safeEmail = email.replace("@", "-");
+console.log(safeEmail);
+
 const addListing = (listing, onUploadProgress) => {
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
@@ -12,9 +17,9 @@ const addListing = (listing, onUploadProgress) => {
   data.append("title", listing.title);
   firebase
     .database()
-    .ref("/user")
+    .ref(safeEmail + "/" + Date())
     .set({
-      data: {
+      listing: {
         title: listing.title,
         timeStart: listing.timeStart,
         timeFinish: listing.timeFinish,
