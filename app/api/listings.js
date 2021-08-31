@@ -4,12 +4,16 @@ const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
 
-const user = firebase.default.auth().currentUser.email;
-const email = user.replace(".", "-");
-const safeEmail = email.replace("@", "-");
-console.log(safeEmail);
-
 const addListing = (listing, onUploadProgress) => {
+  const user = firebase.default.auth().currentUser.email;
+
+  const email = user.replace(".", "-");
+  console.log(user);
+  const safeEmail = email.replace("@", "-");
+  console.log(safeEmail);
+  const date = new Date();
+  const dateString =
+    date.getMonth() + " " + date.getDate() + " " + date.getFullYear();
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
@@ -17,7 +21,7 @@ const addListing = (listing, onUploadProgress) => {
   data.append("title", listing.title);
   firebase
     .database()
-    .ref(safeEmail + "/" + Date())
+    .ref(safeEmail + "/" + dateString + "/" + date.getTime())
     .set({
       listing: {
         title: listing.title,

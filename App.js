@@ -18,7 +18,6 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   const restoreUser = async () => {
-    const user = await authStorage.getUser();
     firebase.default.auth().onAuthStateChanged(function (user) {
       if (user) {
         setUser(user);
