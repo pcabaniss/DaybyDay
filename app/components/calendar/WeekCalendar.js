@@ -36,7 +36,14 @@ const WeekCalendar = ({ navigation }) => {
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
             const num = j + 1;
-            if (j === numItems - 1) {
+            if (numItems === 1) {
+              items[strTime].push({
+                name: "Item # " + num + " for " + strTime,
+                height: "100%",
+                number: numItems,
+                onlyDate: true,
+              });
+            } else if (j === numItems - 1 && j != 0) {
               items[strTime].push({
                 name: "Item # " + num + " for " + strTime,
                 height: "100%",
@@ -83,29 +90,21 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: item.height }]}
-            onPress={() => Alert.alert(item.name)}
+            onPress={() => Alert.alert("View, Edit, or Delete")}
           >
             <Text>{item.name}</Text>
-            <View style={styles.button}>
-              <MaterialCommunityIcons
-                name={"pencil"}
-                size={20}
-                color={colors.red}
-                onPress={() => navigation.navigate("Add")}
-              />
-            </View>
           </TouchableOpacity>
         </>
       );
-    } else {
+    } else if (item.onlyDate === true) {
       return (
         <>
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
-            style={[styles.item, { height: item.height }]}
-            onPress={() => Alert.alert(item.name)}
+            style={[styles.item, { height: 15 }]}
+            onPress={() => Alert.alert("Add Event")}
           >
-            <Text>{item.name}</Text>
+            <Text>{"This is an empty ass date!"}</Text>
             <View style={styles.button}>
               <MaterialCommunityIcons
                 name={"pencil"}
@@ -118,15 +117,41 @@ const WeekCalendar = ({ navigation }) => {
           <CalendarSeperator />
         </>
       );
+    } else {
+      return (
+        <>
+          <TouchableOpacity
+            testID={testIDs.agenda.ITEM}
+            style={[styles.item, { height: item.height }]}
+            onPress={() => Alert.alert("View, Edit, or Delete")}
+          >
+            <Text>{item.name}</Text>
+          </TouchableOpacity>
+          <CalendarSeperator />
+        </>
+      );
     }
   };
 
   const renderEmptyDate = () => {
     return (
-      <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
-        <Button title={"Add Item"} color={colors.danger} />
-      </View>
+      <>
+        <TouchableOpacity
+          testID={testIDs.agenda.ITEM}
+          style={[styles.item, { height: 15 }]}
+          onPress={() => Alert.alert("Add Event")}
+        >
+          <Text>{"This is an empty ass date!"}</Text>
+          <View style={styles.button}>
+            <MaterialCommunityIcons
+              name={"pencil"}
+              size={20}
+              color={colors.red}
+              onPress={() => navigation.navigate("Add")}
+            />
+          </View>
+        </TouchableOpacity>
+      </>
     );
   };
 

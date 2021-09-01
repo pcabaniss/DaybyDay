@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import ListingEditScreen from "../screens/ListingEditScreen";
 import AccountNavigator from "./AccountNavigator";
 import NewListingButton from "./NewListingButton";
@@ -20,12 +20,12 @@ const AppNavigator = () => (
     }}
   >
     <Tab.Screen
-      name="Calendar"
-      component={CalendarNavigator}
+      name="Discover"
+      component={ListingEditScreen}
       options={{
-        tabBarIcon: ({ color, size }) => (
+        tabBarIcon: ({ size, color }) => (
           <MaterialCommunityIcons
-            name="calendar-month"
+            name="calendar-search"
             color={color}
             size={size}
           />
@@ -33,18 +33,14 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="ListingEdit"
-      component={ListingEditScreen}
+      name="Agenda"
+      component={CalendarNavigator}
       options={({ navigation }) => ({
-        tabBarButton: () => (
-          <NewListingButton
-            onPress={() => navigation.navigate("ListingEdit")}
-          />
-        ),
-        tabBarIcon: ({ size }) => (
+        //tabBarButton: ({ color }) => <NewListingButton color={color} onPress={() => navigation.navigate("WeekCalendar")} />,
+        tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons
-            name="calendar-plus"
-            color={colors.medium}
+            name="calendar-text"
+            color={color}
             size={size}
           />
         ),

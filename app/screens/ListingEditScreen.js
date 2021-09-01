@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -100,7 +100,7 @@ const isRepeating = [
   },
 ];
 
-function ListingEditScreen() {
+function ListingEditScreen({ navigation }) {
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
   const [mode, setMode] = useState("date");
@@ -116,6 +116,7 @@ function ListingEditScreen() {
   const onChangeEnd = (event, selectedDate) => {
     const endDate = selectedDate;
     setShow(Platform.OS === "ios");
+    setShow(Platform.OS === "android");
     setEndDate(endDate);
   };
 
@@ -149,7 +150,7 @@ function ListingEditScreen() {
       console.log("Could not save listing. Error: " + result.originalError);
       return alert("Could not save listing.");
     }
-
+    navigation.popToTop();
     //resetForm();
   };
 

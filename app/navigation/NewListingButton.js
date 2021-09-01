@@ -1,17 +1,17 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 
-function NewListingButton({ onPress }) {
+function NewListingButton({ onPress, color }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <MaterialCommunityIcons
-          name="calendar-plus"
-          color={colors.primary}
-          size={50}
+          name="calendar-text"
+          color={color}
+          size={45}
           borderRadius={15}
           borderColor={colors.black}
         />
@@ -26,12 +26,15 @@ const styles = StyleSheet.create({
 
     backgroundColor: colors.white,
     borderColor: colors.black,
-    borderWidth: 6,
+    borderWidth: 4,
     borderRadius: 20,
-    bottom: 20,
-    height: 80,
+    height: 75,
+    bottom: -5,
     justifyContent: "center",
-    width: 80,
+    width: 75,
+  },
+  text: {
+    fontSize: 10,
   },
 });
 
