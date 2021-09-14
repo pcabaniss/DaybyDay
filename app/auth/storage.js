@@ -1,6 +1,5 @@
 import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
-import { firebase } from "./firebaseConfig";
 
 const key = "authToken";
 const setToken = async (authToken) => {

@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 import React, { Component, useState } from "react";
+import listingsApi from "../../api/listings";
 import {
   Alert,
   StyleSheet,
@@ -11,6 +12,9 @@ import {
   SafeAreaView,
 } from "react-native";
 // @ts-expect-error
+
+//Need to pull the current date that i clicked on and pass it to the database
+// for reference
 import { Agenda } from "react-native-calendars";
 import colors from "../../config/colors";
 import CalendarSeperator from "../CalendarSeperator";
@@ -22,53 +26,62 @@ const timeToString = (time) => {
   return date.toISOString().split("T")[0];
 };
 
+const getDates = () => {};
+
 const WeekCalendar = ({ navigation }) => {
   const [items, setItems] = useState({});
+  const [date, setDate] = useState();
 
   const loadItems = (day) => {
-    const now = moment();
-    setTimeout(() => {
+    setTimeout(async () => {
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = timeToString(time);
+        setDate(strTime);
+
         if (!items[strTime]) {
           items[strTime] = [];
+          const result = await pullDate(strTime).then((result) => {
+            if (result != undefined) {
+              items[strTime].push({
+                name: result.title,
+                height: "100%",
+                date: strTime,
+              });
+            }
+          });
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
             const num = j + 1;
-            if (numItems === 1) {
+            if (numItems === 1 && !items[strTime]) {
               items[strTime].push({
-                name: "Item # " + num + " for " + strTime,
+                name: strTime,
                 height: "100%",
                 number: numItems,
+                date: strTime,
                 onlyDate: true,
+                pulled: false,
               });
-            } else if (j === numItems - 1 && j != 0) {
+            } else if (j === numItems - 1 && j != 0 && !items[strTime]) {
               items[strTime].push({
-                name: "Item # " + num + " for " + strTime,
+                name: strTime,
                 height: "100%",
                 number: numItems,
+                date: strTime,
                 dateChanged: true,
               });
-            } else {
+            } else if (!items[strTime]) {
               items[strTime].push({
-                name: "Item # " + num + " for " + strTime,
+                name: strTime,
                 height: "100%",
+                date: strTime,
                 number: numItems,
                 dateChanged: false,
               });
             }
           }
         } else {
-          //Pull items from existing array of objects here
-          //pullItems(item)
-          /* 
-          items[item.date].push({
-                name: item.name
-                height: "100%",
-                number: numItems,
-                dateChanged: false,
-                */
+          renderEmptyDate(items);
         }
       }
       const newItems = [];
@@ -80,17 +93,13 @@ const WeekCalendar = ({ navigation }) => {
   };
 
   const renderItem = (item) => {
-    if (item.number === 2) {
-      item.name === "Empty!";
-      renderEmptyDate;
-    }
     if (item.dateChanged === false) {
       return (
         <>
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: item.height }]}
-            onPress={() => Alert.alert("View, Edit, or Delete")}
+            onPress={() => pullDate(item.name)}
           >
             <Text>{item.name}</Text>
           </TouchableOpacity>
@@ -102,15 +111,15 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: 15 }]}
-            onPress={() => Alert.alert("Add Event")}
+            onPress={() => pullDate(item.name)}
           >
-            <Text>{"This is an empty ass date!"}</Text>
+            <Text>{item.name}</Text>
             <View style={styles.button}>
               <MaterialCommunityIcons
                 name={"pencil"}
                 size={20}
                 color={colors.red}
-                onPress={() => navigation.navigate("Add")}
+                onPress={() => navigation.navigate("Add", { day: item.date })}
               />
             </View>
           </TouchableOpacity>
@@ -123,7 +132,7 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: item.height }]}
-            onPress={() => Alert.alert("View, Edit, or Delete")}
+            onPress={() => pullDate(item.name)}
           >
             <Text>{item.name}</Text>
           </TouchableOpacity>
@@ -133,7 +142,18 @@ const WeekCalendar = ({ navigation }) => {
     }
   };
 
-  const renderEmptyDate = () => {
+  const pullDate = async (date) => {
+    const result = await listingsApi.getDate(date);
+
+    if (result === null) {
+      return null;
+    } else {
+      return result;
+    }
+    //resetForm();
+  };
+
+  const renderEmptyDate = (item) => {
     return (
       <>
         <TouchableOpacity
@@ -141,16 +161,17 @@ const WeekCalendar = ({ navigation }) => {
           style={[styles.item, { height: 15 }]}
           onPress={() => Alert.alert("Add Event")}
         >
-          <Text>{"This is an empty ass date!"}</Text>
+          <Text>{"Nothing scheduled today."}</Text>
           <View style={styles.button}>
             <MaterialCommunityIcons
               name={"pencil"}
               size={20}
               color={colors.red}
-              onPress={() => navigation.navigate("Add")}
+              onPress={() => navigation.navigate("Add", { day: item.date })}
             />
           </View>
         </TouchableOpacity>
+        <CalendarSeperator />
       </>
     );
   };

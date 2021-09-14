@@ -100,12 +100,13 @@ const isRepeating = [
   },
 ];
 
-function ListingEditScreen({ navigation }) {
+function ListingEditScreen({ navigation, route }) {
+  const { day } = route.params;
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-
+  console.log(day);
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");
@@ -141,6 +142,7 @@ function ListingEditScreen({ navigation }) {
     setUploadVisible(true);
     listing.timeStart = dateStart.toString();
     listing.timeFinish = dateEnd.toString();
+    listing.dateClicked = day;
     const result = await listingsApi.addListing({ ...listing }, (progress) =>
       setProgress(progress)
     );
@@ -169,6 +171,7 @@ function ListingEditScreen({ navigation }) {
           description: "",
           category: null,
           repeating: null,
+          dateClicked: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}

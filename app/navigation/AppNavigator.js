@@ -1,17 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, StyleSheet } from "react-native";
-import ListingEditScreen from "../screens/ListingEditScreen";
+import { StyleSheet } from "react-native";
 import AccountNavigator from "./AccountNavigator";
-import NewListingButton from "./NewListingButton";
 import colors from "../config/colors";
 import CalendarNavigator from "./CalendarNavigator";
+import DiscoverScreen from "../screens/DiscoverScreen";
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => (
   <Tab.Navigator
+    initialRouteName="Agenda"
     tabBarOptions={{
       tabStyle: {
         borderColor: colors.black,
@@ -21,7 +21,7 @@ const AppNavigator = () => (
   >
     <Tab.Screen
       name="Discover"
-      component={ListingEditScreen}
+      component={DiscoverScreen}
       options={{
         tabBarIcon: ({ size, color }) => (
           <MaterialCommunityIcons

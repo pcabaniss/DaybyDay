@@ -59,6 +59,7 @@ function AccountScreen({ navigation }) {
           subTitle={user.email}
           image={require("../assets/mosh.jpg")}
           onPress={() => navigation.navigate("Profile")}
+          key="one"
         />
       </View>
       <View style={styles.container}>

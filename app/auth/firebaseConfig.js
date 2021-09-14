@@ -1,6 +1,4 @@
 import * as firebase from "firebase";
-import { useState } from "react";
-import { concat } from "react-native-reanimated";
 
 const config = {
   apiKey: "AIzaSyDc-1slfARS2h3Xr6ExyyisYZqirL3wmiI",

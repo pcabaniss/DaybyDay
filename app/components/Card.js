@@ -17,8 +17,8 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
           uri={imageUrl}
         />
         <View style={styles.detailContainer}>
-          <AppText style={styles.title}>{title}</AppText>
-          <AppText style={styles.subTitle}>{subTitle}</AppText>
+          <AppText style={styles.title}>{"Business Name"}</AppText>
+          <AppText style={styles.subTitle}>{"Star Rating"}</AppText>
         </View>
       </View>
     </TouchableOpacity>
@@ -27,12 +27,18 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
 const styles = StyleSheet.create({
   card: {
     borderRadius: 15,
+    borderWidth: 2,
+    borderColor: colors.black,
     backgroundColor: colors.white,
     marginBottom: 20,
     overflow: "hidden",
   },
   detailContainer: {
+    borderTopColor: colors.medium,
+    borderTopWidth: 1,
     paddingTop: 20,
+    paddingLeft: 10,
+    paddingBottom: 4,
   },
   image: {
     width: "100%",
