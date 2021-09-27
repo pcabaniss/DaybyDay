@@ -32,7 +32,7 @@ const getDate = async (date) => {
   return doc;
 };
 
-const addListing = (listing, onUploadProgress) => {
+const addListing = (listing, onUploadProgress, updateComplete) => {
   const user = firebase.default.auth().currentUser.email;
 
   const email = user.replace(".", "-");
@@ -59,6 +59,7 @@ const addListing = (listing, onUploadProgress) => {
         description: listing.description,
       },
     });
+
   //  if (listing.location)
   //    data.append("location", JSON.stringify(listing.location));
 

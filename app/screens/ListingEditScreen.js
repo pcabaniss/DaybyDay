@@ -152,7 +152,8 @@ function ListingEditScreen({ navigation, route }) {
       console.log("Could not save listing. Error: " + result.originalError);
       return alert("Could not save listing.");
     }
-    navigation.popToTop();
+    //listingsApi.getDate(day);
+    navigation.navigate("Calendar");
     //resetForm();
   };
 

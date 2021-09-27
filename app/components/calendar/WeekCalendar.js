@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
-import React, { Component, useState } from "react";
+import React, { useState, useEffect } from "react";
 import listingsApi from "../../api/listings";
 import {
   Alert,
@@ -18,6 +18,7 @@ import {
 import { Agenda } from "react-native-calendars";
 import colors from "../../config/colors";
 import CalendarSeperator from "../CalendarSeperator";
+import { useIsFocused } from "@react-navigation/core";
 
 const testIDs = require("../Test");
 
@@ -26,18 +27,29 @@ const timeToString = (time) => {
   return date.toISOString().split("T")[0];
 };
 
-const getDates = () => {};
-
 const WeekCalendar = ({ navigation }) => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const refresh = navigation.addListener("focus", () => {
+      console.log("Inside");
+      setItems(updateDate());
+    });
+    console.log("Refreshed?");
+    loadItems(date);
+    return refresh;
+  }, [isFocused]);
+
   const [items, setItems] = useState({});
-  const [date, setDate] = useState();
+  const [date, setDate] = useState({});
 
   const loadItems = (day) => {
+    console.log("Loading items....");
     setTimeout(async () => {
+      setDate(day);
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = timeToString(time);
-        setDate(strTime);
 
         if (!items[strTime]) {
           items[strTime] = [];
@@ -81,15 +93,28 @@ const WeekCalendar = ({ navigation }) => {
             }
           }
         } else {
-          renderEmptyDate(items);
+          renderEmptyDate(strTime);
         }
       }
-      const newItems = [];
+      console.log("Items loaded!");
+      const newItems = {};
       Object.keys(items).forEach((key) => {
         newItems[key] = items[key];
       });
+      console.log("Items set");
       setItems(newItems);
     }, 1000);
+  };
+
+  const updateDate = async () => {
+    const newItems = {};
+    console.log("updating........");
+    Object.keys(items).forEach((key) => {
+      console.log(key);
+      newItems[key] = items[key];
+    }, 1000);
+
+    return newItems;
   };
 
   const renderItem = (item) => {
@@ -142,8 +167,8 @@ const WeekCalendar = ({ navigation }) => {
     }
   };
 
-  const pullDate = async (date) => {
-    const result = await listingsApi.getDate(date);
+  const pullDate = async (day) => {
+    const result = await listingsApi.getDate(day);
 
     if (result === null) {
       return null;
@@ -153,7 +178,8 @@ const WeekCalendar = ({ navigation }) => {
     //resetForm();
   };
 
-  const renderEmptyDate = (item) => {
+  const renderEmptyDate = (day) => {
+    const dayString = timeToString(day);
     return (
       <>
         <TouchableOpacity
@@ -167,7 +193,7 @@ const WeekCalendar = ({ navigation }) => {
               name={"pencil"}
               size={20}
               color={colors.red}
-              onPress={() => navigation.navigate("Add", { day: item.date })}
+              onPress={() => navigation.navigate("Add", { day: dayString })}
             />
           </View>
         </TouchableOpacity>
