@@ -22,6 +22,11 @@ import { useIsFocused } from "@react-navigation/core";
 
 const testIDs = require("../Test");
 
+const timeFormatter = (date) => {
+  let d = moment(date).utcOffset(date);
+  return d.format("hh:mm A");
+};
+
 const timeToString = (time) => {
   const date = new Date(time);
   return date.toISOString().split("T")[0];
@@ -55,9 +60,14 @@ const WeekCalendar = ({ navigation }) => {
           items[strTime] = [];
           const result = await pullDate(strTime).then((result) => {
             if (result != undefined) {
+              const timeSt = timeFormatter(result.timeStart);
+              const timeEn = timeFormatter(result.timeFinish);
               items[strTime].push({
                 name: result.title,
+                time: timeSt + " - " + timeEn,
+                subText: result.description,
                 height: "100%",
+                category: result.categoryID,
                 date: strTime,
               });
             }
@@ -110,7 +120,6 @@ const WeekCalendar = ({ navigation }) => {
     const newItems = {};
     console.log("updating........");
     Object.keys(items).forEach((key) => {
-      console.log(key);
       newItems[key] = items[key];
     }, 1000);
 
@@ -124,9 +133,10 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: item.height }]}
-            onPress={() => pullDate(item.name)}
+            onPress={() => Alert.alert("Nope")}
           >
-            <Text>{item.name}</Text>
+            <Text style={styles.mainText}>{item.name}</Text>
+            <Text style={styles.timeText}>{item.time}</Text>
           </TouchableOpacity>
         </>
       );
@@ -136,9 +146,10 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: 15 }]}
-            onPress={() => pullDate(item.name)}
+            onPress={() => Alert.alert("I am an only date.")}
           >
-            <Text>{item.name}</Text>
+            <Text style={styles.mainText}>{item.name}</Text>
+            <Text style={styles.timeText}>{item.time}</Text>
             <View style={styles.button}>
               <MaterialCommunityIcons
                 name={"pencil"}
@@ -157,9 +168,35 @@ const WeekCalendar = ({ navigation }) => {
           <TouchableOpacity
             testID={testIDs.agenda.ITEM}
             style={[styles.item, { height: item.height }]}
-            onPress={() => pullDate(item.name)}
+            onPress={() => console.log("Else")}
           >
-            <Text>{item.name}</Text>
+            <Text style={styles.mainText}>{item.name}</Text>
+            <Text style={styles.timeText}>{item.time}</Text>
+            <View style={styles.button}>
+              <MaterialCommunityIcons
+                name={"lead-pencil"}
+                size={28}
+                style={styles.icon}
+                color={colors.medium}
+                onPress={() =>
+                  navigation.navigate("View", {
+                    day: item.date,
+                    title: item.name,
+                    time: item.time,
+                    description: item.subText,
+                    category: item.category,
+                  })
+                }
+              />
+              <MaterialCommunityIcons
+                name={"trash-can-outline"}
+                size={28}
+                color={colors.medium}
+                onPress={() =>
+                  Alert.alert("Are you sure you want to delete this item?")
+                }
+              />
+            </View>
           </TouchableOpacity>
           <CalendarSeperator />
         </>
@@ -187,15 +224,7 @@ const WeekCalendar = ({ navigation }) => {
           style={[styles.item, { height: 15 }]}
           onPress={() => Alert.alert("Add Event")}
         >
-          <Text>{"Nothing scheduled today."}</Text>
-          <View style={styles.button}>
-            <MaterialCommunityIcons
-              name={"pencil"}
-              size={20}
-              color={colors.red}
-              onPress={() => navigation.navigate("Add", { day: dayString })}
-            />
-          </View>
+          <Text style={styles.mainText}>{"Nothing scheduled today."}</Text>
         </TouchableOpacity>
         <CalendarSeperator />
       </>
@@ -221,18 +250,18 @@ const WeekCalendar = ({ navigation }) => {
         showClosingKnob={true}
         markingType={"period"}
         markedDates={{
-          "2021-08-08": { textColor: "#43515c" },
-          "2021-08-09": { textColor: "#43515c" },
-          "2021-08-14": {
+          "2021-10-08": { textColor: "#43515c" },
+          "2021-10-09": { textColor: "#43515c" },
+          "2021-10-14": {
             startingDay: true,
             endingDay: true,
             color: colors.danger,
           },
-          "2021-08-21": { startingDay: true, color: colors.blue },
-          "2021-08-22": { endingDay: true, color: colors.medium },
-          "2021-08-24": { startingDay: true, color: colors.medium },
-          "2021-08-25": { color: colors.medium },
-          "2021-08-26": { endingDay: true, color: colors.medium },
+          "2021-10-21": { startingDay: true, color: colors.blue },
+          "2021-10-22": { endingDay: true, color: colors.medium },
+          "2021-10-24": { startingDay: true, color: colors.medium },
+          "2021-10-25": { color: colors.medium },
+          "2021-10-26": { endingDay: true, color: colors.medium },
         }}
         monthFormat={"MMM" + "  yyyy"}
         theme={{
@@ -247,26 +276,40 @@ const WeekCalendar = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "flex-end",
     width: "100%",
+    flexDirection: "row",
     position: "absolute",
-    bottom: 0,
-    paddingBottom: 5,
+    justifyContent: "flex-end",
+    paddingTop: 22,
   },
   item: {
     backgroundColor: "white",
     flex: 1,
-    borderRadius: 3,
+    borderRadius: 10,
     borderColor: colors.medium,
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 10,
     marginRight: 10,
     marginTop: 17,
+    height: 10,
   },
   emptyDate: {
     height: 15,
     flex: 1,
     paddingTop: 30,
+  },
+  mainText: {
+    fontSize: 22,
+    fontWeight: "300",
+    paddingBottom: 10,
+  },
+  icon: {
+    paddingRight: 7,
+  },
+  timeText: {
+    fontSize: 12,
+    fontWeight: "500",
+    paddingBottom: 2,
   },
   safe: {
     flex: 1,

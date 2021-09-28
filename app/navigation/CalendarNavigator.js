@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import WeekCalendar from "../components/calendar/WeekCalendar";
 import ListingEditScreen from "../screens/ListingEditScreen";
+import AgendaDetailsScreen from "../screens/AgendaDetailsScreen";
 
 const Stack = createStackNavigator();
 
@@ -10,6 +11,7 @@ const CalendarNavigator = () => {
     <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Calendar" component={WeekCalendar} />
       <Stack.Screen name="Add" component={ListingEditScreen} />
+      <Stack.Screen name="View" component={AgendaDetailsScreen} />
     </Stack.Navigator>
   );
 };
