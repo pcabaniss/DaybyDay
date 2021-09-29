@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Button,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 // @ts-expect-error
 
@@ -27,6 +28,8 @@ const timeFormatter = (date) => {
   return d.format("hh:mm A");
 };
 
+const markedDay = {};
+
 const timeToString = (time) => {
   const date = new Date(time);
   return date.toISOString().split("T")[0];
@@ -37,10 +40,8 @@ const WeekCalendar = ({ navigation }) => {
 
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
-      console.log("Inside");
       setItems(updateDate());
     });
-    console.log("Refreshed?");
     loadItems(date);
     return refresh;
   }, [isFocused]);
@@ -62,6 +63,13 @@ const WeekCalendar = ({ navigation }) => {
             if (result != undefined) {
               const timeSt = timeFormatter(result.timeStart);
               const timeEn = timeFormatter(result.timeFinish);
+              markedDay[strTime] = {
+                marked: true,
+                startingDay: true,
+                endingDay: true,
+                color: colors.danger,
+                dotColor: colors.danger,
+              };
               items[strTime].push({
                 name: result.title,
                 time: timeSt + " - " + timeEn,
@@ -140,28 +148,6 @@ const WeekCalendar = ({ navigation }) => {
           </TouchableOpacity>
         </>
       );
-    } else if (item.onlyDate === true) {
-      return (
-        <>
-          <TouchableOpacity
-            testID={testIDs.agenda.ITEM}
-            style={[styles.item, { height: 15 }]}
-            onPress={() => Alert.alert("I am an only date.")}
-          >
-            <Text style={styles.mainText}>{item.name}</Text>
-            <Text style={styles.timeText}>{item.time}</Text>
-            <View style={styles.button}>
-              <MaterialCommunityIcons
-                name={"pencil"}
-                size={20}
-                color={colors.red}
-                onPress={() => navigation.navigate("Add", { day: item.date })}
-              />
-            </View>
-          </TouchableOpacity>
-          <CalendarSeperator />
-        </>
-      );
     } else {
       return (
         <>
@@ -198,6 +184,15 @@ const WeekCalendar = ({ navigation }) => {
               />
             </View>
           </TouchableOpacity>
+          <View style={styles.footer}>
+            <MaterialCommunityIcons
+              name={"tooltip-plus"}
+              size={35}
+              style={{ transform: [{ rotateX: "180deg" }] }}
+              color={colors.secondary}
+              onPress={() => navigation.navigate("Add", { day: item.date })}
+            />
+          </View>
           <CalendarSeperator />
         </>
       );
@@ -221,11 +216,20 @@ const WeekCalendar = ({ navigation }) => {
       <>
         <TouchableOpacity
           testID={testIDs.agenda.ITEM}
-          style={[styles.item, { height: 15 }]}
+          style={[styles.item]}
           onPress={() => Alert.alert("Add Event")}
         >
           <Text style={styles.mainText}>{"Nothing scheduled today."}</Text>
         </TouchableOpacity>
+        <View style={styles.footer}>
+          <MaterialCommunityIcons
+            name={"tooltip-plus"}
+            style={{ transform: [{ rotateX: "180deg" }] }}
+            size={35}
+            color={colors.secondary}
+            onPress={() => navigation.navigate("Add", { day: dayString })}
+          />
+        </View>
         <CalendarSeperator />
       </>
     );
@@ -249,7 +253,7 @@ const WeekCalendar = ({ navigation }) => {
         rowHasChanged={rowHasChanged}
         showClosingKnob={true}
         markingType={"period"}
-        markedDates={{
+        markedDates={markedDay} /*{
           "2021-10-08": { textColor: "#43515c" },
           "2021-10-09": { textColor: "#43515c" },
           "2021-10-14": {
@@ -262,10 +266,10 @@ const WeekCalendar = ({ navigation }) => {
           "2021-10-24": { startingDay: true, color: colors.medium },
           "2021-10-25": { color: colors.medium },
           "2021-10-26": { endingDay: true, color: colors.medium },
-        }}
+        }*/
         monthFormat={"MMM" + "  yyyy"}
         theme={{
-          calendarBackground: colors.background,
+          calendarBackground: colors.white,
           agendaKnobColor: colors.medium,
         }}
         hideExtraDays={false}
@@ -291,12 +295,26 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 17,
-    height: 10,
+    height: "100%",
   },
   emptyDate: {
-    height: 15,
+    backgroundColor: "white",
     flex: 1,
-    paddingTop: 30,
+    borderRadius: 10,
+    borderColor: colors.medium,
+    borderWidth: 1,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+    height: 50,
+  },
+  footer: {
+    alignItems: "center",
+    alignContent: "center",
+
+    height: Dimensions.get("window").height - 20,
+    paddingTop: 10,
+    width: (Dimensions.get("window").width / 3) * 2 + 35,
   },
   mainText: {
     fontSize: 22,
