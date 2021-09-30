@@ -35,7 +35,7 @@ const AppNavigator = () => (
     <Tab.Screen
       name="Agenda"
       component={CalendarNavigator}
-      options={({ navigation }) => ({
+      options={{
         //tabBarButton: ({ color }) => <NewListingButton color={color} onPress={() => navigation.navigate("WeekCalendar")} />,
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons
@@ -44,7 +44,7 @@ const AppNavigator = () => (
             size={size}
           />
         ),
-      })}
+      }}
     />
     <Tab.Screen
       name="Profile"

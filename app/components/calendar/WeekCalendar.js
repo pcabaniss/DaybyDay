@@ -67,8 +67,8 @@ const WeekCalendar = ({ navigation }) => {
                 marked: true,
                 startingDay: true,
                 endingDay: true,
-                color: colors.danger,
-                dotColor: colors.danger,
+                color: colors.background,
+                dotColor: colors.background,
               };
               items[strTime].push({
                 name: result.title,
@@ -189,7 +189,7 @@ const WeekCalendar = ({ navigation }) => {
               name={"tooltip-plus"}
               size={35}
               style={{ transform: [{ rotateX: "180deg" }] }}
-              color={colors.secondary}
+              color={colors.white}
               onPress={() => navigation.navigate("Add", { day: item.date })}
             />
           </View>
@@ -224,9 +224,11 @@ const WeekCalendar = ({ navigation }) => {
         <View style={styles.footer}>
           <MaterialCommunityIcons
             name={"tooltip-plus"}
-            style={{ transform: [{ rotateX: "180deg" }] }}
+            style={{
+              transform: [{ rotateX: "180deg" }],
+            }}
             size={35}
-            color={colors.secondary}
+            color={colors.white}
             onPress={() => navigation.navigate("Add", { day: dayString })}
           />
         </View>
@@ -244,7 +246,6 @@ const WeekCalendar = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safe}>
       <Agenda
-        style={styles.agenda}
         items={items}
         loadItemsForMonth={loadItems}
         selected={now.day}
@@ -267,12 +268,17 @@ const WeekCalendar = ({ navigation }) => {
           "2021-10-25": { color: colors.medium },
           "2021-10-26": { endingDay: true, color: colors.medium },
         }*/
-        monthFormat={"MMM" + "  yyyy"}
+        monthFormat={"MMMM" + "  yyyy"}
         theme={{
-          calendarBackground: colors.white,
+          backgroundColor: colors.secondary,
+          calendarBackground: colors.light,
           agendaKnobColor: colors.medium,
+          agendaDayNumColor: colors.white,
+          agendaDayTextColor: colors.white,
+          dayTextColor: colors.black,
+          selectedDayTextColor: colors.danger,
         }}
-        hideExtraDays={false}
+        hideExtraDays={true}
       />
     </SafeAreaView>
   );
@@ -290,7 +296,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     borderRadius: 10,
-    borderColor: colors.medium,
+    borderColor: colors.dark,
     borderWidth: 1,
     padding: 10,
     marginRight: 10,
@@ -301,7 +307,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     borderRadius: 10,
-    borderColor: colors.medium,
+    borderColor: colors.dark,
     borderWidth: 1,
     padding: 10,
     marginRight: 10,
