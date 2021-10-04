@@ -54,7 +54,7 @@ function SettingsScreen(props) {
       <View style={styles.container}>
         <FlatList
           data={settingItems}
-          keyExtractor={(settingItems) => settingItems.title}
+          keyExtractor={(item, index) => item.title}
           ItemSeparatorComponent={ListItemSeperator}
           renderItem={({ item }) => (
             <ListItem

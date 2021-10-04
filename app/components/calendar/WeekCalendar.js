@@ -11,6 +11,7 @@ import {
   Button,
   SafeAreaView,
   Dimensions,
+  FlatList,
 } from "react-native";
 // @ts-expect-error
 
@@ -20,6 +21,7 @@ import { Agenda } from "react-native-calendars";
 import colors from "../../config/colors";
 import CalendarSeperator from "../CalendarSeperator";
 import { useIsFocused } from "@react-navigation/core";
+import Screen from "../Screen";
 
 const testIDs = require("../Test");
 
@@ -27,7 +29,6 @@ const timeFormatter = (date) => {
   let d = moment(date).utcOffset(date);
   return d.format("hh:mm A");
 };
-
 const markedDay = {};
 
 const timeToString = (time) => {
@@ -37,79 +38,43 @@ const timeToString = (time) => {
 
 const WeekCalendar = ({ navigation }) => {
   const isFocused = useIsFocused();
-
-  useEffect(() => {
-    const refresh = navigation.addListener("focus", () => {
-      setItems(updateDate());
-    });
-    loadItems(date);
-    return refresh;
-  }, [isFocused]);
-
   const [items, setItems] = useState({});
   const [date, setDate] = useState({});
 
   const loadItems = (day) => {
     console.log("Loading items....");
+    setDate(day);
     setTimeout(async () => {
-      setDate(day);
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = timeToString(time);
 
         if (!items[strTime]) {
           items[strTime] = [];
-          const result = await pullDate(strTime).then((result) => {
+          const result = pullDate(strTime).then((result) => {
             if (result != undefined) {
-              const timeSt = timeFormatter(result.timeStart);
-              const timeEn = timeFormatter(result.timeFinish);
-              markedDay[strTime] = {
-                marked: true,
-                startingDay: true,
-                endingDay: true,
-                color: colors.background,
-                dotColor: colors.background,
-              };
-              items[strTime].push({
-                name: result.title,
-                time: timeSt + " - " + timeEn,
-                subText: result.description,
-                height: "100%",
-                category: result.categoryID,
-                date: strTime,
+              result.forEach((item) => {
+                const timeSt = timeFormatter(item.timeStart);
+                const timeEn = timeFormatter(item.timeFinish);
+                markedDay[strTime] = {
+                  marked: true,
+                  startingDay: true,
+                  endingDay: true,
+                  color: colors.background,
+                  dotColor: colors.background,
+                };
+                items[strTime].push({
+                  name: item.title,
+                  time: timeSt + " - " + timeEn,
+                  subText: item.description,
+                  height: "100%",
+                  category: item.categoryID,
+                  date: strTime,
+                });
+                renderItem(items[strTime]);
               });
             }
           });
-          const numItems = Math.floor(Math.random() * 3 + 1);
-          for (let j = 0; j < numItems; j++) {
-            const num = j + 1;
-            if (numItems === 1 && !items[strTime]) {
-              items[strTime].push({
-                name: strTime,
-                height: "100%",
-                number: numItems,
-                date: strTime,
-                onlyDate: true,
-                pulled: false,
-              });
-            } else if (j === numItems - 1 && j != 0 && !items[strTime]) {
-              items[strTime].push({
-                name: strTime,
-                height: "100%",
-                number: numItems,
-                date: strTime,
-                dateChanged: true,
-              });
-            } else if (!items[strTime]) {
-              items[strTime].push({
-                name: strTime,
-                height: "100%",
-                date: strTime,
-                number: numItems,
-                dateChanged: false,
-              });
-            }
-          }
         } else {
           renderEmptyDate(strTime);
         }
@@ -119,95 +84,117 @@ const WeekCalendar = ({ navigation }) => {
       Object.keys(items).forEach((key) => {
         newItems[key] = items[key];
       });
-      console.log("Items set");
       setItems(newItems);
-    }, 1000);
+    }, 3000);
   };
+
+  useEffect(() => {
+    setItems(items);
+    const refresh = navigation.addListener("focus", () => {
+      setItems(updateDate());
+      loadItems(date);
+    });
+    loadItems(date);
+    return refresh;
+  }, [isFocused]);
 
   const updateDate = async () => {
-    const newItems = {};
     console.log("updating........");
+    const newItems = {};
     Object.keys(items).forEach((key) => {
       newItems[key] = items[key];
-    }, 1000);
-
+    });
+    console.log("Done!");
+    //loadItems(date);
     return newItems;
-  };
-
-  const renderItem = (item) => {
-    if (item.dateChanged === false) {
-      return (
-        <>
-          <TouchableOpacity
-            testID={testIDs.agenda.ITEM}
-            style={[styles.item, { height: item.height }]}
-            onPress={() => Alert.alert("Nope")}
-          >
-            <Text style={styles.mainText}>{item.name}</Text>
-            <Text style={styles.timeText}>{item.time}</Text>
-          </TouchableOpacity>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <TouchableOpacity
-            testID={testIDs.agenda.ITEM}
-            style={[styles.item, { height: item.height }]}
-            onPress={() => console.log("Else")}
-          >
-            <Text style={styles.mainText}>{item.name}</Text>
-            <Text style={styles.timeText}>{item.time}</Text>
-            <View style={styles.button}>
-              <MaterialCommunityIcons
-                name={"lead-pencil"}
-                size={28}
-                style={styles.icon}
-                color={colors.medium}
-                onPress={() =>
-                  navigation.navigate("View", {
-                    day: item.date,
-                    title: item.name,
-                    time: item.time,
-                    description: item.subText,
-                    category: item.category,
-                  })
-                }
-              />
-              <MaterialCommunityIcons
-                name={"trash-can-outline"}
-                size={28}
-                color={colors.medium}
-                onPress={() =>
-                  Alert.alert("Are you sure you want to delete this item?")
-                }
-              />
-            </View>
-          </TouchableOpacity>
-          <View style={styles.footer}>
-            <MaterialCommunityIcons
-              name={"tooltip-plus"}
-              size={35}
-              style={{ transform: [{ rotateX: "180deg" }] }}
-              color={colors.white}
-              onPress={() => navigation.navigate("Add", { day: item.date })}
-            />
-          </View>
-          <CalendarSeperator />
-        </>
-      );
-    }
   };
 
   const pullDate = async (day) => {
     const result = await listingsApi.getDate(day);
-
     if (result === null) {
       return null;
     } else {
       return result;
     }
     //resetForm();
+  };
+
+  const renderItem = (item) => {
+    return (
+      <>
+        <Screen style={styles.container}>
+          <FlatList
+            keyExtractor={(item, index) => item.name}
+            data={items[item.date]}
+            style={styles.list}
+            ItemSeparatorComponent={CalendarSeperator}
+            renderItem={({ item }) => (
+              <>
+                <TouchableOpacity
+                  testID={testIDs.agenda.ITEM}
+                  style={[styles.item, { height: item.height }]}
+                  onPress={() => console.log("Else")}
+                >
+                  <Text style={styles.mainText}>{item.name}</Text>
+                  <Text style={styles.timeText}>{item.time}</Text>
+                  <View style={styles.button}>
+                    <MaterialCommunityIcons
+                      name={"lead-pencil"}
+                      size={28}
+                      style={styles.icon}
+                      color={colors.medium}
+                      onPress={() =>
+                        navigation.navigate("View", {
+                          day: item.date,
+                          title: item.name,
+                          time: item.time,
+                          description: item.subText,
+                          category: item.category,
+                        })
+                      }
+                    />
+                    <MaterialCommunityIcons
+                      name={"trash-can-outline"}
+                      size={28}
+                      color={colors.medium}
+                      onPress={() => alertButton(item)}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </>
+            )}
+          />
+        </Screen>
+        <View style={styles.footer}>
+          <MaterialCommunityIcons
+            name={"tooltip-plus"}
+            size={35}
+            style={{ transform: [{ rotateX: "180deg" }] }}
+            color={colors.white}
+            onPress={() => navigation.navigate("Add", { day: item.date })}
+          />
+        </View>
+        <CalendarSeperator />
+      </>
+    );
+  };
+
+  const alertButton = (item) => {
+    Alert.alert("Are you sure want to delete this item?", "", [
+      {
+        text: "No",
+        onPress: () => console.log("Nope!"),
+        style: "cancel",
+      },
+      {
+        text: "Yes im sure",
+        onPress: () => {
+          listingsApi.deleteListing(item);
+          setItems(updateDate());
+          loadItems(date);
+        },
+      },
+    ]);
   };
 
   const renderEmptyDate = (day) => {
@@ -241,36 +228,22 @@ const WeekCalendar = ({ navigation }) => {
     return r1.name !== r2.name;
   };
 
-  const now = moment();
-
   return (
     <SafeAreaView style={styles.safe}>
       <Agenda
         items={items}
         loadItemsForMonth={loadItems}
-        selected={now.day}
+        //selected={now.day}
         renderItem={renderItem}
         renderEmptyDate={renderEmptyDate}
         rowHasChanged={rowHasChanged}
-        showClosingKnob={true}
         markingType={"period"}
-        markedDates={markedDay} /*{
-          "2021-10-08": { textColor: "#43515c" },
-          "2021-10-09": { textColor: "#43515c" },
-          "2021-10-14": {
-            startingDay: true,
-            endingDay: true,
-            color: colors.danger,
-          },
-          "2021-10-21": { startingDay: true, color: colors.blue },
-          "2021-10-22": { endingDay: true, color: colors.medium },
-          "2021-10-24": { startingDay: true, color: colors.medium },
-          "2021-10-25": { color: colors.medium },
-          "2021-10-26": { endingDay: true, color: colors.medium },
-        }*/
+        markedDates={markedDay}
+        onDayPress={loadItems}
+        onDayChange={loadItems}
         monthFormat={"MMMM" + "  yyyy"}
         theme={{
-          backgroundColor: colors.secondary,
+          backgroundColor: colors.black,
           calendarBackground: colors.light,
           agendaKnobColor: colors.medium,
           agendaDayNumColor: colors.white,
@@ -278,7 +251,9 @@ const WeekCalendar = ({ navigation }) => {
           dayTextColor: colors.black,
           selectedDayTextColor: colors.danger,
         }}
-        hideExtraDays={true}
+        refreshing
+        hideExtraDays
+        showClosingKnob
       />
     </SafeAreaView>
   );
@@ -291,6 +266,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "flex-end",
     paddingTop: 22,
+  },
+  container: {
+    flex: 1,
+  },
+  list: {
+    paddingTop: 10,
   },
   item: {
     backgroundColor: "white",

@@ -8,30 +8,54 @@ const getDate = async (date) => {
   const user = firebase.default.auth().currentUser.email;
   const email = user.replace(".", "-");
   const safeEmail = email.replace("@", "-");
+  const arrayz = [];
+
   const doc = await firebase.default
     .firestore()
     .collection(safeEmail)
     .doc(date)
+    .collection("listing")
     .get()
     .then((doc) => {
-      if (doc.exists) {
-        const data = doc.data();
-        const date = {
-          title: data.listing.title,
-          timeStart: data.listing.timeStart,
-          timeFinish: data.listing.timeFinish,
-          categoryID: data.listing.categoryID,
-          isRepeating: data.listing.isRepeating,
-          description: data.listing.description,
-        };
-        return date;
-      } else {
-        return null;
-      }
+      doc.forEach((snapshot) => {
+        if (snapshot.exists) {
+          arrayz.push(snapshot.data());
+        }
+      });
     });
-  return doc;
-};
 
+  return arrayz;
+};
+const deleteListing = (listing) => {
+  const user = firebase.default.auth().currentUser.email;
+
+  const email = user.replace(".", "-");
+  console.log(user);
+  const safeEmail = email.replace("@", "-");
+  console.log(safeEmail);
+  const arrayz = [];
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc(listing.date)
+    .collection("listing")
+    .get()
+    .then((doc) => {
+      doc.forEach((snapshot) => {
+        if (snapshot.data().title == listing.name) {
+          firebase.default
+            .firestore()
+            .collection(safeEmail)
+            .doc(listing.date)
+            .collection("listing")
+            .doc(snapshot.id)
+            .delete();
+        } else {
+          return;
+        }
+      });
+    });
+};
 const addListing = (listing, onUploadProgress, updateComplete) => {
   const user = firebase.default.auth().currentUser.email;
 
@@ -49,19 +73,15 @@ const addListing = (listing, onUploadProgress, updateComplete) => {
     .firestore()
     .collection(safeEmail)
     .doc(listing.dateClicked)
-    .set({
-      listing: {
-        title: listing.title,
-        timeStart: listing.timeStart,
-        timeFinish: listing.timeFinish,
-        categoryID: listing.category.label,
-        isRepeating: listing.repeating.label,
-        description: listing.description,
-      },
+    .collection("listing")
+    .add({
+      title: listing.title,
+      timeStart: listing.timeStart,
+      timeFinish: listing.timeFinish,
+      categoryID: listing.category.label,
+      isRepeating: listing.repeating.label,
+      description: listing.description,
     });
-
-  //  if (listing.location)
-  //    data.append("location", JSON.stringify(listing.location));
 
   return client.post(endPoint, data, {
     onUploadProgress: (progress) =>
@@ -73,4 +93,5 @@ export default {
   getListings,
   addListing,
   getDate,
+  deleteListing,
 };
