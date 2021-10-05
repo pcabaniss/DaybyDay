@@ -235,14 +235,13 @@ function ListingEditScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.background,
+    backgroundColor: colors.black,
   },
   date: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
-
     padding: 10,
     width: "100%",
     height: 50,
@@ -250,7 +249,6 @@ const styles = StyleSheet.create({
   picker: {
     width: "23%",
     backgroundColor: "white",
-    borderWidth: 3,
     borderColor: "black",
     borderRadius: 10,
     overflow: "hidden",
@@ -261,6 +259,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "bold",
+    color: colors.white,
   },
 });
 export default ListingEditScreen;

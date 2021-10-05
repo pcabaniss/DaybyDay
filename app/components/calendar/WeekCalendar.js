@@ -70,6 +70,10 @@ const WeekCalendar = ({ navigation }) => {
                   height: "100%",
                   category: item.categoryID,
                   date: strTime,
+                  timeStart: timeSt,
+                  timeEnd: timeEn,
+                  repeating: item.isRepeating,
+                  id: item.id,
                 });
                 renderItem(items[strTime]);
               });
@@ -147,9 +151,12 @@ const WeekCalendar = ({ navigation }) => {
                         navigation.navigate("View", {
                           day: item.date,
                           title: item.name,
-                          time: item.time,
+                          timeStart: item.timeStart,
+                          timeEnd: item.timeEnd,
                           description: item.subText,
                           category: item.category,
+                          repeating: item.repeating,
+                          id: item.id,
                         })
                       }
                     />

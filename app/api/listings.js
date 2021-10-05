@@ -26,6 +26,7 @@ const getDate = async (date) => {
 
   return arrayz;
 };
+
 const deleteListing = (listing) => {
   const user = firebase.default.auth().currentUser.email;
 
@@ -56,6 +57,7 @@ const deleteListing = (listing) => {
       });
     });
 };
+
 const addListing = (listing, onUploadProgress, updateComplete) => {
   const user = firebase.default.auth().currentUser.email;
 
@@ -81,8 +83,53 @@ const addListing = (listing, onUploadProgress, updateComplete) => {
       categoryID: listing.category.label,
       isRepeating: listing.repeating.label,
       description: listing.description,
+      id: listing.dateClicked + listing.title,
     });
 
+  return client.post(endPoint, data, {
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
+  });
+};
+
+const updateListing = (listing, onUploadProgress) => {
+  const user = firebase.default.auth().currentUser.email;
+
+  const email = user.replace(".", "-");
+  console.log(user);
+  const safeEmail = email.replace("@", "-");
+  console.log(safeEmail);
+  const data = new FormData();
+  data.append("title", listing.title);
+
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc(listing.dateClicked)
+    .collection("listing")
+    .get()
+    .then((doc) => {
+      doc.forEach((snapshot) => {
+        if (snapshot.data().id == listing.id) {
+          firebase.default
+            .firestore()
+            .collection(safeEmail)
+            .doc(listing.dateClicked)
+            .collection("listing")
+            .doc(snapshot.id)
+            .update({
+              title: listing.title,
+              timeStart: listing.timeStart,
+              timeFinish: listing.timeFinish,
+              categoryID: listing.category.label,
+              isRepeating: listing.repeating.label,
+              description: listing.description,
+            });
+        } else {
+          return;
+        }
+      });
+    });
   return client.post(endPoint, data, {
     onUploadProgress: (progress) =>
       onUploadProgress(progress.loaded / progress.total),
@@ -94,4 +141,5 @@ export default {
   addListing,
   getDate,
   deleteListing,
+  updateListing,
 };
