@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 
 import Screen from "../components/Screen";
@@ -8,6 +8,7 @@ import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
 import useAuth from "../auth/useAuth";
 import SettingsScreen from "./SettingsScreen";
+import listings from "../api/listings";
 
 const menuItems = [
   {
@@ -50,14 +51,28 @@ const menuItems = [
 
 function AccountScreen({ navigation }) {
   const { user, logOut } = useAuth();
+  const [name, setName] = useState("");
+  const [pic, setPic] = useState(" ");
+  const getName = async () => {
+    const name = await listings.getName(user.email);
+    setName(name);
+  };
+
+  const getPic = async () => {
+    const pic = await listings.pullImage(user.email);
+    setPic(pic);
+  };
+
+  getName();
+  getPic();
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title={user.displayName}
+          title={name}
           subTitle={user.email}
-          image={require("../assets/mosh.jpg")}
+          image={pic}
           onPress={() => navigation.navigate("Profile")}
           key="one"
         />
@@ -107,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: colors.black,
   },
   screen: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.black,
   },
 });
 

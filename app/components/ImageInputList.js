@@ -3,12 +3,33 @@ import { View, StyleSheet, ScrollView } from "react-native";
 
 import ImageInput from "./ImageInput";
 
-function ImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
+function ImageInputList({ imageUri, onRemoveImage, onAddImage }) {
   const scrollView = useRef();
 
   return (
-    <View>
-      <ScrollView
+    <View style={styles.container}>
+      <ImageInput
+        imageUri={imageUri}
+        onChangeImage={(uri) => onAddImage(uri)}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+  },
+  image: {
+    marginRight: 10,
+  },
+});
+
+export default ImageInputList;
+
+/**
+ * For the array of images for business pages:
+ * <ScrollView
         ref={scrollView}
         horizontal
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
@@ -25,17 +46,4 @@ function ImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
           <ImageInput onChangeImage={(uri) => onAddImage(uri)} />
         </View>
       </ScrollView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-  },
-  image: {
-    marginRight: 10,
-  },
-});
-
-export default ImageInputList;
+ */

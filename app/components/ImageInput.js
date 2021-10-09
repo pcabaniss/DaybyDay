@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,63 +6,112 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
+import listings from "../api/listings";
 
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 
-function ImageInput({ imageUri, onChangeImage }) {
+function ImageInput() {
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
-    requestPermission();
+    requestLibraryPermission();
+    requestCameraPermission();
   }, []);
 
-  const requestPermission = async () => {
+  const requestLibraryPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!granted)
       alert("You need to enable permissions to access the library.");
   };
 
+  const requestCameraPermission = async () => {
+    const { granted } = await ImagePicker.requestCameraPermissionsAsync();
+    if (!granted) alert("You need to enable permissions to access the Camera.");
+  };
+
   const handlePress = () => {
-    if (!imageUri) selectImage();
+    if (!image) alertButton();
     else
       Alert.alert("Delete", "Are you sure you want to delete this image?", [
-        { text: "Yes", onPress: () => onChangeImage(null) },
+        { text: "Yes", onPress: () => setImage(null) },
         { text: "No" },
       ]);
+  };
+
+  const takePhoto = async () => {
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        mediaTypes: "Images",
+      });
+      setImage(result.uri);
+      path = () => {
+        const pic = image;
+        return pic;
+      };
+    } catch (error) {
+      console.log("Error taking picture.");
+    }
   };
 
   const selectImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5,
+        mediaTypes: "Images",
+        allowsEditing: true,
+        //aspect: [4,3],
+        quality: 1,
       });
-      if (!result.cancelled) onChangeImage(result.uri);
+      //Send a promise to save the picture to storage once register button is clicked
+      if (!result.cancelled) setImage(result.uri);
+      path = () => {
+        const pic = image;
+        return pic;
+      };
     } catch (error) {
-      console.log("Error reading image");
+      console.log("Error reading image" + error);
     }
   };
 
+  const alertButton = () => {
+    Alert.alert("Upload from?", "", [
+      {
+        text: "Photo Library",
+        onPress: () => {
+          selectImage();
+        },
+      },
+      {
+        text: "Take Picture",
+        onPress: () => {
+          takePhoto();
+        },
+      },
+    ]);
+  };
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
-        {!imageUri && (
+        {!image && (
           <MaterialCommunityIcons
-            color={colors.medium}
-            name="camera"
-            size={40}
+            color={colors.black}
+            name="account-outline"
+            size={75}
           />
         )}
-        {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+        {image && <Image source={{ uri: image }} style={styles.image} />}
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  imageContainer: {
     backgroundColor: colors.light,
-    borderRadius: 15,
+    borderRadius: 50,
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
     height: 100,

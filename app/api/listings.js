@@ -4,15 +4,27 @@ const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
 
-const getDate = async (date) => {
-  const user = firebase.default.auth().currentUser.email;
-  const email = user.replace(".", "-");
+const safetyFirst = (notSafeEmail) => {
+  const email = notSafeEmail.replace(".", "-");
   const safeEmail = email.replace("@", "-");
+
+  return safeEmail;
+};
+
+const getUser = () => {
+  const user = firebase.default.auth().currentUser.email;
+  const safeEmail = safetyFirst(user);
+  return firebase.default.firestore().collection(safeEmail);
+};
+
+const currentUser = () => {
+  return firebase.default.database();
+};
+
+const getDate = async (date) => {
   const arrayz = [];
 
-  const doc = await firebase.default
-    .firestore()
-    .collection(safeEmail)
+  const doc = await getUser()
     .doc(date)
     .collection("listing")
     .get()
@@ -28,16 +40,7 @@ const getDate = async (date) => {
 };
 
 const deleteListing = (listing) => {
-  const user = firebase.default.auth().currentUser.email;
-
-  const email = user.replace(".", "-");
-  console.log(user);
-  const safeEmail = email.replace("@", "-");
-  console.log(safeEmail);
-  const arrayz = [];
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
+  getUser()
     .doc(listing.date)
     .collection("listing")
     .get()
@@ -59,21 +62,13 @@ const deleteListing = (listing) => {
 };
 
 const addListing = (listing, onUploadProgress, updateComplete) => {
-  const user = firebase.default.auth().currentUser.email;
-
-  const email = user.replace(".", "-");
-  console.log(user);
-  const safeEmail = email.replace("@", "-");
-  console.log(safeEmail);
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
   const data = new FormData();
   data.append("title", listing.title);
 
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
+  getUser()
     .doc(listing.dateClicked)
     .collection("listing")
     .add({
@@ -93,27 +88,17 @@ const addListing = (listing, onUploadProgress, updateComplete) => {
 };
 
 const updateListing = (listing, onUploadProgress) => {
-  const user = firebase.default.auth().currentUser.email;
-
-  const email = user.replace(".", "-");
-  console.log(user);
-  const safeEmail = email.replace("@", "-");
-  console.log(safeEmail);
   const data = new FormData();
   data.append("title", listing.title);
 
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
+  getUser()
     .doc(listing.dateClicked)
     .collection("listing")
     .get()
     .then((doc) => {
       doc.forEach((snapshot) => {
         if (snapshot.data().id == listing.id) {
-          firebase.default
-            .firestore()
-            .collection(safeEmail)
+          getUser()
             .doc(listing.dateClicked)
             .collection("listing")
             .doc(snapshot.id)
@@ -136,10 +121,35 @@ const updateListing = (listing, onUploadProgress) => {
   });
 };
 
+const getName = (email) => {
+  const safeEmail = safetyFirst(email);
+
+  const name = currentUser()
+    .ref(safeEmail + "/UserInfo")
+    .get()
+    .then((doc) => {
+      return doc.child("name").val();
+    });
+  return name;
+};
+
+const pullImage = (email) => {
+  const safeEmail = safetyFirst(email);
+  const pic = currentUser()
+    .ref(safeEmail + "/UserInfo")
+    .get()
+    .then((image) => {
+      return image.child("profilePic").val();
+    });
+  return pic;
+};
+
 export default {
   getListings,
   addListing,
   getDate,
   deleteListing,
   updateListing,
+  pullImage,
+  getName,
 };

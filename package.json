@@ -43,6 +43,7 @@
     "react-native-date-picker": "^3.3.2",
     "react-native-drop-down-item": "^1.1.0",
     "react-native-expo-image-cache": "^4.1.0",
+    "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.9.2",
     "react-native-progress": "^5.0.0",

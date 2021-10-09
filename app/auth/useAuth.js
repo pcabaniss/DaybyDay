@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import jwtDecode from "jwt-decode";
 import AuthContext from "./context";
+import { firebase } from "../auth/firebaseConfig";
 import authStorage from "./storage";
 
 export default useAuth = () => {
@@ -15,6 +16,7 @@ export default useAuth = () => {
   const logOut = () => {
     setUser(null);
     authStorage.removeToken();
+    firebase.default.auth().signOut();
   };
 
   return { user, logOut, logIn };

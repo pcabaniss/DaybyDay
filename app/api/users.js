@@ -2,6 +2,7 @@ import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
 //const register = (userInfo) => client.post("/users", userInfo);
 const register = (userInfo) => (
+  console.log(userInfo),
   client.post("/users", userInfo),
   firebase.default
     .auth()
@@ -17,6 +18,17 @@ const register = (userInfo) => (
       }
       console.log(error);
     })
+    .then(
+      firebase.default
+        .database()
+        .ref(userInfo.safeEmail + "/UserInfo")
+        .set({
+          name: userInfo.name,
+          email: userInfo.email,
+          profilePic: userInfo.image,
+        })
+    )
+    .then(console.log("Registered " + userInfo.name))
 );
 
 export default { register };

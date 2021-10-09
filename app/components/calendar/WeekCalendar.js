@@ -8,7 +8,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
   SafeAreaView,
   Dimensions,
   FlatList,
