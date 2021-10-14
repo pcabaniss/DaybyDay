@@ -167,7 +167,7 @@ function RegisterScreen() {
     <>
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
       <ScrollView style={styles.scroll}>
-        <Text style={styles.header}>Customer</Text>
+        <Text style={styles.header}>Business</Text>
         <Screen style={styles.container}>
           <Form
             initialValues={{
@@ -176,7 +176,7 @@ function RegisterScreen() {
               email: "",
               password: "",
               image: "",
-              business: false,
+              business: true,
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -187,8 +187,8 @@ function RegisterScreen() {
                   {!image && (
                     <MaterialCommunityIcons
                       color={colors.black}
-                      name="account"
-                      size={75}
+                      name="account-group"
+                      size={65}
                     />
                   )}
                   {image && (
@@ -204,9 +204,9 @@ function RegisterScreen() {
             <ErrorMessage error={error} visible={error} />
             <FormField
               autoCorrect={false}
-              icon="account"
+              icon="shopping"
               name="name"
-              placeholder="Name"
+              placeholder="Business Name"
             />
             <FormField
               autoCapitalize="none"
@@ -217,7 +217,9 @@ function RegisterScreen() {
               placeholder="Email"
               textContentType="emailAddress"
             />
-
+            <Text style={{ color: colors.dark, flex: 1 }}>
+              **This email will be displayed to customers for contact.
+            </Text>
             <FormField
               autoCapitalize="none"
               autoCorrect={false}
@@ -240,7 +242,7 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.red,
+    backgroundColor: colors.blue,
   },
   imageContainer: {
     backgroundColor: colors.light,
@@ -263,7 +265,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 400, //Noteworthy-Bold
-    backgroundColor: colors.red,
+    backgroundColor: colors.blue,
     fontSize: 80,
     textAlign: "center",
     fontFamily: "Noteworthy-Bold",

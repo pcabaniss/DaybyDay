@@ -12,6 +12,7 @@ import AuthContext from "./app/auth/context";
 import { firebase } from "./app/auth/firebaseConfig";
 import authStorage from "./app/auth/storage";
 import colors from "./app/config/colors";
+import listings from "./app/api/listings";
 
 export default function App() {
   const [user, setUser] = useState();
@@ -35,7 +36,6 @@ export default function App() {
         onError={console.warn}
       />
     );
-
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <OfflineNotice />

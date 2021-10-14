@@ -26,9 +26,10 @@ const register = (userInfo) => (
           name: userInfo.name,
           email: userInfo.email,
           profilePic: userInfo.image,
+          isBusiness: userInfo.business,
         })
     )
-    .then(console.log("Registered " + userInfo.name))
+    .then(console.log("Registered " + userInfo))
 );
 
 export default { register };

@@ -51,10 +51,12 @@ const menuItems = [
 
 function AccountScreen({ navigation }) {
   const { user, logOut } = useAuth();
+  console.log(user);
   const [name, setName] = useState("");
   const [pic, setPic] = useState(" ");
   const getName = async () => {
     const name = await listings.getName(user.email);
+    console.log(name);
     setName(name);
   };
 

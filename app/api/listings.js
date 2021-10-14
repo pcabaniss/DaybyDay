@@ -144,6 +144,17 @@ const pullImage = (email) => {
   return pic;
 };
 
+const pullProfileType = (email) => {
+  const safeEmail = safetyFirst(email);
+  const type = currentUser()
+    .ref(safeEmail + "/UserInfo")
+    .get()
+    .then((profile) => {
+      return profile.child("isBusiness").val();
+    });
+  return type;
+};
+
 export default {
   getListings,
   addListing,
@@ -152,4 +163,5 @@ export default {
   updateListing,
   pullImage,
   getName,
+  pullProfileType,
 };
