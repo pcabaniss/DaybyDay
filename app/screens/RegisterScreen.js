@@ -227,7 +227,7 @@ function RegisterScreen() {
               secureTextEntry
               textContentType="password"
             />
-            <SubmitButton title="Register" />
+            <SubmitButton title="Register" color={colors.primary} />
           </Form>
         </Screen>
       </ScrollView>

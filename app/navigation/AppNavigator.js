@@ -10,6 +10,7 @@ import ScheduleScreen from "../screens/SceduleScreen";
 import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
 import { useState } from "react";
+import ScheduleNavigator from "./ScheduleNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ const AppNavigator = () => {
       {isBusiness ? (
         <Tab.Screen
           name="Schedule"
-          component={ScheduleScreen}
+          component={ScheduleNavigator}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons

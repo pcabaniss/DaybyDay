@@ -2,6 +2,7 @@ import React from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 
 import AppButton from "../components/AppButton";
+import colors from "../config/colors";
 
 function WelcomeScreen({ navigation }) {
   return (
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "#B4C5E4",
+    backgroundColor: colors.white,
   },
   buttonContainer: {
     padding: 20,

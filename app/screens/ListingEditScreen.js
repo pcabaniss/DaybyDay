@@ -226,7 +226,7 @@ function ListingEditScreen({ navigation, route }) {
             width="48%"
           />
         </View>
-        <SubmitButton title="Add" />
+        <SubmitButton title="Add" color={colors.primary} />
       </Form>
     </Screen>
   );
