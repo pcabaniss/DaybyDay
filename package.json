@@ -10,6 +10,7 @@
   "dependencies": {
     "@dooboo-ui/native-accordion": "^0.7.0",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/checkbox": "^0.5.8",
     "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "0.1.10",
