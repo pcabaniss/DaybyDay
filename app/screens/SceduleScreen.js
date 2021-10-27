@@ -26,7 +26,7 @@ function SceduleScreen({ navigation }) {
         </Text>
         <ListItemSeperator />
         <Text style={styles.saved}>Current Schedule:</Text>
-        <CurrentSchedule onPress={() => navigation.navigate("Edit Schedule")} />
+        <CurrentSchedule navigation={navigation} />
       </View>
     </>
   );

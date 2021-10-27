@@ -37,7 +37,7 @@ const AppNavigator = () => {
       {isBusiness ? (
         <Tab.Screen
           name="Schedule"
-          component={ScheduleNavigator}
+          component={ScheduleScreen}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons

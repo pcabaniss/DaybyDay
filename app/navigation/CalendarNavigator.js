@@ -4,7 +4,6 @@ import WeekCalendar from "../components/calendar/WeekCalendar";
 import ListingEditScreen from "../screens/ListingEditScreen";
 import AgendaDetailsScreen from "../screens/AgendaDetailsScreen";
 import ScheduleScreen from "../screens/SceduleScreen";
-import EditScheduleScreen from "../screens/EditScheduleScreen";
 
 const Stack = createStackNavigator();
 

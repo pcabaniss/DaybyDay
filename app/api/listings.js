@@ -21,6 +21,35 @@ const currentUser = () => {
   return firebase.default.database();
 };
 
+const saveSchedule = (day, open, close, isOpen, letter) => {
+  getUser().doc("Schedule").collection(day).doc("info").set({
+    open: open,
+    close: close,
+    isOpen: isOpen,
+    letter: letter,
+  });
+};
+
+const getSchedule = async (day) => {
+  var info = {};
+
+  await getUser()
+    .doc("Schedule")
+    .collection(day)
+    .doc("info")
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+
+        info = data;
+        return data;
+      }
+    });
+
+  return info;
+};
+
 const getDate = async (date) => {
   const arrayz = [];
 
@@ -164,4 +193,6 @@ export default {
   pullImage,
   getName,
   pullProfileType,
+  saveSchedule,
+  getSchedule,
 };
