@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
   Text,
+  Modal,
   ScrollView,
 } from "react-native";
 import * as Yup from "yup";
@@ -30,7 +31,8 @@ import colors from "../config/colors";
 import listings from "../api/listings";
 
 /**
- * Create a tab navigator for 2 screens, a business page and a customer one
+ * Needs a onboarding/intro slider screen that displays only once per download explaining the
+ * apps features.
  * Each page should have a brief explaination on the top of the differences
  * if a business page have a space for 'company name'
  */
@@ -47,6 +49,7 @@ function RegisterScreen() {
   const loginApi = useApi(authApi.login);
 
   const auth = useAuth();
+  const [modalVisible, setModalVisible] = useState(true);
   const [error, setError] = useState();
   const [image, setImage] = useState();
 

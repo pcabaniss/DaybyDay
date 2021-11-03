@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, Text } from "react-native";
 import { firebase } from "../auth/firebaseConfig";
 import * as Yup from "yup";
 
@@ -51,7 +51,7 @@ function LoginScreen(props) {
 
   return (
     <Screen style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+      <Image style={styles.logo} source={require("../assets/logo1.png")} />
 
       <AppForm
         initialValues={{ email: "", password: "" }}
@@ -80,6 +80,7 @@ function LoginScreen(props) {
           secureTextEntry
           textContentType="password"
         />
+        <Text style={styles.text}>Forgotten anything? Click here</Text>
         <SubmitButton title="Login" />
       </AppForm>
     </Screen>
@@ -97,6 +98,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 50,
     marginBottom: 20,
+  },
+  text: {
+    textAlign: "center",
   },
 });
 

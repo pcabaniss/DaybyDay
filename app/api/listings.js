@@ -41,9 +41,10 @@ const getSchedule = async (day) => {
     .then((doc) => {
       if (doc.exists) {
         const data = doc.data();
-
         info = data;
         return data;
+      } else {
+        info = null;
       }
     });
 

@@ -15,12 +15,12 @@ function WelcomeScreen({ navigation }) {
         <AppButton
           title="Login"
           onPress={() => navigation.navigate("Login")}
-          color="primary"
+          color={colors.primary}
         />
         <AppButton
           title="Register"
           onPress={() => navigation.navigate("Registration")}
-          color="secondary"
+          color={colors.secondary}
         />
       </View>
     </ImageBackground>

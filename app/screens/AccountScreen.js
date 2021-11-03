@@ -7,7 +7,6 @@ import colors from "../config/colors";
 import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
 import useAuth from "../auth/useAuth";
-import SettingsScreen from "./SettingsScreen";
 import listings from "../api/listings";
 
 const menuItems = [
@@ -16,8 +15,8 @@ const menuItems = [
     icon: {
       name: "format-list-bulleted",
       backgroundColor: colors.primary,
-      key: 1,
     },
+    key: "Dates",
     targetScreen: "Dates",
   },
   {
@@ -25,8 +24,8 @@ const menuItems = [
     icon: {
       name: "email",
       backgroundColor: colors.secondary,
-      key: 2,
     },
+    key: "Messages",
     targetScreen: "Messages",
   },
   {
@@ -34,8 +33,8 @@ const menuItems = [
     icon: {
       name: "account-cog",
       backgroundColor: "#cdc392",
-      key: 3,
     },
+    key: "Settings",
     targetScreen: "Settings",
   },
   {
@@ -43,9 +42,9 @@ const menuItems = [
     icon: {
       name: "head-question",
       backgroundColor: colors.blue,
-      key: 4,
     },
-    targetScreen: "SupportScreen",
+    key: "Help",
+    targetScreen: "Help",
   },
 ];
 
@@ -80,10 +79,11 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <FlatList
           data={menuItems}
-          keyExtractor={(menuItem) => menuItems.title}
+          //keyExtractor={(menuItem) => menuItems.title}
           ItemSeparatorComponent={ListItemSeperator}
           contentContainerStyle={{
             borderRadius: 25,
+            width: "99%",
             backgroundColor: colors.white,
             overflow: "hidden",
           }}
@@ -119,6 +119,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: colors.white,
     borderWidth: 3,
+    width: "97%",
+    alignSelf: "center",
     borderColor: colors.black,
   },
   screen: {

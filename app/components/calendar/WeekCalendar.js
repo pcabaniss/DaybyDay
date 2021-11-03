@@ -88,7 +88,7 @@ const WeekCalendar = ({ navigation }) => {
         newItems[key] = items[key];
       });
       setItems(newItems);
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {

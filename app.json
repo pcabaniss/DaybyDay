@@ -4,9 +4,9 @@
     "slug": "PracticingCode",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "icon": "./app/assets/logo1.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/Hotpot.png",
       "resizeMode": "cover",
       "backgroundColor": "#e63c4b"
     },

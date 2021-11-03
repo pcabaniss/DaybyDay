@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-native";
 
+import moment, { isMoment } from "moment";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -28,58 +29,62 @@ function CurrentSchedule({ navigation }) {
     {
       day: "Sunday",
       letter: "S",
-      open: "",
-      close: "",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
+
       key: "sun",
-      isSelected: false,
     },
 
     {
       day: "Monday",
       letter: "M",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
+
       key: "mon",
     },
     {
       day: "Tuesday",
       letter: "T",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
+
       key: "tues",
-      isSelected: false,
     },
     {
       day: "Wednesday",
       letter: "W",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
       key: "wed",
-      isSelected: true,
     },
     {
       day: "Thursday",
       letter: "Th",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
       key: "thur",
-      isSelected: false,
     },
     {
       day: "Friday",
       letter: "F",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
       key: "fri",
-      isSelected: false,
     },
     {
       day: "Saturday",
       letter: "S",
-      open: "fill",
-      close: "fill",
+      open: new Date(),
+      close: new Date(),
+      marked: false,
       key: "sat",
-      isSelected: false,
     },
   ];
 
@@ -90,11 +95,11 @@ function CurrentSchedule({ navigation }) {
   const [letterSelected, setLetterSelected] = useState("S");
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
-  const [formattedOpen, setFormattedOpen] = useState("12:00 AM");
-  const [formattedClose, setFormattedClose] = useState("12:00 PM");
-  const [isOpen, setIsOpen] = useState(true);
+
+  const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [colored, setColored] = useState(colors.white);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -107,26 +112,31 @@ function CurrentSchedule({ navigation }) {
 
   const getSchedule = async (day) => {
     const dayInfo = await listings.getSchedule(day);
-    dayOfTheWeek.map((currentDay) => {
-      if (currentDay.day == day) {
-        (currentDay.close = dayInfo.close),
-          (currentDay.open = dayInfo.open),
-          (currentDay.isSelected = !dayInfo.isOpen),
-          (currentDay.letter = dayInfo.letter);
-      }
-      setIsOpen(dayInfo.isOpen);
-    });
+    if (dayInfo == null) {
+      setStartDate(new Date());
+      setEndDate(new Date());
+      setIsOpen(false);
+    } else {
+      dayOfTheWeek.map((currentDay) => {
+        if (currentDay.day == day) {
+          (currentDay.close = new Date(dayInfo.close)),
+            (currentDay.open = new Date(dayInfo.open)),
+            (currentDay.isSelected = !dayInfo.isOpen),
+            (currentDay.letter = dayInfo.letter);
+          setStartDate(currentDay.open);
+          setEndDate(currentDay.close);
+          setIsOpen(dayInfo.isOpen);
+        }
 
-    console.log("_____This is a line break______");
-    console.log(dayOfTheWeek);
+        //console.log(new Date(dayInfo.open.seconds));
+      });
+    }
   };
 
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");
     setStartDate(startDate);
-    const formatDate = format(startDate, "hh:mm a");
-    setFormattedOpen(formatDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
@@ -134,11 +144,13 @@ function CurrentSchedule({ navigation }) {
     setShow(Platform.OS === "ios");
     setShow(Platform.OS === "android");
     setEndDate(endDate);
-
-    const formatDate = format(endDate, "hh:mm a");
-    setFormattedClose(formatDate);
+    console.log(endDate);
   };
 
+  const formatString = (date) => {
+    const format = new Date(date);
+    console.log(format);
+  };
   const showDatepicker = () => {
     showMode("date");
   };
@@ -156,15 +168,17 @@ function CurrentSchedule({ navigation }) {
     setIsOpen((isOpen) => !isOpen);
   };
 
+  const checkDays = async (day) => {
+    const dayInfo = await listings.getSchedule(day);
+    if (dayInfo == null) {
+      return colors.danger;
+    }
+    return colors.white;
+  };
+
   const saveButtonPressed = (day, open, close, isOpen, letter) => {
     console.log("Saving... " + day, letter, open, close, isOpen);
     try {
-      if (open == "") {
-        open = "12:00 AM";
-      }
-      if (close == "") {
-        close = "12:00 PM";
-      }
       if (isOpen == undefined) {
         setIsOpen(false);
       }
@@ -183,12 +197,18 @@ function CurrentSchedule({ navigation }) {
           horizontal
           data={dayOfTheWeek}
           ItemSeparatorComponent={DaySeperator}
-          contentContainerStyle={{ width: "14%" }}
+          contentContainerStyle={{
+            width: "14%",
+          }}
           renderItem={(day) => {
-            if (day.item.isSelected == true) {
+            if (day.item.day == daySelected) {
               return (
                 <TouchableOpacity
-                  style={styles.selected}
+                  style={{
+                    backgroundColor: colors.medium,
+                    width: "99%",
+                    borderRadius: 5,
+                  }}
                   onPress={() => (
                     setDaySelected(day.item.day),
                     setLetterSelected(day.item.letter),
@@ -201,6 +221,7 @@ function CurrentSchedule({ navigation }) {
                 </TouchableOpacity>
               );
             }
+
             return (
               <TouchableOpacity
                 style={styles.view}
@@ -257,8 +278,8 @@ function CurrentSchedule({ navigation }) {
         onPress={() =>
           saveButtonPressed(
             daySelected,
-            formattedOpen,
-            formattedClose,
+            new Date(dateStart).toString(),
+            new Date(dateEnd).toString(),
             isOpen,
             letterSelected
           )
@@ -300,7 +321,6 @@ const styles = StyleSheet.create({
   },
   selected: {
     width: "99%",
-    backgroundColor: colors.red,
     borderRadius: 5,
   },
   view: {

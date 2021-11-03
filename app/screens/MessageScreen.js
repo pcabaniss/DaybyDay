@@ -42,7 +42,7 @@ function MessageScreen(props) {
           <ListItem
             title={item.title}
             subTitle={item.description}
-            image={item.image}
+            //image={item.image}
             onPress={() => console.log("Message Selected", item)}
             renderRightActions={() => (
               <ListItemDeleteItem onPress={() => handleDelete(item)} />
