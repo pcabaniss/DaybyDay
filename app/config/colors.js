@@ -8,6 +8,7 @@ export default {
   white: "#fbfff1",
   danger: "#ff5252",
   blue: "#3066be",
+  yellow: "#FDCA40",
   background: "#B4C5E4",
   red: "#ef6351",
 };

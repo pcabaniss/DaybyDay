@@ -99,7 +99,6 @@ function CurrentSchedule({ navigation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [colored, setColored] = useState(colors.white);
   const isFocused = useIsFocused();
 
   useEffect(() => {

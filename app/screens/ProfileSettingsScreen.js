@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -14,6 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SpaceSeperator from "../components/SpaceSeperator";
 import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
+import SelectedIcon from "../components/SelectedIcon";
 
 const menuItems = [
   {
@@ -23,6 +24,7 @@ const menuItems = [
       backgroundColor: colors.primary,
     },
     key: "schedule",
+    onPress: () => console.log("Schedule"),
   },
   {
     title: "Message",
@@ -31,6 +33,7 @@ const menuItems = [
       backgroundColor: colors.secondary,
     },
     key: "Message",
+    onPress: () => console.log("Message"),
   },
   {
     title: "Reviews",
@@ -39,18 +42,23 @@ const menuItems = [
       backgroundColor: colors.red,
     },
     key: "reviews",
+    onPress: () => console.log("Reviews"),
   },
   {
     title: "About",
     icon: {
-      name: "head-question",
+      name: "information-outline",
       backgroundColor: colors.blue,
     },
     key: "About",
+    onPress: () => console.log("About"),
   },
 ];
 
-function ProfileSettingsScreen(props) {
+function ProfileSettingsScreen({ route }) {
+  const { name, pic, email } = route.params;
+  const [selected, setSelected] = useState("About");
+
   const profilePicPressed = () => {
     console.log("Pressed profile pic!");
   };
@@ -60,7 +68,10 @@ function ProfileSettingsScreen(props) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: colors.white }}>
+    <ScrollView
+      scrollEnabled
+      style={{ backgroundColor: colors.white, flex: 1 }}
+    >
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.bgContainer}
@@ -89,31 +100,36 @@ function ProfileSettingsScreen(props) {
           flexDirection: "row",
           width: "99%",
           backgroundColor: colors.white,
-          justifyContent: "space-between",
+          alignSelf: "center",
         }}
       >
         <View style={{ paddingRight: 10 }}>
-          <Text style={styles.nameText}>Business Name</Text>
+          <Text style={styles.nameText}>{name}</Text>
 
-          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>
-            Email@email.com
-          </Text>
+          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>{email}</Text>
         </View>
+
         <FlatList
           data={menuItems}
           horizontal
+          scrollEnabled={false}
           contentContainerStyle={styles.icon}
           renderItem={() => {
             return (
-              <MaterialCommunityIcons name="star" size={40} color="#FDCA40" />
+              <MaterialCommunityIcons
+                name="star"
+                size={40}
+                color={colors.yellow}
+              />
             );
           }}
         />
       </View>
       <ListItemSeperator />
-      <View style={{ alignSelf: "center", paddingTop: 10 }}>
+      <View style={{ alignSelf: "center", paddingTop: 10, height: 80 }}>
         <FlatList
           horizontal
+          scrollEnabled={false}
           data={menuItems}
           contentContainerStyle={{
             height: 60,
@@ -121,7 +137,7 @@ function ProfileSettingsScreen(props) {
           ItemSeparatorComponent={SpaceSeperator}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setSelected(item.title)}>
                 <Icon
                   name={item.icon.name}
                   size={60}
@@ -132,17 +148,16 @@ function ProfileSettingsScreen(props) {
           }}
         />
       </View>
-      <Text>
-        This will be a reactive box that displays information based on the icon
-        selected
-      </Text>
+      <View style={styles.boxContainer}>
+        {<SelectedIcon prop={selected} />}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   bgContainer: {
-    borderRadius: 10,
+    // borderRadius: 10,
     borderWidth: 5,
     borderColor: colors.white,
   },
@@ -150,10 +165,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  boxContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    borderColor: colors.black,
+    borderWidth: 2,
+    alignSelf: "center",
+    height: "100%",
+    width: "98%",
+  },
   image: {
-    height: 300,
+    height: 250,
     width: "100%",
     justifyContent: "flex-end",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   picContainer: {
     justifyContent: "center",
@@ -163,7 +189,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderColor: colors.white,
-    borderRadius: 75,
+    borderRadius: 10,
     borderWidth: 3,
     overflow: "hidden",
   },
@@ -173,11 +199,11 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   icon: {
-    borderWidth: 2,
-    borderColor: colors.medium,
-    width: "100%",
+    borderColor: colors.light,
     borderRadius: 17,
     alignSelf: "center",
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });
 

@@ -72,7 +72,13 @@ function AccountScreen({ navigation }) {
           title={name}
           subTitle={user.email}
           image={pic}
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() =>
+            navigation.navigate("Edit Profile", {
+              name: name,
+              email: user.email,
+              pic: pic,
+            })
+          }
           key="one"
         />
       </View>
@@ -91,10 +97,7 @@ function AccountScreen({ navigation }) {
             <ListItem
               title={item.title}
               IconComponent={
-                <Icon
-                  name={item.icon.name}
-                  backgroundColor={item.icon.backgroundColor}
-                />
+                <Icon name={item.icon.name} backgroundColor={colors.black} />
               }
               onPress={() => navigation.navigate(item.targetScreen)}
             />
