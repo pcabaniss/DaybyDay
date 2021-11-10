@@ -29,6 +29,19 @@ const register = (userInfo) => (
           isBusiness: userInfo.business,
         })
     )
+    .then(
+      firebase.default
+        .storage()
+        .ref(userInfo.safeEmail + "/profilePicture/")
+        .put(userInfo.image, { contentType: "image/jpg" })
+        .then(() => {
+          console.log("Image uplaoded!");
+        })
+        .catch((e) => {
+          console.log("Something went  wrong.");
+          console.log("Uploading image error => ", e);
+        })
+    )
     .then(console.log("Registered " + userInfo))
 );
 

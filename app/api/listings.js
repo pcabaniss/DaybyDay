@@ -21,6 +21,30 @@ const currentUser = () => {
   return firebase.default.database();
 };
 
+const saveAbout = (text) => {
+  getUser().doc("About").set({
+    aboutText: text,
+  });
+};
+
+const getAbout = async () => {
+  var info = {};
+
+  await getUser()
+    .doc("About")
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+
+        info = data.aboutText;
+      } else {
+        info = null;
+      }
+    });
+  return info;
+};
+
 const saveSchedule = (day, open, close, isOpen, letter) => {
   getUser().doc("Schedule").collection(day).doc("info").set({
     open: open,
@@ -163,7 +187,16 @@ const getName = (email) => {
   return name;
 };
 
-const pullImage = (email) => {
+const replaceImage = async (email, pic) => {
+  const safeEmail = safetyFirst(email);
+  await currentUser()
+    .ref(safeEmail + "/UserInfo/")
+    .update({ profilePic: pic })
+
+    .then(console.log("Saved new photo!" + pic));
+};
+
+const pullImage = async (email) => {
   const safeEmail = safetyFirst(email);
   const pic = currentUser()
     .ref(safeEmail + "/UserInfo")
@@ -171,6 +204,14 @@ const pullImage = (email) => {
     .then((image) => {
       return image.child("profilePic").val();
     });
+  /*
+  
+    const pic = await firebase.default
+      .storage()
+      .ref(safeEmail + "/profilePicture")
+      .getDownloadURL();
+   
+      */
   return pic;
 };
 
@@ -196,4 +237,7 @@ export default {
   pullProfileType,
   saveSchedule,
   getSchedule,
+  getAbout,
+  replaceImage,
+  saveAbout,
 };

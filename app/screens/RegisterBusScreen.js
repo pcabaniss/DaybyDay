@@ -123,6 +123,7 @@ function RegisterScreen() {
         allowsEditing: true,
         mediaTypes: "Images",
       });
+      console.log("Got picture from camera: " + result);
       setImage(result.uri);
       console.log(result.uri);
     } catch (error) {
@@ -138,9 +139,13 @@ function RegisterScreen() {
         //aspect: [4,3],
         quality: 1,
       });
+      const source = result.uri;
+      if (Platform.OS === "ios") {
+        source.replace("file://", "");
+      }
+
       //Send a promise to save the picture to storage once register button is clicked
-      if (!result.cancelled) setImage(result.uri);
-      console.log(result.uri);
+      if (!result.cancelled) setImage(source);
     } catch (error) {
       console.log("Error reading image" + error);
     }
@@ -159,6 +164,10 @@ function RegisterScreen() {
         onPress: () => {
           takePhoto();
         },
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
       },
     ]);
   };

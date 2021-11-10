@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
+import { useIsFocused } from "@react-navigation/core";
 
 import Screen from "../components/Screen";
 import ListItem from "../components/ListItem";
@@ -49,9 +50,19 @@ const menuItems = [
 ];
 
 function AccountScreen({ navigation }) {
+  const isFocused = useIsFocused();
+
   const { user, logOut } = useAuth();
   const [name, setName] = useState("");
   const [pic, setPic] = useState(" ");
+
+  useEffect(() => {
+    const refresh = navigation.addListener("focus", () => {
+      getPic();
+    });
+    return refresh;
+  }, [isFocused]);
+
   const getName = async () => {
     const name = await listings.getName(user.email);
     setName(name);
@@ -59,6 +70,7 @@ function AccountScreen({ navigation }) {
 
   const getPic = async () => {
     const pic = await listings.pullImage(user.email);
+    pic.replace("file://", "");
     setPic(pic);
   };
 
@@ -85,6 +97,7 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <FlatList
           data={menuItems}
+          scrollEnabled={false}
           //keyExtractor={(menuItem) => menuItems.title}
           ItemSeparatorComponent={ListItemSeperator}
           contentContainerStyle={{

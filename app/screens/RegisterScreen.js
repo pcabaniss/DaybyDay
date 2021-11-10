@@ -94,8 +94,6 @@ function RegisterScreen() {
         }
         console.log(error);
       });
-
-    console.log("Successfully logged in!");
   };
 
   // image picker
@@ -162,6 +160,10 @@ function RegisterScreen() {
         onPress: () => {
           takePhoto();
         },
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
       },
     ]);
   };

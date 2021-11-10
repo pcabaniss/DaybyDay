@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import { View, StyleSheet, Text, TextInput, FlatList } from "react-native";
 import colors from "../config/colors";
 import SpaceSeperator from "./SpaceSeperator";
 import listings from "../api/listings";
@@ -51,6 +51,7 @@ function SelectedIcon({ prop }) {
   const [thursday, setThursday] = useState("Closed");
   const [friday, setFriday] = useState("Closed");
   const [saturday, setSaturday] = useState("Closed");
+  const [about, setAbout] = useState("PlaceHolder");
 
   const timeFormatter = (date) => {
     let d = moment(date).utcOffset(date);
@@ -75,7 +76,7 @@ function SelectedIcon({ prop }) {
       if (day == "Wednesday") {
         setWednesday(open + " - " + close);
       }
-      if (day == "Thurday") {
+      if (day == "Thursday") {
         setThursday(open + " - " + close);
       }
       if (day == "Friday") {
@@ -89,6 +90,23 @@ function SelectedIcon({ prop }) {
   dayOfTheWeek.map((day) => {
     getSchedule(day.day);
   });
+
+  const saveAbout = (text) => {
+    pullAboutInfo();
+    if (about != "PlaceHolder") {
+      listings.saveAbout(text);
+    }
+  };
+
+  const pullAboutInfo = async () => {
+    const data = await listings.getAbout();
+    if (data != undefined || data != null) {
+      setAbout(data);
+    } else {
+      setAbout("PlaceHolder");
+    }
+  };
+
   if (prop == "Schedule") {
     return (
       <View style={styles.aboutView}>
@@ -131,11 +149,21 @@ function SelectedIcon({ prop }) {
       </View>
     );
   }
+
   if (prop == "Reviews") {
     return <Text>This is all about the reviews</Text>;
   }
   if (prop == "About") {
-    return <Text>Here is my About Page</Text>;
+    return (
+      <TextInput
+        editable
+        multiline
+        onPressOut={saveAbout(about)}
+        onChangeText={setAbout}
+        value={about}
+        style={styles.aboutText}
+      ></TextInput>
+    );
   }
   if (prop == "Message") {
     return (
@@ -153,6 +181,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "flex-start",
+  },
+  aboutText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.black,
+    padding: 10,
   },
   text: {
     fontSize: 25,
