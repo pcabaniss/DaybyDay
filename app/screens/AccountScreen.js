@@ -112,7 +112,12 @@ function AccountScreen({ navigation }) {
               IconComponent={
                 <Icon name={item.icon.name} backgroundColor={colors.black} />
               }
-              onPress={() => navigation.navigate(item.targetScreen)}
+              onPress={() =>
+                navigation.navigate(item.targetScreen, {
+                  email: user.email,
+                  name: name,
+                })
+              }
             />
           )}
         />

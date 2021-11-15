@@ -8,6 +8,8 @@ import ListItemSeperator from "../components/ListItemSeperator";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
 
+const userOne = "Bob";
+
 const initialMessage = [
   {
     id: 1,
@@ -23,7 +25,8 @@ const initialMessage = [
   },
 ];
 
-function MessageScreen(props) {
+function MessageScreen({ navigation, route }) {
+  const { email, name } = route.params;
   const [messages, setMessages] = useState(initialMessage);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -43,7 +46,9 @@ function MessageScreen(props) {
             title={item.title}
             subTitle={item.description}
             //image={item.image}
-            onPress={() => console.log("Message Selected", item)}
+            onPress={() =>
+              navigation.navigate("Chat", { email: email, name: name })
+            }
             renderRightActions={() => (
               <ListItemDeleteItem onPress={() => handleDelete(item)} />
             )}
