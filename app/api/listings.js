@@ -1,5 +1,6 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
+import { error } from "react-native-gifted-chat/lib/utils";
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -226,6 +227,118 @@ const pullProfileType = (email) => {
   return type;
 };
 
+/**
+ * 
+ * Array [
+  Object {
+    "_id": "f463f2c2-5d57-4452-abcf-0c0e1157fb06",
+    "createdAt": 2021-11-17T06:48:59.634Z,
+    "text": "Fdsafsdf",
+    "user": Object {
+      "_id": 1,
+      "email": "ip@gmail.com",
+      "name": "Image picker",
+    },
+  },
+]
+ */
+
+const saveMessages = (message, otherUsers, createdAt, user) => {
+  //console.log(message[0]);
+
+  const otherSafeEmail = safetyFirst(otherUsers.email);
+
+  //main sender of the message
+  getUser()
+    .doc("messages")
+    .collection(otherUsers.email)
+    .add({
+      messages: {
+        _id: user._id,
+        createdAt: createdAt,
+        text: message[0].text,
+        user: {
+          _id: otherUsers._id,
+          email: otherUsers.email,
+          name: otherUsers.name,
+        },
+      },
+    })
+    //This is for the recipients DB
+    .then(
+      firebase.default
+        .firestore()
+        .collection(otherSafeEmail)
+        .doc("messages")
+        .collection(user.email)
+        .add({
+          messages: {
+            _id: user._id,
+            createdAt: createdAt,
+            text: message[0].text,
+            user: {
+              _id: otherUsers._id,
+              email: otherUsers.email,
+              name: otherUsers.name,
+            },
+          },
+        })
+    )
+    .then(
+      getUser()
+        .doc("inbox")
+        .set({
+          email: {
+            email: otherUsers.email,
+            latestMessage: message[0].text,
+          },
+        })
+    )
+    .then(
+      firebase.default
+        .firestore()
+        .collection(otherSafeEmail)
+        .doc("inbox")
+        .set({
+          email: {
+            email: user.email,
+            latestMessage: message[0].text,
+          },
+        })
+    );
+};
+
+const getMessages = async (otherEmail) => {
+  var info = [];
+
+  await getUser()
+    .doc("messages")
+    .collection(otherEmail)
+    .get()
+    .then((collection) => {
+      collection.forEach((item) => {
+        const data = item.data();
+        info.push(data.messages);
+      });
+    });
+
+  return info;
+};
+
+const getInbox = async () => {
+  var info = {};
+
+  await getUser()
+    .doc("inbox/")
+    .get()
+    .then((collection) => {
+      const data = collection.data();
+      info = data.email;
+    });
+
+  return info;
+};
+
 export default {
   getListings,
   addListing,
@@ -240,4 +353,7 @@ export default {
   getAbout,
   replaceImage,
   saveAbout,
+  saveMessages,
+  getMessages,
+  getInbox,
 };
