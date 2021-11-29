@@ -31,7 +31,6 @@ function MessageScreen({ navigation, route }) {
 
   //Next step is to pull the other user informatio from somewhere
 
-  const otherUser = "strawhats@op.com";
   const getMessages = async () => {
     const inbox = await listings.getInbox();
     if (inbox != undefined) {
@@ -68,7 +67,7 @@ function MessageScreen({ navigation, route }) {
                 navigation.navigate("Chat", {
                   email: email,
                   name: name,
-                  otherUser: otherUser,
+                  otherUser: inbox.email,
                 })
               }
               renderRightActions={() => (
@@ -79,14 +78,7 @@ function MessageScreen({ navigation, route }) {
           ItemSeparatorComponent={ListItemSeperator}
           refreshing={refreshing}
           onRefresh={() => {
-            setMessages([
-              {
-                id: 2,
-                title: "T2",
-                description: "D2",
-                image: require("../assets/couch.jpg"),
-              },
-            ]);
+            getMessages();
           }}
         />
       </Screen>

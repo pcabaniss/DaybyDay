@@ -258,7 +258,7 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         createdAt: createdAt,
         text: message[0].text,
         user: {
-          _id: otherUsers._id,
+          _id: "DXD" + otherUsers._id,
           email: otherUsers.email,
           name: otherUsers.name,
         },
@@ -277,7 +277,7 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
             createdAt: createdAt,
             text: message[0].text,
             user: {
-              _id: otherUsers._id,
+              _id: "DXD" + otherUsers._id,
               email: otherUsers.email,
               name: otherUsers.name,
             },
@@ -319,9 +319,9 @@ const getMessages = async (otherEmail) => {
       collection.forEach((item) => {
         const data = item.data();
         info.push(data.messages);
+        info.sort((a, b) => b.createdAt - a.createdAt);
       });
     });
-
   return info;
 };
 

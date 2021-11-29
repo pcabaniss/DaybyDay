@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
   boxContainer: {
     backgroundColor: colors.white,
     borderRadius: 10,
-    borderColor: colors.black,
-    borderWidth: 2,
+    borderColor: colors.medium,
+    borderWidth: 1,
     alignSelf: "center",
     height: "100%",
     width: "98%",

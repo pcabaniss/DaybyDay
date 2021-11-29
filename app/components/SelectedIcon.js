@@ -4,6 +4,7 @@ import colors from "../config/colors";
 import SpaceSeperator from "./SpaceSeperator";
 import listings from "../api/listings";
 import moment from "moment";
+import MessageForm from "./MessageForm";
 
 function SelectedIcon({ prop }) {
   var dayOfTheWeek = [
@@ -166,12 +167,7 @@ function SelectedIcon({ prop }) {
     );
   }
   if (prop == "Message") {
-    return (
-      <Text>
-        Quick message form goes here, it will message the business and also put
-        it in the databse as a message stream.
-      </Text>
-    );
+    return <MessageForm />;
   }
 }
 

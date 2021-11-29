@@ -1,0 +1,83 @@
+import React, { useState } from "react";
+import { View, StyleSheet, TextInput, Button } from "react-native";
+import colors from "../config/colors";
+import AppPicker from "./AppPicker";
+
+function MessageForm(props) {
+  const [value, setValue] = useState("Reason");
+  const [about, setAbout] = useState("Type message here.");
+  const [pressed, setPressed] = useState(false);
+
+  const menuItems = [
+    {
+      label: "Questions about services",
+      value: 0,
+    },
+    { label: "Questions about scheduling", value: 1 },
+    {
+      label: "General inquiry",
+      value: 2,
+    },
+    {
+      label: "Concerns or issues",
+      value: 3,
+    },
+    {
+      label: "Other",
+      value: 4,
+    },
+  ];
+
+  // This will be in charge of sending the message to the business.
+  const submitPressed = () => {
+    console.log("Pressed submit!");
+  };
+  /**
+   * Add functionality that checks if user has already messaged business
+   * if so, display a message instead of the form.
+   */
+
+  return (
+    <View style={styles.container}>
+      <AppPicker
+        items={menuItems}
+        numberOfColumns={1}
+        placeholder={value}
+        onSelectItem={(value) => {
+          setValue(value.label);
+        }}
+        width="100%"
+      />
+      <TextInput
+        editable
+        multiline
+        onChangeText={setAbout}
+        value={about}
+        style={styles.aboutText}
+      ></TextInput>
+      <Button
+        title="Send Message"
+        color={colors.black}
+        onPress={submitPressed}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {},
+  aboutText: {
+    fontSize: 18,
+    fontWeight: "400",
+    color: colors.black,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: colors.medium,
+    borderWidth: 1,
+    width: "98%",
+    height: 200,
+    alignSelf: "center",
+  },
+});
+
+export default MessageForm;

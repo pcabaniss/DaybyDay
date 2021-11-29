@@ -7,6 +7,7 @@ import React, {
 import { View, StyleSheet, Text } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import listings from "../api/listings";
+import colors from "../config/colors";
 
 /**
  * The message will contain the following params: 
@@ -46,33 +47,27 @@ function ChatScreen({ navigation, route }) {
   const [messages, setMessages] = useState([]);
   const [sent, setSent] = useState(false);
 
-  const user = {
-    _id: 1,
+  const sender = {
+    _id: email,
     name: name,
     email: email,
   };
 
   //Will send otherUser credentials when i pull from database
-  const otherUsers = {
-    _id: 2,
+  const reciever = {
+    _id: otherUser,
     name: "Other User Name",
     email: otherUser,
     //avatar: "https://facebook.github.io/react/img/logo_og.png",
   };
 
-  useEffect(() => {
+  setInterval(() => {
     getMessages();
-  }, []);
+  }, 10000);
 
   const getMessages = async () => {
     const messageArray = await listings.getMessages(otherUser);
-    console.log(messageArray);
     setMessages(messageArray);
-    if (messageArray[0].user.email == email) {
-      setSent(true);
-    } else {
-      setSent(false);
-    }
   };
 
   const onSend = useCallback((messages = [], sender, recipients) => {
@@ -87,34 +82,22 @@ function ChatScreen({ navigation, route }) {
     //save messages to database
     //something like postMessages(message, otherUser)
   }, []);
-  if (sent == true) {
-    return (
-      <View style={styles.container}>
-        <GiftedChat
-          user={user}
-          onSend={(messages) => onSend(messages, user, otherUsers)}
-          messages={messages}
-          inverted={false}
-        />
-      </View>
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        <GiftedChat
-          user={otherUsers}
-          onSend={(messages) => onSend(messages, otherUsers, user)}
-          messages={messages}
-          inverted={false}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <GiftedChat
+        user={reciever}
+        onSend={(messages) => onSend(messages, sender, reciever)}
+        messages={messages}
+        inverted={false}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.black,
   },
 });
 

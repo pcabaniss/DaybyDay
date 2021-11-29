@@ -82,13 +82,12 @@ const WeekCalendar = ({ navigation }) => {
           renderEmptyDate(strTime);
         }
       }
-      console.log("Items loaded!");
       const newItems = {};
       Object.keys(items).forEach((key) => {
         newItems[key] = items[key];
       });
       setItems(newItems);
-    }, 5000);
+    }, 1000);
   };
 
   useEffect(() => {
