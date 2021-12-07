@@ -16,7 +16,6 @@ import colors from "../config/colors";
 //Open, Close, lunch breaks, holidays, PTO
 
 function SceduleScreen({ navigation }) {
-  const [savedCal, setSavedCal] = useState();
   return (
     <>
       <View style={styles.container}>

@@ -325,6 +325,27 @@ const getMessages = async (otherEmail) => {
   return info;
 };
 
+const getHours = async (dayOf) => {
+  var info = {};
+
+  await getUser()
+    .doc("Schedule")
+    .collection(dayOf)
+    .doc("info")
+    .get()
+    .then((collection) => {
+      const data = collection.data();
+      if (collection.exists) {
+        info = {
+          open: data.open,
+          close: data.close,
+        };
+        return info;
+      }
+    });
+  return info;
+};
+
 const getInbox = async () => {
   var info = {};
 
@@ -356,4 +377,5 @@ export default {
   saveMessages,
   getMessages,
   getInbox,
+  getHours,
 };

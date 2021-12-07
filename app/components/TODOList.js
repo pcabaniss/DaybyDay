@@ -1,10 +1,21 @@
 /**
  * create time slots that users can click and try to schedule with.
+ * add the option to select either half-hour, hour, or custom time slots
  *
  * create api that reads through bus. names and displays them for the
  * discover tab.
  *
+ * finish the functionality for the scheduling in the app, connect the
+ * scheduling tool to the calendar.
+ *
+ * Have it to where the customer can select a time slot and it’s like
+ * applying to get that spot and the business has to confirm it to be
+ * sent then it shows up on the calendar for others to see.
+ *
  * reevaluate the calendar component and make it render better.
+ *
+ * add functionality to schedule maker to includes option to select
+ * hour/half- hour slots and how many people per slot.
  *
  * test test test and then test some more to find bugs.
  *

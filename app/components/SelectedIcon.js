@@ -5,8 +5,10 @@ import SpaceSeperator from "./SpaceSeperator";
 import listings from "../api/listings";
 import moment from "moment";
 import MessageForm from "./MessageForm";
+import { Calendar } from "react-native-calendars";
+import SchedulingCalendar from "./calendar/SchedulingCalendar";
 
-function SelectedIcon({ prop }) {
+function SelectedIcon({ prop, navigation }) {
   var dayOfTheWeek = [
     {
       day: "Sunday",
@@ -109,9 +111,51 @@ function SelectedIcon({ prop }) {
   };
 
   if (prop == "Schedule") {
+    return <SchedulingCalendar navigation={navigation} />;
+  }
+
+  if (prop == "Reviews") {
+    return <Text>This is all about the reviews</Text>;
+  }
+  if (prop == "About") {
     return (
-      <View style={styles.aboutView}>
-        <Text style={styles.text}>
+      <TextInput
+        editable
+        multiline
+        onPressOut={saveAbout(about)}
+        onChangeText={setAbout}
+        value={about}
+        style={styles.aboutText}
+      ></TextInput>
+    );
+  }
+  if (prop == "Message") {
+    return <MessageForm />;
+  }
+}
+
+const styles = StyleSheet.create({
+  aboutView: {
+    padding: 10,
+    width: "100%",
+    height: "100%",
+  },
+  aboutText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: colors.black,
+    padding: 10,
+  },
+  text: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: colors.black,
+  },
+});
+
+export default SelectedIcon;
+
+/**<Text style={styles.text}>
           {" "}
           S{"      "} {sunday}
         </Text>
@@ -146,49 +190,4 @@ function SelectedIcon({ prop }) {
           S {"       "}
           {saturday}
         </Text>
-        <SpaceSeperator />
-      </View>
-    );
-  }
-
-  if (prop == "Reviews") {
-    return <Text>This is all about the reviews</Text>;
-  }
-  if (prop == "About") {
-    return (
-      <TextInput
-        editable
-        multiline
-        onPressOut={saveAbout(about)}
-        onChangeText={setAbout}
-        value={about}
-        style={styles.aboutText}
-      ></TextInput>
-    );
-  }
-  if (prop == "Message") {
-    return <MessageForm />;
-  }
-}
-
-const styles = StyleSheet.create({
-  aboutView: {
-    padding: 10,
-    width: "100%",
-    height: "100%",
-    alignItems: "flex-start",
-  },
-  aboutText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.black,
-    padding: 10,
-  },
-  text: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: colors.black,
-  },
-});
-
-export default SelectedIcon;
+        <SpaceSeperator /> */

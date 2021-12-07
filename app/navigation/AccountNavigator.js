@@ -6,11 +6,12 @@ import MyDatesScreen from "../screens/MyDatesScreen";
 import ProfileSettingsScreen from "../screens/ProfileSettingsScreen";
 import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
+import AvailabilityScreen from "../screens/AvailabilityScreen";
 
 const Stack = createStackNavigator();
 
 const AccountNavigator = () => (
-  <Stack.Navigator>
+  <Stack.Navigator mode="modal">
     <Stack.Screen name="Account" component={AccountScreen} />
     <Stack.Screen name="Edit Profile" component={ProfileSettingsScreen} />
     <Stack.Screen
@@ -21,6 +22,11 @@ const AccountNavigator = () => (
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="Dates" component={MyDatesScreen} />
     <Stack.Screen name="Help" component={HelpAndSupport} />
+    <Stack.Screen
+      name="Profile"
+      options={{ headerShown: false }}
+      component={AvailabilityScreen}
+    />
   </Stack.Navigator>
 );
 

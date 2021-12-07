@@ -19,7 +19,7 @@ import ListItemSeperator from "../components/ListItemSeperator";
 import SelectedIcon from "../components/SelectedIcon";
 import listings from "../api/listings";
 
-function ProfileSettingsScreen({ route }) {
+function ProfileSettingsScreen({ route, navigation }) {
   const menuItems = [
     {
       title: "Schedule",
@@ -207,7 +207,7 @@ function ProfileSettingsScreen({ route }) {
         />
       </View>
       <View style={styles.boxContainer}>
-        {<SelectedIcon prop={selected} />}
+        {<SelectedIcon prop={selected} navigation={navigation} />}
       </View>
     </ScrollView>
   );

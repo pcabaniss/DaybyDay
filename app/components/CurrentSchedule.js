@@ -9,20 +9,12 @@ import {
   Alert,
 } from "react-native";
 
-import moment, { isMoment } from "moment";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { format } from "date-fns";
 import DaySeperator from "./DaySeprator";
 import { useIsFocused } from "@react-navigation/core";
-import ListItemSeperator from "./ListItemSeperator";
 import listings from "../api/listings";
-
-//Work put the display to be like this:
-//                          |S|M|T|W|T|F|S|
-//Make a function that scans the "Current schedule" in the DB and displays
-//a highlight on the days that return true
 
 function CurrentSchedule({ navigation }) {
   var dayOfTheWeek = [
@@ -88,8 +80,8 @@ function CurrentSchedule({ navigation }) {
     },
   ];
 
-  //Create a function that is called at the beginning and pulls the data
-  //for open and close based on the day selected
+  //Make it where you can select either hour or half- hour intervals
+  //and how many customers per slot
 
   const [daySelected, setDaySelected] = useState("Sunday");
   const [letterSelected, setLetterSelected] = useState("S");
@@ -251,6 +243,7 @@ function CurrentSchedule({ navigation }) {
               value={dateStart}
               mode={"time"}
               is24Hour={false}
+              minuteInterval={30}
               display="default"
               onChange={onChangeStart}
               style={{ width: 100 }}
@@ -262,6 +255,7 @@ function CurrentSchedule({ navigation }) {
               value={dateEnd}
               mode={"time"}
               is24Hour={true}
+              minuteInterval={30}
               display="default"
               onChange={onChangeEnd}
               style={{ width: 100 }}
