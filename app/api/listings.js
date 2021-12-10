@@ -46,12 +46,14 @@ const getAbout = async () => {
   return info;
 };
 
-const saveSchedule = (day, open, close, isOpen, letter) => {
+const saveSchedule = (day, open, close, isOpen, letter, interval, slots) => {
   getUser().doc("Schedule").collection(day).doc("info").set({
     open: open,
     close: close,
     isOpen: isOpen,
     letter: letter,
+    interval: interval,
+    slots: slots,
   });
 };
 
@@ -335,13 +337,22 @@ const getHours = async (dayOf) => {
     .get()
     .then((collection) => {
       const data = collection.data();
+      var slots = data.slots;
+      if (data.slots == undefined) {
+        slots = 1;
+      }
+
       if (collection.exists) {
         info = {
           open: data.open,
           close: data.close,
+          interval: data.interval,
+          slots: slots,
         };
         return info;
       }
+      info = null;
+      return info;
     });
   return info;
 };

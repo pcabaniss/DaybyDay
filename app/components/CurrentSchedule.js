@@ -8,6 +8,7 @@ import {
   Switch,
   Alert,
 } from "react-native";
+import AppPicker from "./AppPicker";
 
 import colors from "../config/colors";
 import AppButton from "./AppButton";
@@ -80,6 +81,46 @@ function CurrentSchedule({ navigation }) {
     },
   ];
 
+  const valueItems = [
+    {
+      label: "15 Minutes",
+      value: 15,
+    },
+    { label: "30 Minutes", value: 30 },
+    {
+      label: "45 Minutes",
+      value: 45,
+    },
+    {
+      label: "1 Hour",
+      value: 60,
+    },
+  ];
+
+  const numberOfItems = [
+    {
+      label: "1",
+      value: 1,
+    },
+
+    {
+      label: "2",
+      value: 2,
+    },
+    {
+      label: "3",
+      value: 3,
+    },
+    {
+      label: "4",
+      value: 4,
+    },
+    {
+      label: "5",
+      value: 5,
+    },
+  ];
+
   //Make it where you can select either hour or half- hour intervals
   //and how many customers per slot
 
@@ -87,6 +128,15 @@ function CurrentSchedule({ navigation }) {
   const [letterSelected, setLetterSelected] = useState("S");
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
+
+  const [value, setValue] = useState({
+    label: "Please select a time.",
+    value: undefined,
+  });
+  const [numberOfValue, setNumberOfValue] = useState({
+    label: "Please select a number.",
+    value: undefined,
+  });
 
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("date");
@@ -113,10 +163,33 @@ function CurrentSchedule({ navigation }) {
           (currentDay.close = new Date(dayInfo.close)),
             (currentDay.open = new Date(dayInfo.open)),
             (currentDay.isSelected = !dayInfo.isOpen),
-            (currentDay.letter = dayInfo.letter);
+            (currentDay.letter = dayInfo.letter),
+            (currentDay.interval = dayInfo.interval),
+            (currentDay.slots = dayInfo.slots);
           setStartDate(currentDay.open);
           setEndDate(currentDay.close);
           setIsOpen(dayInfo.isOpen);
+          if (currentDay.interval != undefined) {
+            if (currentDay.interval == 60) {
+              setValue({
+                label: "1 hour",
+                value: currentDay.interval,
+              });
+            }
+            setNumberOfValue({
+              label: currentDay.slots,
+              value: currentDay.slots,
+            });
+          } else {
+            setValue({
+              label: "Please Select a time.",
+              value: undefined,
+            });
+            setNumberOfValue({
+              label: "Please select a number. ",
+              value: undefined,
+            });
+          }
         }
 
         //console.log(new Date(dayInfo.open.seconds));
@@ -167,18 +240,37 @@ function CurrentSchedule({ navigation }) {
     return colors.white;
   };
 
-  const saveButtonPressed = (day, open, close, isOpen, letter) => {
-    console.log("Saving... " + day, letter, open, close, isOpen);
+  const saveButtonPressed = (
+    day,
+    open,
+    close,
+    isOpen,
+    letter,
+    interval,
+    slots
+  ) => {
     try {
+      if (interval == undefined || slots == undefined) {
+        Alert.alert(
+          "Error saving schedule, please make sure you pick a time interval and slots."
+        );
+        return;
+      }
       if (isOpen == undefined) {
         setIsOpen(false);
       }
-      listings.saveSchedule(day, open, close, isOpen, letter);
+      console.log(
+        "Saving... " + day,
+        letter,
+        open,
+        close,
+        isOpen,
+        interval,
+        slots
+      );
+      listings.saveSchedule(day, open, close, isOpen, letter, interval, slots);
       getSchedule(day);
-    } catch (error) {
-      Alert.alert("Error saving schedule, please try again.");
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -236,32 +328,58 @@ function CurrentSchedule({ navigation }) {
         <Switch onValueChange={toggleSwitch} value={isOpen} />
       </View>
       {isOpen ? (
-        <View style={styles.containerOne}>
-          <View style={styles.open}>
-            <Text style={styles.titleText}>Open</Text>
-            <DateTimePicker
-              value={dateStart}
-              mode={"time"}
-              is24Hour={false}
-              minuteInterval={30}
-              display="default"
-              onChange={onChangeStart}
-              style={{ width: 100 }}
+        <>
+          <View style={styles.containerOne}>
+            <View style={styles.open}>
+              <Text style={styles.titleText}>Open</Text>
+              <DateTimePicker
+                value={dateStart}
+                mode={"time"}
+                is24Hour={false}
+                minuteInterval={30}
+                display="default"
+                onChange={onChangeStart}
+                style={{ width: 100 }}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Close</Text>
+              <DateTimePicker
+                value={dateEnd}
+                mode={"time"}
+                is24Hour={true}
+                minuteInterval={30}
+                display="default"
+                onChange={onChangeEnd}
+                style={{ width: 100 }}
+              />
+            </View>
+          </View>
+          <View style={styles.questions}>
+            <Text style={styles.footer}>
+              How long should each appointment take?
+            </Text>
+            <AppPicker
+              items={valueItems}
+              numberOfColumns={1}
+              placeholder={value.label}
+              onSelectItem={(value) => {
+                setValue(value);
+              }}
+              width="96%"
+            />
+            <Text style={styles.footer}>How many patrons per appointment?</Text>
+            <AppPicker
+              items={numberOfItems}
+              numberOfColumns={1}
+              placeholder={numberOfValue.label}
+              onSelectItem={(value) => {
+                setNumberOfValue(value);
+              }}
+              width="96%"
             />
           </View>
-          <View>
-            <Text style={styles.titleText}>Close</Text>
-            <DateTimePicker
-              value={dateEnd}
-              mode={"time"}
-              is24Hour={true}
-              minuteInterval={30}
-              display="default"
-              onChange={onChangeEnd}
-              style={{ width: 100 }}
-            />
-          </View>
-        </View>
+        </>
       ) : (
         <Text style={styles.titleText}>Closed For the Day!</Text>
       )}
@@ -274,7 +392,9 @@ function CurrentSchedule({ navigation }) {
             new Date(dateStart).toString(),
             new Date(dateEnd).toString(),
             isOpen,
-            letterSelected
+            letterSelected,
+            value.value,
+            numberOfValue.value
           )
         }
         color={colors.black}
@@ -305,7 +425,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
   },
-
+  footer: {
+    alignSelf: "flex-start",
+    height: 20,
+    fontSize: 15,
+    fontWeight: "bold",
+    paddingLeft: 5,
+  },
+  questions: {
+    alignItems: "center",
+    fontWeight: "bold",
+    paddingBottom: 10,
+  },
   text: {
     height: 20,
     fontSize: 15,

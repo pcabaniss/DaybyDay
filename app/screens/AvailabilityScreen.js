@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,12 +7,13 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import format from "date-fns/format";
 import colors from "../config/colors";
 import moment from "moment";
+import SpaceSeperator from "../components/SpaceSeperator";
 
 function AvailabilityScreen({ route }) {
-  const { day } = route.params;
+  const { day, hours } = route.params;
+  const [dayHours, setDayHours] = useState(hours);
 
   const dateString = moment(day.timestamp)
     .utcOffset(360)
@@ -38,78 +39,14 @@ function AvailabilityScreen({ route }) {
   //and only display the hours in-between
 
   //checkDate will be called onClick and return an array of con
-  const hours = [
-    {
-      time: "9:00am",
-      isEmpty: true,
-      isFull: false,
-      almostFull: false,
-      key: "0900",
-    },
-    {
-      time: "10:00am",
-      isEmpty: true,
-      isFull: false,
-      almostFull: false,
-      key: "1000",
-    },
-    {
-      time: "11:00am",
-      isEmpty: false,
-      isFull: false,
-      almostFull: true,
-      key: "1100",
-    },
-    {
-      time: "12:00pm",
-      isEmpty: true,
-      isFull: false,
-      almostFull: false,
-      key: "1200",
-    },
-    {
-      time: "1:00pm",
-      isEmpty: false,
-      isFull: false,
-      almostFull: true,
-      key: "1300",
-    },
-    {
-      time: "2:00pm",
-      isEmpty: false,
-      isFull: true,
-      almostFull: false,
-      key: "1400",
-    },
-    {
-      time: "3:00pm",
-      isEmpty: false,
-      isFull: true,
-      almostFull: false,
-      key: "1500",
-    },
-    {
-      time: "4:00pm",
-      isEmpty: true,
-      isFull: false,
-      almostFull: false,
-      key: "1600",
-    },
-    {
-      time: "5:00pm",
-      isEmpty: true,
-      isFull: false,
-      almostFull: false,
-      key: "1700",
-    },
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.date}>{dateString}</Text>
       <FlatList
-        data={hours}
+        data={dayHours}
         scrollEnabled={true}
+        ItemSeparatorComponent={SpaceSeperator}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => onPressTime(item.time)}>
             <View
@@ -129,7 +66,8 @@ function AvailabilityScreen({ route }) {
                 borderRadius: 20,
               }}
             >
-              <Text style={{ textAlign: "center" }}>{item.time}</Text>
+              <Text style={styles.header}>{item.time}</Text>
+              <Text style={styles.footer}>Available slots: {item.slots}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -148,6 +86,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
     paddingTop: 10,
+  },
+  header: {
+    textAlign: "center",
+  },
+  footer: {
+    fontSize: 10,
+    paddingLeft: 10,
   },
 });
 

@@ -1,19 +1,8 @@
-import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-  FlatList,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
 import CurrentSchedule from "../components/CurrentSchedule";
 import ListItemSeperator from "../components/ListItemSeperator";
 import colors from "../config/colors";
-
-//Make it to where you can customize hours on each day
-//Open, Close, lunch breaks, holidays, PTO
 
 function SceduleScreen({ navigation }) {
   return (

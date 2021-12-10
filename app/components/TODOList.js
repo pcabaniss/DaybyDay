@@ -1,6 +1,4 @@
 /**
- * create time slots that users can click and try to schedule with.
- * add the option to select either half-hour, hour, or custom time slots
  *
  * create api that reads through bus. names and displays them for the
  * discover tab.
@@ -22,9 +20,7 @@
  * make sure messaging isnt buggy and reading properly.
  *
  * Make the necessary changes to run on android successfully
- *
- * Finish making the set schedule screen and implement time slots
- *
+ * *
  * implement profile/ message blocking and favoriting
  *
  * finish implementing deleting messages

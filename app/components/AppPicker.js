@@ -52,25 +52,34 @@ function AppPicker({
           />
         </View>
       </TouchableWithoutFeedback>
-      <Modal visible={modalVisible} animationType="slide">
-        <Screen>
-          <Button title="Close" onPress={() => setModalVisible(false)} />
-          <FlatList
-            data={items}
-            keyExtractor={(item) => item.value.toString()}
-            numColumns={numberOfColumns}
-            renderItem={({ item }) => (
-              <PickerItemComponent
-                item={item}
-                label={item.label}
-                onPress={() => {
-                  setModalVisible(false);
-                  onSelectItem(item);
-                }}
-              />
-            )}
-          />
-        </Screen>
+      <Modal transparent={true} visible={modalVisible} animationType="slide">
+        <View
+          style={{
+            height: "40%",
+            marginTop: "auto",
+            backgroundColor: colors.light,
+          }}
+        >
+          <Screen style={styles.Screen}>
+            <Button title="Close" onPress={() => setModalVisible(false)} />
+            <FlatList
+              data={items}
+              style={styles.modal}
+              keyExtractor={(item) => item.value.toString()}
+              numColumns={numberOfColumns}
+              renderItem={({ item }) => (
+                <PickerItemComponent
+                  item={item}
+                  label={item.label}
+                  onPress={() => {
+                    setModalVisible(false);
+                    onSelectItem(item);
+                  }}
+                />
+              )}
+            />
+          </Screen>
+        </View>
       </Modal>
     </>
   );
@@ -87,12 +96,19 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  modal: {
+    height: "40%",
+    backgroundColor: colors.light,
+  },
   placeholder: {
     color: defaultStyles.colors.medium,
     flex: 1,
   },
   text: {
     flex: 1,
+  },
+  screen: {
+    height: "50%",
   },
 });
 
