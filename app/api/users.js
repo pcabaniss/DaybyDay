@@ -2,7 +2,6 @@ import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
 //const register = (userInfo) => client.post("/users", userInfo);
 const register = (userInfo) => (
-  console.log(userInfo),
   client.post("/users", userInfo),
   firebase.default
     .auth()
@@ -21,7 +20,7 @@ const register = (userInfo) => (
     .then(
       firebase.default
         .database()
-        .ref(userInfo.safeEmail + "/UserInfo")
+        .ref("users/" + userInfo.safeEmail.toLowerCase() + "/UserInfo")
         .set({
           name: userInfo.name,
           email: userInfo.email,

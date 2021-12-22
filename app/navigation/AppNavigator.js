@@ -5,12 +5,12 @@ import { StyleSheet } from "react-native";
 import AccountNavigator from "./AccountNavigator";
 import colors from "../config/colors";
 import CalendarNavigator from "./CalendarNavigator";
-import DiscoverScreen from "../screens/DiscoverScreen";
 import ScheduleScreen from "../screens/SceduleScreen";
 import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
 import { useState } from "react";
-import ScheduleNavigator from "./ScheduleNavigator";
+import UserAccountNavigator from "./UserAccountNavigator";
+import ProfileViewNavigator from "./ProfileViewNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +19,7 @@ const AppNavigator = () => {
   const [isBusiness, setIsBusiness] = useState();
   const type = async (profile) => {
     const bool = await listings.pullProfileType(profile.email);
+    console.log(bool);
     setIsBusiness(bool);
     console.log("Your Profile Type is? :" + bool);
   };
@@ -51,7 +52,7 @@ const AppNavigator = () => {
       ) : (
         <Tab.Screen
           name="Discover"
-          component={DiscoverScreen}
+          component={ProfileViewNavigator}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
@@ -77,15 +78,35 @@ const AppNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={AccountNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
+      {isBusiness ? (
+        <Tab.Screen
+          name="Profile"
+          component={AccountNavigator}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="Profile"
+          component={UserAccountNavigator}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 };

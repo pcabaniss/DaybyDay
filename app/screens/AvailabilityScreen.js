@@ -5,15 +5,19 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  Alert,
   TouchableOpacity,
 } from "react-native";
 import colors from "../config/colors";
 import moment from "moment";
 import SpaceSeperator from "../components/SpaceSeperator";
+import listings from "../api/listings";
 
-function AvailabilityScreen({ route }) {
+function AvailabilityScreen({ route, navigation }) {
   const { day, hours } = route.params;
   const [dayHours, setDayHours] = useState(hours);
+
+  //find a way to get profile info to send message
 
   const dateString = moment(day.timestamp)
     .utcOffset(360)
@@ -29,11 +33,34 @@ function AvailabilityScreen({ route }) {
     }
   };
 
+  const clickedYes = (time) => {
+    console.log("I clicked yes for " + time + " on " + day.dateString);
+    //listings.sendRequest(time)
+    navigation.goBack(null);
+  };
+
   const onPressTime = (time) => {
     //An alert will pop up asking if you are sure that you want to
     //apply for this time slot? and if yes then send business a message
     //asking to confirm.
     console.log("You have selected the " + time + " time slot.");
+    Alert.alert(
+      "Are you sure you want to request this slot?",
+      "You have 2 remaining requests.",
+      [
+        {
+          text: "Yes, im sure.",
+          onPress: () => {
+            clickedYes(time);
+          },
+        },
+
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    );
   };
   //make a function that searches the database for open hours on that day,
   //and only display the hours in-between

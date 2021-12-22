@@ -1,6 +1,5 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
-import { error } from "react-native-gifted-chat/lib/utils";
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -32,6 +31,26 @@ const getAbout = async () => {
   var info = {};
 
   await getUser()
+    .doc("About")
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+
+        info = data.aboutText;
+      } else {
+        info = null;
+      }
+    });
+  return info;
+};
+
+const getAboutFor = async (email) => {
+  const safeEmail = safetyFirst(email);
+  var info = {};
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
     .doc("About")
     .get()
     .then((doc) => {
@@ -182,7 +201,7 @@ const getName = (email) => {
   const safeEmail = safetyFirst(email);
 
   const name = currentUser()
-    .ref(safeEmail + "/UserInfo")
+    .ref("users/" + safeEmail + "/UserInfo")
     .get()
     .then((doc) => {
       return doc.child("name").val();
@@ -193,7 +212,7 @@ const getName = (email) => {
 const replaceImage = async (email, pic) => {
   const safeEmail = safetyFirst(email);
   await currentUser()
-    .ref(safeEmail + "/UserInfo/")
+    .ref("users/" + safeEmail + "/UserInfo/")
     .update({ profilePic: pic })
 
     .then(console.log("Saved new photo!" + pic));
@@ -202,7 +221,7 @@ const replaceImage = async (email, pic) => {
 const pullImage = async (email) => {
   const safeEmail = safetyFirst(email);
   const pic = currentUser()
-    .ref(safeEmail + "/UserInfo")
+    .ref("users/" + safeEmail + "/UserInfo")
     .get()
     .then((image) => {
       return image.child("profilePic").val();
@@ -220,8 +239,11 @@ const pullImage = async (email) => {
 
 const pullProfileType = (email) => {
   const safeEmail = safetyFirst(email);
+  const user = safeEmail.charAt(0).toUpperCase() + safeEmail.slice(1);
+
+  var info = {};
   const type = currentUser()
-    .ref(safeEmail + "/UserInfo")
+    .ref("users/" + safeEmail + "/UserInfo")
     .get()
     .then((profile) => {
       return profile.child("isBusiness").val();
@@ -336,20 +358,57 @@ const getHours = async (dayOf) => {
     .doc("info")
     .get()
     .then((collection) => {
-      const data = collection.data();
-      var slots = data.slots;
-      if (data.slots == undefined) {
-        slots = 1;
-      }
-
       if (collection.exists) {
-        info = {
-          open: data.open,
-          close: data.close,
-          interval: data.interval,
-          slots: slots,
-        };
-        return info;
+        const data = collection.data();
+        var slots = data.slots;
+        if (data.slots == undefined) {
+          slots = 1;
+        }
+
+        if (collection.exists) {
+          info = {
+            open: data.open,
+            close: data.close,
+            interval: data.interval,
+            slots: slots,
+          };
+          return info;
+        }
+      }
+      info = null;
+      return info;
+    });
+  return info;
+};
+
+const getHoursFor = async (dayOf, email) => {
+  const safeEmail = safetyFirst(email);
+  var info = {};
+
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("Schedule")
+    .collection(dayOf)
+    .doc("info")
+    .get()
+    .then((collection) => {
+      if (collection.exists) {
+        const data = collection.data();
+        var slots = data.slots;
+        if (data.slots == undefined) {
+          slots = 1;
+        }
+
+        if (collection.exists) {
+          info = {
+            open: data.open,
+            close: data.close,
+            interval: data.interval,
+            slots: slots,
+          };
+          return info;
+        }
       }
       info = null;
       return info;
@@ -371,6 +430,37 @@ const getInbox = async () => {
   return info;
 };
 
+const getSearchResults = async (text = "null") => {
+  var info = [];
+  const names = await currentUser()
+    .ref("users/")
+    .get()
+    .then((name) => {
+      name.forEach((user) => {
+        const email = user.child("UserInfo/email").val();
+        const name = user.child("UserInfo/name").val();
+
+        if (
+          email.toLowerCase().includes(text.toLowerCase()) ||
+          name.toLowerCase().includes(text.toLowerCase())
+        ) {
+          console.log(name);
+          //should be true
+          if (user.child("UserInfo/isBusiness").val() == true) {
+            info.push({
+              email: email,
+              name: name,
+              key: 0,
+              pic: user.child("UserInfo/profilePic").val(),
+            });
+          }
+        } else {
+          return;
+        }
+      });
+    });
+  return info;
+};
 export default {
   getListings,
   addListing,
@@ -383,10 +473,13 @@ export default {
   saveSchedule,
   getSchedule,
   getAbout,
+  getAboutFor,
   replaceImage,
   saveAbout,
   saveMessages,
   getMessages,
   getInbox,
   getHours,
+  getHoursFor,
+  getSearchResults,
 };

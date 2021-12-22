@@ -4,7 +4,7 @@ import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import listings from "../../api/listings";
 
-function SchedulingCalendar({ navigation }) {
+function ViewSchedulingCalendar({ navigation, email }) {
   const [daySelected, setDaySelected] = useState(new Date());
 
   //Pull if all slots are full I want to highlight
@@ -62,7 +62,7 @@ function SchedulingCalendar({ navigation }) {
   };
 
   const getSchedule = async (day) => {
-    const dayArray = await listings.getHours(day);
+    const dayArray = await listings.getHoursFor(day, email);
     //complete function by making a dynamic function that creates an array
     //that is timeDiff long and can read whether they are booked or not
 
@@ -118,7 +118,7 @@ function SchedulingCalendar({ navigation }) {
     if (sched == null) {
       emptyDate();
     } else {
-      navigation.navigate("Profile", { day: day, hours: sched });
+      navigation.navigate("Schedule", { day: day, hours: sched });
     }
   };
 
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SchedulingCalendar;
+export default ViewSchedulingCalendar;

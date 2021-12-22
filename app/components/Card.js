@@ -17,8 +17,8 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
           uri={imageUrl}
         />
         <View style={styles.detailContainer}>
-          <AppText style={styles.title}>{"Business Name"}</AppText>
-          <AppText style={styles.subTitle}>{"Star Rating"}</AppText>
+          <AppText style={styles.title}>{title}</AppText>
+          <AppText style={styles.subTitle}>{subTitle}</AppText>
         </View>
       </View>
     </TouchableOpacity>

@@ -18,8 +18,9 @@ import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
 import SelectedIcon from "../components/SelectedIcon";
 import listings from "../api/listings";
+import SelectedIconViewed from "../components/SelectedIconViewed";
 
-function ProfileSettingsScreen({ route, navigation }) {
+function ProfileScreen({ route, navigation }) {
   const menuItems = [
     {
       title: "Schedule",
@@ -224,7 +225,13 @@ function ProfileSettingsScreen({ route, navigation }) {
         />
       </View>
       <View style={styles.boxContainer}>
-        {<SelectedIcon prop={selected} navigation={navigation} />}
+        {
+          <SelectedIconViewed
+            prop={selected}
+            navigation={navigation}
+            email={email}
+          />
+        }
       </View>
     </ScrollView>
   );
@@ -283,4 +290,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileSettingsScreen;
+export default ProfileScreen;
