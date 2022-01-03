@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 30,
     overflow: "hidden",
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
     borderWidth: 3,
     width: "97%",
     alignSelf: "center",

@@ -15,6 +15,7 @@ import useApi from "../hooks/useApi";
 function DiscoverScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState();
   const [results, setResults] = useState(false);
+  const [didSearch, setDidSearch] = useState("Search by name or email.");
   const [tempResults, setTempResults] = useState([
     {
       email: "none",
@@ -28,7 +29,6 @@ function DiscoverScreen({ navigation }) {
 
   useEffect(() => {
     listings.getSearchResults();
-    getListingsApi.request();
   }, []);
 
   const searchFuntion = async (text) => {
@@ -37,12 +37,13 @@ function DiscoverScreen({ navigation }) {
       setResults(false);
     } else {
       const results = await listings.getSearchResults(text);
-      if (results == undefined) {
-        console.log("nope");
+      if (results == undefined || results === []) {
+        setDidSearch("No results found.");
         setResults(false);
       } else {
         setTempResults(results);
         setResults(true);
+        setDidSearch("Search by name or email.");
         console.log(tempResults);
       }
     }
@@ -62,12 +63,6 @@ function DiscoverScreen({ navigation }) {
     <>
       <ActivityIndicator visible={getListingsApi.loading} />
       <Screen style={styles.container}>
-        {getListingsApi.error && (
-          <>
-            <AppText>Couldnt retrieve listings.</AppText>
-            <Button name="Retry" onPress={getListingsApi.request()} />
-          </>
-        )}
         <Searchbar
           style={styles.search}
           placeholder="Search"
@@ -92,24 +87,9 @@ function DiscoverScreen({ navigation }) {
           />
         ) : (
           <>
-            <FlatList
-              //Create a function that picks random businesses and displays their
-              //cards
-              data={getListingsApi.data}
-              keyExtractor={(listings) => listings.id.toString()}
-              style={styles.list}
-              renderItem={({ item }) => (
-                <Card
-                  title={item.title}
-                  subTitle={"$" + item.price}
-                  imageUrl={item.images[0].url}
-                  onPress={() =>
-                    navigation.navigate(routes.LISTING_DETAILS, item)
-                  }
-                  thumbnailUrl={item.images[0].thumbnailUrl}
-                />
-              )}
-            />
+            <View style={styles.beforeView}>
+              <Text style={styles.beforeSearch}>{didSearch}</Text>
+            </View>
           </>
         )}
       </Screen>
@@ -118,6 +98,16 @@ function DiscoverScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  beforeView: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  beforeSearch: {
+    textAlign: "center",
+    fontSize: 30,
+    color: "#1D3D72",
+    fontWeight: "bold",
+  },
   container: {
     backgroundColor: colors.blue,
     padding: 10,

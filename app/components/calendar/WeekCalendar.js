@@ -248,7 +248,7 @@ const WeekCalendar = ({ navigation }) => {
         onDayChange={loadItems}
         monthFormat={"MMMM" + "  yyyy"}
         theme={{
-          backgroundColor: colors.black,
+          backgroundColor: colors.blue,
           calendarBackground: colors.light,
           agendaKnobColor: colors.medium,
           agendaDayNumColor: colors.white,

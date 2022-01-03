@@ -400,15 +400,13 @@ const getHoursFor = async (dayOf, email) => {
           slots = 1;
         }
 
-        if (collection.exists) {
-          info = {
-            open: data.open,
-            close: data.close,
-            interval: data.interval,
-            slots: slots,
-          };
-          return info;
-        }
+        info = {
+          open: data.open,
+          close: data.close,
+          interval: data.interval,
+          slots: slots,
+        };
+        return info;
       }
       info = null;
       return info;
@@ -455,7 +453,8 @@ const getSearchResults = async (text = "null") => {
             });
           }
         } else {
-          return;
+          info = undefined;
+          return info;
         }
       });
     });

@@ -103,7 +103,7 @@ function UserProfileSettingsScreen({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

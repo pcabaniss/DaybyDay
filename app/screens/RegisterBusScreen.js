@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
   },
   imageContainer: {
-    backgroundColor: colors.light,
+    backgroundColor: colors.blue,
     borderRadius: 50,
     borderWidth: 3,
     justifyContent: "center",

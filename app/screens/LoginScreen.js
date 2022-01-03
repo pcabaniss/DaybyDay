@@ -12,6 +12,7 @@ import {
   SubmitButton,
 } from "../components/forms/index";
 import useAuth from "../auth/useAuth";
+import colors from "../config/colors";
 
 //With Yup we can set the scheme for each of our text fields easily since
 //it is intigrated with Formik
@@ -90,7 +91,7 @@ function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: "#B4C5E4",
+    backgroundColor: colors.blue,
   },
   logo: {
     width: 80,

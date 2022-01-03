@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 150, //Noteworthy-Bold
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
     fontSize: 40,
     textAlign: "center",
     fontFamily: "Noteworthy-Bold",

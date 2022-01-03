@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     left: 30,
   },
   container: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.blue,
     flex: 1,
   },
   deleteIcon: {

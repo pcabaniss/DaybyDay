@@ -65,111 +65,23 @@ function ProfileScreen({ route, navigation }) {
   const [selected, setSelected] = useState("About");
   const [image, setImage] = useState(pic);
 
-  const backgroundPressed = () => {
-    Alert.alert("Change background picture?", "This funtion is not finished.", [
-      {
-        text: "Photo Library",
-        onPress: () => {
-          selectImage();
-        },
-      },
-      {
-        text: "Take Picture",
-        onPress: () => {
-          takePhoto();
-        },
-      },
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]);
-  };
-
-  const alertButton = () => {
-    Alert.alert("Change profile picture?", "", [
-      {
-        text: "Photo Library",
-        onPress: () => {
-          selectImage();
-        },
-      },
-      {
-        text: "Take Picture",
-        onPress: () => {
-          takePhoto();
-        },
-      },
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]);
-  };
-
-  const takePhoto = async () => {
-    try {
-      const result = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        mediaTypes: "Images",
-      });
-      console.log("Got picture from camera: " + result);
-      const source = result.uri;
-      if (Platform.OS === "ios") {
-        source.replace("file://", "");
-      }
-      listings.replaceImage(email, source);
-      setImage(source);
-      console.log(result.uri);
-    } catch (error) {
-      console.log("Error taking picture.");
-    }
-  };
-
-  const selectImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "Images",
-        allowsEditing: true,
-        //aspect: [4,3],
-        quality: 1,
-      });
-      const source = result.uri;
-      if (Platform.OS === "ios") {
-        source.replace("file://", "");
-      }
-      listings.replaceImage(email, source);
-      //Send a promise to save the picture to storage once register button is clicked
-      if (!result.cancelled) setImage(source);
-    } catch (error) {
-      console.log("Error reading image" + error);
-    }
-  };
-
   return (
     <ScrollView
       scrollEnabled
       style={{ backgroundColor: colors.white, flex: 1 }}
     >
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.bgContainer}
-          onPress={() => backgroundPressed()}
-          activeOpacity={3}
-        >
+        <View style={styles.bgContainer}>
           <ImageBackground
             source={require("../assets/couch.jpg")}
             resizeMode="cover"
             style={styles.image}
           >
-            <TouchableOpacity
-              onPress={() => alertButton()}
-              style={styles.picContainer}
-            >
+            <View style={styles.picContainer}>
               <Image source={{ uri: image }} style={styles.profilePic} />
-            </TouchableOpacity>
+            </View>
           </ImageBackground>
-        </TouchableOpacity>
+        </View>
       </View>
       <View
         style={{
@@ -245,10 +157,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
   },
   boxContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
     borderRadius: 10,
     borderColor: colors.medium,
     borderWidth: 1,

@@ -10,7 +10,11 @@ const ProfileViewNavigator = () => {
   return (
     <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Discover" component={DiscoverScreen} />
-      <Stack.Screen name="ProfileView" component={ProfileScreen} />
+      <Stack.Screen
+        options={{ headerShown: true, headerTitle: "" }}
+        name="ProfileView"
+        component={ProfileScreen}
+      />
       <Stack.Screen name="Schedule" component={AvailabilityScreen} />
     </Stack.Navigator>
   );

@@ -258,7 +258,7 @@ function AgendaDetailsScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.blue,
   },
   date: {
     flexDirection: "row",

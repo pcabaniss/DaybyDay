@@ -238,10 +238,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
   },
   boxContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.blue,
     borderRadius: 10,
     borderColor: colors.medium,
     borderWidth: 1,
