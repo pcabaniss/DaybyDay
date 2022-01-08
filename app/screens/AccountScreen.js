@@ -12,9 +12,9 @@ import listings from "../api/listings";
 
 const menuItems = [
   {
-    title: "My Dates",
+    title: "Requests",
     icon: {
-      name: "format-list-bulleted",
+      name: "alarm-check",
       backgroundColor: colors.primary,
     },
     key: "Dates",
@@ -110,12 +110,13 @@ function AccountScreen({ navigation }) {
             <ListItem
               title={item.title}
               IconComponent={
-                <Icon name={item.icon.name} backgroundColor={colors.black} />
+                <Icon name={item.icon.name} backgroundColor={colors.medium} />
               }
               onPress={() =>
                 navigation.navigate(item.targetScreen, {
                   email: user.email,
                   name: name,
+                  pic: pic,
                 })
               }
             />
@@ -125,7 +126,7 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <ListItem
           title="Log Out"
-          IconComponent={<Icon name="logout" backgroundColor={colors.danger} />}
+          IconComponent={<Icon name="logout" backgroundColor={colors.red} />}
           onPress={() => logOut()}
         />
       </View>

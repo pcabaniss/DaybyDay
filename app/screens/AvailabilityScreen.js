@@ -14,7 +14,7 @@ import SpaceSeperator from "../components/SpaceSeperator";
 import listings from "../api/listings";
 
 function AvailabilityScreen({ route, navigation }) {
-  const { day, hours } = route.params;
+  const { day, hours, business } = route.params;
   const [dayHours, setDayHours] = useState(hours);
 
   //find a way to get profile info to send message
@@ -35,7 +35,11 @@ function AvailabilityScreen({ route, navigation }) {
 
   const clickedYes = (time) => {
     console.log("I clicked yes for " + time + " on " + day.dateString);
-    //listings.sendRequest(time)
+    const currentTime = moment().format("MM-DD hh:mm:ss a");
+    listings.sendRequest(time, day.dateString, business, currentTime);
+    /**users name: {
+     * request: 'approved', 'denied', or 'pending'
+     * } */
     navigation.goBack(null);
   };
 
@@ -56,7 +60,7 @@ function AvailabilityScreen({ route, navigation }) {
         },
 
         {
-          text: "Cancel",
+          text: "No",
           style: "cancel",
         },
       ]
@@ -72,9 +76,11 @@ function AvailabilityScreen({ route, navigation }) {
       <Text style={styles.date}>{dateString}</Text>
       <FlatList
         data={dayHours}
-        scrollEnabled={true}
+        scrollEnabled
         ItemSeparatorComponent={SpaceSeperator}
         renderItem={({ item }) => (
+          //Needs a function here checking the date for any matching times.
+          //CheckRequests()
           <TouchableOpacity onPress={() => onPressTime(item.time)}>
             <View
               style={{
@@ -95,6 +101,7 @@ function AvailabilityScreen({ route, navigation }) {
             >
               <Text style={styles.header}>{item.time}</Text>
               <Text style={styles.footer}>Available slots: {item.slots}</Text>
+              <Text style={styles.footer}>Pending requests: 0</Text>
             </View>
           </TouchableOpacity>
         )}

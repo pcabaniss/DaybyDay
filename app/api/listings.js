@@ -460,6 +460,79 @@ const getSearchResults = async (text = "null") => {
     });
   return info;
 };
+
+const sendRequest = async (time, date, business, timeOfRequest) => {
+  //console.log(time, date, business, timeRequested);
+  const safeEmail = safetyFirst(business);
+  //may have to come back and change this to be more fluid.
+  const user = firebase.default.auth().currentUser.email;
+  const userEmail = safetyFirst(user);
+  console.log(user);
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("requests/")
+    .collection("list/")
+    .add({
+      dateRequested: date,
+      timeRequested: time,
+      request: "pending",
+      user: user,
+      timeOfRequest: timeOfRequest,
+    });
+
+  await getUser().doc("myRequests/").collection("list/").add({
+    dateRequested: date,
+    status: "pending",
+    timeRequested: time,
+    user: userEmail,
+    timeOfRequest: timeOfRequest,
+    business: business,
+  });
+};
+
+const getUserRequests = async () => {
+  var info = [];
+
+  await getUser()
+    .doc("myRequests/")
+    .collection("list/")
+    .get()
+    .then((item) => {
+      item.forEach((obby) => {
+        if (obby.exists) {
+          info.push(obby.data());
+        } else {
+          info = undefined;
+        }
+        return info;
+      });
+    });
+  console.log(info);
+  return info;
+};
+
+const getBusRequests = async () => {
+  var info = [];
+
+  await getUser()
+    .doc("requests/")
+    .collection("list/")
+    .get()
+    .then((item) => {
+      item.forEach((obby) => {
+        if (obby.exists) {
+          info.push(obby.data());
+        } else {
+          info = undefined;
+        }
+        return info;
+      });
+    });
+  console.log(info);
+  return info;
+};
+
 export default {
   getListings,
   addListing,
@@ -481,4 +554,7 @@ export default {
   getHours,
   getHoursFor,
   getSearchResults,
+  sendRequest,
+  getUserRequests,
+  getBusRequests,
 };

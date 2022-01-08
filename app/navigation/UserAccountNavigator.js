@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AccountScreen from "../screens/AccountScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import MyDatesScreen from "../screens/MyDatesScreen";
+import MyDatesScreen from "../screens/RequestsScreen";
 import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";

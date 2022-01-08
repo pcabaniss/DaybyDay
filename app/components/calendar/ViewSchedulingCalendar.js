@@ -112,13 +112,18 @@ function ViewSchedulingCalendar({ navigation, email }) {
          "year": 2021,
     }
        */
+    //Check if day has already passed and block if true
     setDaySelected(new Date(day.timestamp));
     const dayOf = moment(day.timestamp).day();
     const sched = await getSchedule(dayString(dayOf));
     if (sched == null) {
       emptyDate();
     } else {
-      navigation.navigate("Schedule", { day: day, hours: sched });
+      navigation.navigate("Schedule", {
+        day: day,
+        hours: sched,
+        business: email,
+      });
     }
   };
 
