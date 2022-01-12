@@ -17,7 +17,6 @@ function RequestScreen({ navigation, route }) {
   const { pic } = route.params;
   const isFocused = useIsFocused();
 
-  const [currentRequests, setCurrentRequests] = useState([]);
   const [pendingArray, setPendingArray] = useState([]);
   const [deniedArray, setDeniedArray] = useState([]);
   const [acceptedArray, setAcceptedArray] = useState([]);

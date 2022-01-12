@@ -12,8 +12,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
 
-function BusRequestFlatList(data, status, pic) {
+function BusRequestFlatList(data, status, pic, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
+  const pressedListing = (item) => {
+    if (status == "Pending") {
+      navigation.navigate("Answer", { item: item });
+    } else {
+      console.log(status + " Listing pressed!");
+    }
+  };
 
   const iconTurn = () => {
     if (!statusPressed) {
@@ -47,7 +54,7 @@ function BusRequestFlatList(data, status, pic) {
             ItemSeparatorComponent={ListItemSeperator}
             renderItem={({ item }) => {
               const userName =
-                item.user.charAt(0).toUpperCase() + item.business.slice(1);
+                item.user.charAt(0).toUpperCase() + item.user.slice(1);
               return (
                 <TouchableOpacity style={styles.requestBox}>
                   <View>
@@ -61,6 +68,7 @@ function BusRequestFlatList(data, status, pic) {
                       }
                       //Work on the onclick function!
                       //Picture from User
+                      onPress={() => pressedListing(item)}
                       image={pic}
                     />
                   </View>

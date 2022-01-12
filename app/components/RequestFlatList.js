@@ -58,6 +58,7 @@ function RequestFlatList(data, status, pic) {
                         " at " +
                         item.timeRequested
                       }
+                      //Make a delete function
                       //Picture from business
                       image={pic}
                     />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import listings from "../api/listings";
 
 import ListItem from "../components/ListItem";
@@ -7,7 +7,6 @@ import ListItemDeleteItem from "../components/ListItemDeleteItem";
 import ListItemSeperator from "../components/ListItemSeperator";
 
 import Screen from "../components/Screen";
-import colors from "../config/colors";
 
 /**
  * This function will contain a listing function that will search and the DB

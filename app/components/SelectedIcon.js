@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TextInput, FlatList } from "react-native";
 import colors from "../config/colors";
-import SpaceSeperator from "./SpaceSeperator";
 import listings from "../api/listings";
 import moment from "moment";
 import MessageForm from "./MessageForm";
-import { Calendar } from "react-native-calendars";
 import SchedulingCalendar from "./calendar/SchedulingCalendar";
 
 function SelectedIcon({ prop, navigation }) {

@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import ListItem from "../components/ListItem";
-import Accordion from "@dooboo-ui/native-accordion";
 import colors from "../config/colors";
-import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
 
 const settingItems = [
@@ -49,12 +40,14 @@ const settingItems = [
 ];
 
 function SettingsScreen(props) {
+  console.log(new Date().valueOf());
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
         <FlatList
           data={settingItems}
-          keyExtractor={(item, index) => item.title}
+          keyExtractor={(item) => item.title}
           ItemSeparatorComponent={ListItemSeperator}
           renderItem={({ item }) => (
             <ListItem

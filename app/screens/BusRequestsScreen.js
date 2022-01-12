@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { useIsFocused } from "@react-navigation/core";
 import listings from "../api/listings";
-import RequestFlatList from "../components/RequestFlatList";
 import colors from "../config/colors";
+import BusRequestFlatList from "../components/BusRequestFlatList";
 
 //Update to show a flatlist of current requests. On the business
 //profile make sure you are allowed to edit the requests and go from there
@@ -33,17 +33,17 @@ function BusRequestScreen({ navigation, route }) {
   }, [isFocused]);
 
   const getRequests = async () => {
-    const requests = await listings.getUserRequests();
-
+    const requests = await listings.getBusRequests();
     requests.forEach((item) => {
-      if (item.status == "pending") {
+      if (item.request == "pending") {
         pending.push(item);
-      } else if (item.status == "accepted") {
+      } else if (item.request == "accepted") {
         accepted.push(item);
-      } else if (item.status == "denied") {
+      } else if (item.request == "denied") {
         denied.push(item);
       }
     });
+
     if (accepted.length > 0) {
       setAcceptedArray(() => accepted);
     }
@@ -55,7 +55,6 @@ function BusRequestScreen({ navigation, route }) {
     }
   };
 
-  getRequests();
   /**
    * Object {
   "dat": "2022-01-16",
@@ -68,9 +67,9 @@ function BusRequestScreen({ navigation, route }) {
 
   return (
     <View style={styles.pending}>
-      {RequestFlatList(pendingArray, "Pending", pic)}
-      {RequestFlatList(acceptedArray, "Accepted")}
-      {RequestFlatList(deniedArray, "Denied")}
+      {BusRequestFlatList(pendingArray, "Pending", pic, navigation)}
+      {BusRequestFlatList(acceptedArray, "Accepted", pic)}
+      {BusRequestFlatList(deniedArray, "Denied", pic)}
     </View>
   );
 }

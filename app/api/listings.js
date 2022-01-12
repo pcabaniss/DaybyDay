@@ -508,7 +508,6 @@ const getUserRequests = async () => {
         return info;
       });
     });
-  console.log(info);
   return info;
 };
 
@@ -529,8 +528,99 @@ const getBusRequests = async () => {
         return info;
       });
     });
-  console.log(info);
   return info;
+};
+
+const updateRequest = async (text, response, request) => {
+  const businessName = firebase.default.auth().currentUser.email;
+  const userSafeEmail = safetyFirst(request.user);
+
+  await getUser()
+    .doc("requests/")
+    .collection("list/")
+    .get()
+    .then((item) => {
+      item.forEach((obby) => {
+        if (obby.exists) {
+          const data = obby.data();
+          if (data.timeOfRequest == request.timeOfRequest) {
+            getUser()
+              .doc("requests/")
+              .collection("list/")
+              .doc(obby.id)
+              .update({
+                dateRequested: data.dateRequested,
+                request: response,
+                timeRequested: data.timeRequested,
+                user: data.user,
+                timeOfRequest: data.timeOfRequest,
+              })
+              .catch((error) => {
+                console.log("error saving listing to business: " + error);
+              });
+          }
+        }
+      });
+    });
+
+  await firebase.default
+    .firestore()
+    .collection(userSafeEmail)
+    .doc("myRequests/")
+    .collection("list/")
+    .get()
+    .then((item) => {
+      item.forEach((obby) => {
+        if (obby.exists) {
+          const data = obby.data();
+          if (data.timeOfRequest == request.timeOfRequest) {
+            firebase.default
+              .firestore()
+              .collection(userSafeEmail)
+              .doc("myRequests/")
+              .collection("list/")
+              .doc(obby.id)
+              .update({
+                dateRequested: data.dateRequested,
+                status: response,
+                timeRequested: data.timeRequested,
+                user: data.user,
+                timeOfRequest: data.timeOfRequest,
+                business: businessName,
+              })
+              .catch((error) => {
+                console.log("error saving listing to user: " + error);
+              });
+          }
+        }
+      });
+    });
+
+  const sender = {
+    _id: businessName,
+    name: "No name",
+    email: businessName,
+  };
+
+  //Will send otherUser credentials when i pull from database
+  const reciever = {
+    _id: request.user,
+    name: "no name",
+    email: request.user,
+    //avatar: "https://facebook.github.io/react/img/logo_og.png",
+  };
+  const message = {
+    _id: businessName,
+    text: text,
+    createdAt: new Date(),
+    user: {
+      _id: request.user,
+      name: "no name yet",
+      //avatar: "https://placeimg.com/140/140/any",
+    },
+  };
+
+  saveMessages([message], reciever, new Date().valueOf(), sender);
 };
 
 export default {
@@ -557,4 +647,5 @@ export default {
   sendRequest,
   getUserRequests,
   getBusRequests,
+  updateRequest,
 };
