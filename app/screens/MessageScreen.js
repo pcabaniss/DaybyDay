@@ -57,23 +57,27 @@ function MessageScreen({ navigation, route }) {
         <FlatList
           data={messages}
           keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              title={inbox.email}
-              subTitle={inbox.latestMessage}
-              //image={item.image}
-              onPress={() =>
-                navigation.navigate("Chat", {
-                  email: email,
-                  name: name,
-                  otherUser: inbox.email,
-                })
-              }
-              renderRightActions={() => (
-                <ListItemDeleteItem onPress={() => handleDelete(item)} />
-              )}
-            />
-          )}
+          renderItem={({ item }) => {
+            const newEmail =
+              inbox.email.charAt(0).toUpperCase() + inbox.email.slice(1);
+            return (
+              <ListItem
+                title={newEmail}
+                subTitle={inbox.latestMessage}
+                //image={item.image}
+                onPress={() =>
+                  navigation.navigate("Chat", {
+                    email: email,
+                    name: name,
+                    otherUser: inbox.email,
+                  })
+                }
+                renderRightActions={() => (
+                  <ListItemDeleteItem onPress={() => handleDelete(item)} />
+                )}
+              />
+            );
+          }}
           ItemSeparatorComponent={ListItemSeperator}
           refreshing={refreshing}
           onRefresh={() => {

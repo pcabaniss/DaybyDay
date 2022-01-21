@@ -1,5 +1,7 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
+import moment from "moment";
+import { format } from "date-fns";
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -9,6 +11,19 @@ const safetyFirst = (notSafeEmail) => {
   const safeEmail = email.replace("@", "-");
 
   return safeEmail;
+};
+
+const calculateHours = (open, interval, ampm) => {
+  if (interval > 45 || interval == undefined) {
+    var temp = open;
+    const another = moment(temp).add(interval, "minutes");
+    return another.format("hh:mm ") + ampm;
+  } else {
+    var temp = open;
+
+    const another = moment(temp).add(30, "minutes");
+    return another.format("hh:mm ") + ampm;
+  }
 };
 
 const getUser = () => {
@@ -137,7 +152,7 @@ const deleteListing = (listing) => {
     });
 };
 
-const addListing = (listing, onUploadProgress, updateComplete) => {
+const addListing = (listing, onUploadProgress) => {
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
@@ -151,8 +166,6 @@ const addListing = (listing, onUploadProgress, updateComplete) => {
       title: listing.title,
       timeStart: listing.timeStart,
       timeFinish: listing.timeFinish,
-      categoryID: listing.category.label,
-      isRepeating: listing.repeating.label,
       description: listing.description,
       id: listing.dateClicked + listing.title,
     });
@@ -182,8 +195,6 @@ const updateListing = (listing, onUploadProgress) => {
               title: listing.title,
               timeStart: listing.timeStart,
               timeFinish: listing.timeFinish,
-              categoryID: listing.category.label,
-              isRepeating: listing.repeating.label,
               description: listing.description,
             });
         } else {
@@ -461,7 +472,7 @@ const getSearchResults = async (text = "null") => {
   return info;
 };
 
-const sendRequest = async (time, date, business, timeOfRequest) => {
+const sendRequest = async (time, date, business, timeOfRequest, duration) => {
   //console.log(time, date, business, timeRequested);
   const safeEmail = safetyFirst(business);
   //may have to come back and change this to be more fluid.
@@ -472,13 +483,14 @@ const sendRequest = async (time, date, business, timeOfRequest) => {
     .firestore()
     .collection(safeEmail)
     .doc("requests/")
-    .collection("list/")
+    .collection(user)
     .add({
       dateRequested: date,
       timeRequested: time,
       request: "pending",
       user: user,
       timeOfRequest: timeOfRequest,
+      duration: duration,
     });
 
   await getUser().doc("myRequests/").collection("list/").add({
@@ -488,6 +500,11 @@ const sendRequest = async (time, date, business, timeOfRequest) => {
     user: userEmail,
     timeOfRequest: timeOfRequest,
     business: business,
+    duration: duration,
+  });
+
+  await getUser().doc(date).collection("/requests").add({
+    time: time,
   });
 };
 
@@ -528,6 +545,7 @@ const getBusRequests = async () => {
         return info;
       });
     });
+
   return info;
 };
 
@@ -554,6 +572,7 @@ const updateRequest = async (text, response, request) => {
                 timeRequested: data.timeRequested,
                 user: data.user,
                 timeOfRequest: data.timeOfRequest,
+                duration: data.duration,
               })
               .catch((error) => {
                 console.log("error saving listing to business: " + error);
@@ -587,6 +606,7 @@ const updateRequest = async (text, response, request) => {
                 user: data.user,
                 timeOfRequest: data.timeOfRequest,
                 business: businessName,
+                duration: data.duration,
               })
               .catch((error) => {
                 console.log("error saving listing to user: " + error);
@@ -595,32 +615,51 @@ const updateRequest = async (text, response, request) => {
         }
       });
     });
+  if (response == "accepted") {
+    const sender = {
+      _id: businessName,
+      name: "No name",
+      email: businessName,
+    };
 
-  const sender = {
-    _id: businessName,
-    name: "No name",
-    email: businessName,
-  };
-
-  //Will send otherUser credentials when i pull from database
-  const reciever = {
-    _id: request.user,
-    name: "no name",
-    email: request.user,
-    //avatar: "https://facebook.github.io/react/img/logo_og.png",
-  };
-  const message = {
-    _id: businessName,
-    text: text,
-    createdAt: new Date(),
-    user: {
+    //Will send otherUser credentials when i pull from database
+    const reciever = {
       _id: request.user,
-      name: "no name yet",
-      //avatar: "https://placeimg.com/140/140/any",
-    },
-  };
+      name: "no name",
+      email: request.user,
+      //avatar: "https://facebook.github.io/react/img/logo_og.png",
+    };
+    const message = {
+      _id: businessName,
+      text: text,
+      createdAt: new Date(),
+      user: {
+        _id: request.user,
+        name: "no name yet",
+        //avatar: "https://placeimg.com/140/140/any",
+      },
+    };
+    if (text != " ") {
+      saveMessages([message], reciever, new Date().valueOf(), sender);
+    }
+    const [time, ampm] = "02:18 am".split(" ");
 
-  saveMessages([message], reciever, new Date().valueOf(), sender);
+    const listing = {
+      title: "Scheduled appointment.",
+      timeStart: request.timeRequested,
+      timeFinish: calculateHours(
+        "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CST)",
+        request.duration,
+        ampm
+      ),
+      categoryID: "Camera",
+      isRepeating: "Never",
+      description: "An accepted scheduling request with " + request.user,
+      id: request.user + request.timeRequested,
+      dateClicked: request.dateRequested,
+    };
+    addListing(listing);
+  }
 };
 
 export default {

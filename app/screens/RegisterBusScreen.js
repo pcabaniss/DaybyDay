@@ -27,7 +27,6 @@ import {
   SubmitButton,
 } from "../components/forms";
 import colors from "../config/colors";
-import listings from "../api/listings";
 
 /**
  * Create a tab navigator for 2 screens, a business page and a customer one

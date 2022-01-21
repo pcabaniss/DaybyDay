@@ -14,7 +14,7 @@ import SpaceSeperator from "../components/SpaceSeperator";
 import listings from "../api/listings";
 
 function AvailabilityScreen({ route, navigation }) {
-  const { day, hours, business } = route.params;
+  const { day, hours, business, duration } = route.params;
   const [dayHours, setDayHours] = useState(hours);
 
   //find a way to get profile info to send message
@@ -36,7 +36,7 @@ function AvailabilityScreen({ route, navigation }) {
   const clickedYes = (time) => {
     console.log("I clicked yes for " + time + " on " + day.dateString);
     const currentTime = moment().format("MM-DD hh:mm:ss a");
-    listings.sendRequest(time, day.dateString, business, currentTime);
+    listings.sendRequest(time, day.dateString, business, currentTime, duration);
     /**users name: {
      * request: 'approved', 'denied', or 'pending'
      * } */

@@ -3,16 +3,12 @@
  * create api that reads through bus. names and displays them for the
  * discover tab.
  *
+ * Go back and redo, the add listing screen in agenda.
+ *
  * finish setting up the storage of the background photo.
  *
  * create functionality to only allow 2 time requests per business, per
  * customer.
- *
- * finish the functionality for the scheduling in the app, connect the
- * scheduling tool to the calendar.
- *
- * create a more condense customer profile screen consisting of just their
- * name, a photo, and a verified marker somewhere.
  *
  * Have it to where the customer can select a time slot and it’s like
  * applying to get that spot and the business has to confirm it to be
@@ -25,12 +21,17 @@
  * make sure messaging isnt buggy and reading properly.
  *
  * Make the necessary changes to run on android successfully
- * *
+ *
  * implement profile/ message blocking and favoriting
  *
  * finish implementing deleting messages
  *
  * get notifications working
+ *
+ * implement picture gallery on bus profile
+ *
+ * make it to where you can only edit scheduled activities that havent
+ * happened yet.
  *
  * Get reviews implemented and working along with start system on profile
  *

@@ -14,6 +14,7 @@ import moment from "moment";
 
 function BusRequestFlatList(data, status, pic, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
+
   const pressedListing = (item) => {
     if (status == "Pending") {
       navigation.navigate("Answer", { item: item });
@@ -62,7 +63,7 @@ function BusRequestFlatList(data, status, pic, navigation) {
                       title={userName}
                       subTitle={
                         "Date Requested: \n" +
-                        moment(item.date).format("MMM Do") +
+                        moment(item.dateRequested).format("MMM Do") +
                         " at " +
                         item.timeRequested
                       }

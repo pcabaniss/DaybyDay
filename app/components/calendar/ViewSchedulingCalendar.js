@@ -6,6 +6,7 @@ import listings from "../../api/listings";
 
 function ViewSchedulingCalendar({ navigation, email }) {
   const [daySelected, setDaySelected] = useState(new Date());
+  const [duration, setDuration] = useState(30);
 
   //Pull if all slots are full I want to highlight
   //the date red.
@@ -29,6 +30,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
   };
 
   const calculateHours = (timeDiff, open, interval, slots) => {
+    console.log(open);
     const hours = [];
     if (interval > 45 || interval == undefined) {
       for (var i = 0; i <= timeDiff; i++) {
@@ -68,9 +70,11 @@ function ViewSchedulingCalendar({ navigation, email }) {
 
     //if date matches the one in database, search that deate instead of  'info'
     if (dayArray != null) {
+      setDuration(dayArray.close);
       if (dayArray.interval < 46) {
         const timeDiff = moment(dayArray.close).diff(dayArray.open, "minutes");
         const divide = timeDiff / dayArray.interval;
+        console.log(timeDiff);
         const calc = calculateHours(
           divide,
           dayArray.open,
@@ -80,6 +84,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         return calc;
       } else {
         const timeDiff = moment(dayArray.close).diff(dayArray.open, "hours");
+        console.log(timeDiff);
 
         const calc = calculateHours(
           timeDiff,
@@ -123,6 +128,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         day: day,
         hours: sched,
         business: email,
+        duration: duration,
       });
     }
   };

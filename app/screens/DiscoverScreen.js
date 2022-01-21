@@ -75,15 +75,21 @@ function DiscoverScreen({ navigation }) {
             data={tempResults}
             keyExtractor={(item) => "" + item.id}
             style={styles.list}
-            renderItem={({ item }) => (
-              <Card
-                title={item.email}
-                subTitle={"business"}
-                onPress={() => clickedProfile(item.email, item.pic, item.name)}
-                thumbnailUrl={item.pic}
-                imageUrl={item.pic.replace("file://", "")}
-              />
-            )}
+            renderItem={({ item }) => {
+              const newEmail =
+                item.email.charAt(0).toUpperCase() + item.email.slice(1);
+              return (
+                <Card
+                  title={newEmail}
+                  subTitle={"business"}
+                  onPress={() =>
+                    clickedProfile(item.email, item.pic, item.name)
+                  }
+                  thumbnailUrl={item.pic}
+                  imageUrl={item.pic.replace("file://", "")}
+                />
+              );
+            }}
           />
         ) : (
           <>

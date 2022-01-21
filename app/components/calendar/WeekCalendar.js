@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment from "moment";
+import moment, { now } from "moment";
 import React, { useState, useEffect } from "react";
 import listingsApi from "../../api/listings";
 import {
@@ -35,10 +35,19 @@ const timeToString = (time) => {
   return date.toISOString().split("T")[0];
 };
 
+const dateInPast = (clickedDate) => {
+  const newDate = new Date(clickedDate);
+  const currentDate = new Date();
+  if (newDate.setHours(0, 0, 0, 0) <= currentDate.setHours(0, 0, 0, 0)) {
+    return Alert.alert("Cannot edit event in the past.");
+  }
+};
+
 const WeekCalendar = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [items, setItems] = useState({});
   const [date, setDate] = useState({});
+  const [custom, setCustom] = useState(true);
 
   const loadItems = (day) => {
     console.log("Loading items....");
@@ -64,14 +73,12 @@ const WeekCalendar = ({ navigation }) => {
                 };
                 items[strTime].push({
                   name: item.title,
-                  time: timeSt + " - " + timeEn,
+                  time: item.timeStart + " - " + item.timeFinish,
                   subText: item.description,
                   height: "100%",
-                  category: item.categoryID,
                   date: strTime,
-                  timeStart: timeSt,
-                  timeEnd: timeEn,
-                  repeating: item.isRepeating,
+                  timeStart: item.timeStart,
+                  timeEnd: item.timeFinish,
                   id: item.id,
                 });
                 renderItem(items[strTime]);
@@ -130,44 +137,44 @@ const WeekCalendar = ({ navigation }) => {
             data={items[item.date]}
             style={styles.list}
             ItemSeparatorComponent={CalendarSeperator}
-            renderItem={({ item }) => (
-              <>
-                <TouchableOpacity
-                  testID={testIDs.agenda.ITEM}
-                  style={[styles.item, { height: item.height }]}
-                  onPress={() => console.log("Else")}
-                >
-                  <Text style={styles.mainText}>{item.name}</Text>
-                  <Text style={styles.timeText}>{item.time}</Text>
-                  <View style={styles.button}>
-                    <MaterialCommunityIcons
-                      name={"lead-pencil"}
-                      size={28}
-                      style={styles.icon}
-                      color={colors.medium}
-                      onPress={() =>
-                        navigation.navigate("View", {
-                          day: item.date,
-                          title: item.name,
-                          timeStart: item.timeStart,
-                          timeEnd: item.timeEnd,
-                          description: item.subText,
-                          category: item.category,
-                          repeating: item.repeating,
-                          id: item.id,
-                        })
-                      }
-                    />
-                    <MaterialCommunityIcons
-                      name={"trash-can-outline"}
-                      size={28}
-                      color={colors.medium}
-                      onPress={() => alertButton(item)}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </>
-            )}
+            renderItem={({ item }) => {
+              if (item.name == "Scheduled appointment.") {
+                setCustom(false);
+              } else {
+                setCustom(true);
+              }
+              return (
+                <>
+                  <TouchableOpacity
+                    testID={testIDs.agenda.ITEM}
+                    style={[styles.item, { height: item.height }]}
+                    onPress={() => dateInPast(item.date)}
+                  >
+                    <Text style={styles.mainText}>{item.name}</Text>
+                    <Text style={styles.timeText}>{item.time}</Text>
+                    <View style={styles.button}>
+                      <MaterialCommunityIcons
+                        name={"lead-pencil"}
+                        size={28}
+                        style={styles.icon}
+                        color={colors.medium}
+                        onPress={() =>
+                          navigation.navigate("View", {
+                            day: item.date,
+                            title: item.name,
+                            timeStart: item.timeStart,
+                            timeEnd: item.timeEnd,
+                            description: item.subText,
+                            id: item.id,
+                            isCustom: custom,
+                          })
+                        }
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </>
+              );
+            }}
           />
         </Screen>
         <View style={styles.footer}>
@@ -184,24 +191,6 @@ const WeekCalendar = ({ navigation }) => {
     );
   };
 
-  const alertButton = (item) => {
-    Alert.alert("Are you sure want to delete this item?", "", [
-      {
-        text: "No",
-        onPress: () => console.log("Nope!"),
-        style: "cancel",
-      },
-      {
-        text: "Yes im sure",
-        onPress: () => {
-          listingsApi.deleteListing(item);
-          setItems(updateDate());
-          loadItems(date);
-        },
-      },
-    ]);
-  };
-
   const renderEmptyDate = (day) => {
     const dayString = timeToString(day);
     return (
@@ -209,7 +198,7 @@ const WeekCalendar = ({ navigation }) => {
         <TouchableOpacity
           testID={testIDs.agenda.ITEM}
           style={[styles.item]}
-          onPress={() => Alert.alert("Add Event")}
+          onPress={() => dateInPast(day)}
         >
           <Text style={styles.mainText}>{"Nothing scheduled today."}</Text>
         </TouchableOpacity>

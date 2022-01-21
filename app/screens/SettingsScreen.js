@@ -3,6 +3,7 @@ import { View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import ListItem from "../components/ListItem";
 import colors from "../config/colors";
 import ListItemSeperator from "../components/ListItemSeperator";
+import moment from "moment";
 
 const settingItems = [
   {
@@ -40,8 +41,6 @@ const settingItems = [
 ];
 
 function SettingsScreen(props) {
-  console.log(new Date().valueOf());
-
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
