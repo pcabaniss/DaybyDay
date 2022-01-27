@@ -121,6 +121,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
     setDaySelected(new Date(day.timestamp));
     const dayOf = moment(day.timestamp).day();
     const sched = await getSchedule(dayString(dayOf));
+
     if (sched == null) {
       emptyDate();
     } else {

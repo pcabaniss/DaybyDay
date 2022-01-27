@@ -5,7 +5,7 @@ import AppPicker from "./AppPicker";
 
 function MessageForm(props) {
   const [value, setValue] = useState("Reason");
-  const [about, setAbout] = useState("Type message here.");
+  const [about, setAbout] = useState("");
   const [pressed, setPressed] = useState(false);
 
   const menuItems = [
@@ -28,6 +28,9 @@ function MessageForm(props) {
     },
   ];
 
+  const changeText = (text) => {
+    setAbout(text);
+  };
   // This will be in charge of sending the message to the business.
   const submitPressed = () => {
     console.log("Pressed submit!");
@@ -51,8 +54,9 @@ function MessageForm(props) {
       <TextInput
         editable
         multiline
-        onChangeText={setAbout}
+        onChangeText={changeText}
         value={about}
+        placeholder="Type message here."
         style={styles.aboutText}
       ></TextInput>
       <Button
@@ -72,10 +76,9 @@ const styles = StyleSheet.create({
     color: colors.black,
     padding: 10,
     borderRadius: 10,
-    borderColor: colors.medium,
+    borderColor: colors.dark,
     borderWidth: 1,
     width: "98%",
-    height: 200,
     alignSelf: "center",
   },
 });

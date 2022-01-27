@@ -223,6 +223,7 @@ function ProfileSettingsScreen({ route, navigation }) {
           }}
         />
       </View>
+
       <View style={styles.boxContainer}>
         {<SelectedIcon prop={selected} navigation={navigation} />}
       </View>
@@ -238,16 +239,17 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.white,
   },
   boxContainer: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.white,
     borderRadius: 10,
     borderColor: colors.medium,
-    borderWidth: 1,
+    paddingTop: 10,
+    //borderWidth: 1,
     alignSelf: "center",
     height: "100%",
-    width: "98%",
+    width: "92%",
   },
   image: {
     height: 250,

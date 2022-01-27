@@ -142,7 +142,7 @@ function ListingEditScreen({ navigation, route }) {
           placeholder="Description"
         />
 
-        <SubmitButton title="Add" color={colors.primary} />
+        <SubmitButton title="Add" color={colors.greenCheck} />
       </Form>
     </Screen>
   );

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     left: -50,
     width: "110%",
     height: 1,
-    backgroundColor: colors.medium,
+    backgroundColor: colors.dark,
   },
 });
 export default CalendarSeperator;

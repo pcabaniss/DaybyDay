@@ -33,6 +33,13 @@
  * make it to where you can only edit scheduled activities that havent
  * happened yet.
  *
+ * finish implementing messaging system in message form.
+ *
+ * Check to see if you can rework textinput to be more responsive and
+ * not so buggy.
+ *
+ * implement picture gallery.
+ *
  * Get reviews implemented and working along with start system on profile
  *
  * implement necessary changes for settings

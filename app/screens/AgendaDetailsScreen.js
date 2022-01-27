@@ -144,6 +144,7 @@ function AgendaDetailsScreen({ navigation, route }) {
             />
           </View>
         ) : (
+          //Need to add optionality to cancel request here.
           <View style={styles.date}>
             <Text style={styles.text}>Start: </Text>
             <Text onPress={alertBox} style={styles.notCustom}>

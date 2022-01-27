@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment, { now } from "moment";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import listingsApi from "../../api/listings";
 import {

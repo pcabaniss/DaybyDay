@@ -483,7 +483,7 @@ const sendRequest = async (time, date, business, timeOfRequest, duration) => {
     .firestore()
     .collection(safeEmail)
     .doc("requests/")
-    .collection(user)
+    .collection("list/")
     .add({
       dateRequested: date,
       timeRequested: time,
@@ -504,7 +504,7 @@ const sendRequest = async (time, date, business, timeOfRequest, duration) => {
   });
 
   await getUser().doc(date).collection("/requests").add({
-    time: time,
+    business: business,
   });
 };
 
@@ -547,6 +547,43 @@ const getBusRequests = async () => {
     });
 
   return info;
+};
+
+const getPendingRequests = async (business, day, time) => {
+  var count = 0;
+  const safeBusEmail = safetyFirst(business);
+
+  await firebase.default
+    .firestore()
+    .collection(safeBusEmail)
+    .doc("requests/")
+    .collection("list/")
+    .get()
+    .then((request) => {
+      request.forEach((doc) => {
+        const data = doc.data();
+        if (
+          data.request == "pending" &&
+          data.timeRequested == time &&
+          data.dateRequested == day
+        ) {
+          count += 1;
+        }
+      });
+    });
+  return count;
+};
+
+const getNumberOfRequest = async (day, business) => {
+  var count = 0;
+  await getUser()
+    .doc(day)
+    .collection("requests")
+    .get()
+    .then((request) => {
+      count = request.size;
+    });
+  return count;
 };
 
 const updateRequest = async (text, response, request) => {
@@ -684,7 +721,9 @@ export default {
   getHoursFor,
   getSearchResults,
   sendRequest,
+  getNumberOfRequest,
   getUserRequests,
   getBusRequests,
+  getPendingRequests,
   updateRequest,
 };

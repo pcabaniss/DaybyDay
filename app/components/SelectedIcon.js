@@ -1,102 +1,25 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, TextInput } from "react-native";
 import colors from "../config/colors";
 import listings from "../api/listings";
-import moment from "moment";
+import { useIsFocused } from "@react-navigation/core";
 import MessageForm from "./MessageForm";
 import SchedulingCalendar from "./calendar/SchedulingCalendar";
 
 function SelectedIcon({ prop, navigation }) {
-  var dayOfTheWeek = [
-    {
-      day: "Sunday",
-      letter: "S",
-      key: "sun",
-    },
+  const [about, setAbout] = useState(" ");
+  const isFocused = useIsFocused();
 
-    {
-      day: "Monday",
-      letter: "M",
-      key: "mon",
-    },
-    {
-      day: "Tuesday",
-      letter: "T",
-      key: "tues",
-    },
-    {
-      day: "Wednesday",
-      letter: "W",
-      key: "wed",
-    },
-    {
-      day: "Thursday",
-      letter: "Th",
-      key: "thur",
-    },
-    {
-      day: "Friday",
-      letter: "F",
-      key: "fri",
-    },
-    {
-      day: "Saturday",
-      letter: "S",
-      key: "sat",
-    },
-  ];
-  const [sunday, setSunday] = useState("Closed");
-  const [monday, setMonday] = useState("Closed");
-  const [tuesday, setTuesday] = useState("Closed");
-  const [wednesday, setWednesday] = useState("Closed");
-  const [thursday, setThursday] = useState("Closed");
-  const [friday, setFriday] = useState("Closed");
-  const [saturday, setSaturday] = useState("Closed");
-  const [about, setAbout] = useState("PlaceHolder");
-
-  const timeFormatter = (date) => {
-    let d = moment(date).utcOffset(date);
-    return d.format("hh:mm A");
-  };
-
-  const getSchedule = async (day) => {
-    const dayInfo = await listings.getSchedule(day);
-
-    if (dayInfo != null) {
-      const open = timeFormatter(dayInfo.open);
-      const close = timeFormatter(dayInfo.close);
-      if (day == "Sunday") {
-        setSunday(open + " - " + close);
-      }
-      if (day == "Monday") {
-        setMonday(open + " - " + close);
-      }
-      if (day == "Tuesday") {
-        setTuesday(open + " - " + close);
-      }
-      if (day == "Wednesday") {
-        setWednesday(open + " - " + close);
-      }
-      if (day == "Thursday") {
-        setThursday(open + " - " + close);
-      }
-      if (day == "Friday") {
-        setFriday(open + " - " + close);
-      }
-      if (day == "Saturday") {
-        setSaturday(open + " - " + close);
-      }
-    }
-  };
-  dayOfTheWeek.map((day) => {
-    getSchedule(day.day);
-  });
+  useEffect(() => {
+    const refresh = navigation.addListener("focus", () => {
+      pullAboutInfo();
+    });
+    return refresh;
+  }, [isFocused]);
 
   const saveAbout = (text) => {
     pullAboutInfo();
-    if (about != "PlaceHolder") {
-      listings.saveAbout(text);
-    }
+    listings.saveAbout(text);
   };
 
   const pullAboutInfo = async () => {
@@ -104,7 +27,7 @@ function SelectedIcon({ prop, navigation }) {
     if (data != undefined || data != null) {
       setAbout(data);
     } else {
-      setAbout("PlaceHolder");
+      console.log("Could not pull about info. ");
     }
   };
 
@@ -115,16 +38,25 @@ function SelectedIcon({ prop, navigation }) {
   if (prop == "Reviews") {
     return <Text>This is all about the reviews</Text>;
   }
+
+  const changeText = (text) => {
+    setAbout(text);
+
+    saveAbout(text);
+  };
   if (prop == "About") {
     return (
-      <TextInput
-        editable
-        multiline
-        onPressOut={saveAbout(about)}
-        onChangeText={setAbout}
-        value={about}
-        style={styles.aboutText}
-      ></TextInput>
+      <>
+        <TextInput
+          editable
+          multiline
+          onChangeText={changeText}
+          value={about}
+          placeholder="This is where the about goes."
+          style={styles.aboutText}
+        ></TextInput>
+        <Text>Add images Button goes here.</Text>
+      </>
     );
   }
   if (prop == "Message") {
@@ -140,9 +72,14 @@ const styles = StyleSheet.create({
   },
   aboutText: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: colors.black,
-    padding: 10,
+    paddingTop: 20,
+    color: colors.dark,
+    borderColor: colors.dark,
+    borderWidth: 3,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    padding: 15,
+    textAlign: "center",
   },
   text: {
     fontSize: 25,
@@ -152,40 +89,3 @@ const styles = StyleSheet.create({
 });
 
 export default SelectedIcon;
-
-/**<Text style={styles.text}>
-          {" "}
-          S{"      "} {sunday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          M{"     "} {monday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          T{"      "} {tuesday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          W{"     "} {wednesday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          Th{"    "} {thursday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          F{"       "} {friday}
-        </Text>
-        <SpaceSeperator />
-        <Text style={styles.text}>
-          {" "}
-          S {"       "}
-          {saturday}
-        </Text>
-        <SpaceSeperator /> */

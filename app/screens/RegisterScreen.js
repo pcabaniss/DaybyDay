@@ -29,6 +29,7 @@ import {
 } from "../components/forms";
 import colors from "../config/colors";
 import listings from "../api/listings";
+import ListItemSeperator from "../components/ListItemSeperator";
 
 /**
  * Needs a onboarding/intro slider screen that displays only once per download explaining the
@@ -173,6 +174,14 @@ function RegisterScreen() {
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
       <ScrollView style={styles.scroll}>
         <Text style={styles.header}>Customer</Text>
+        <ListItemSeperator />
+        <Text style={styles.description}>
+          If you're a customer and will be using this app for scheduling
+          appointments with businesses then fill out the information below to
+          get started!
+        </Text>
+        <ListItemSeperator />
+
         <Screen style={styles.container}>
           <Form
             initialValues={{
@@ -191,7 +200,7 @@ function RegisterScreen() {
                 <View style={styles.imageContainer}>
                   {!image && (
                     <MaterialCommunityIcons
-                      color={colors.black}
+                      color={colors.dark}
                       name="account"
                       size={75}
                     />
@@ -232,7 +241,7 @@ function RegisterScreen() {
               secureTextEntry
               textContentType="password"
             />
-            <SubmitButton title="Register" color={colors.primary} />
+            <SubmitButton title="Register" color={colors.dark} />
           </Form>
         </Screen>
       </ScrollView>
@@ -245,7 +254,15 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.red,
+    backgroundColor: colors.yellow,
+  },
+  description: {
+    backgroundColor: colors.yellow,
+    fontSize: 18,
+    padding: 5,
+    paddingTop: 15,
+    paddingBottom: 15,
+    textAlign: "center",
   },
   imageContainer: {
     backgroundColor: colors.light,
@@ -267,16 +284,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    height: 400, //Noteworthy-Bold
-    backgroundColor: colors.red,
+    backgroundColor: colors.yellow,
     fontSize: 80,
     textAlign: "center",
     fontFamily: "Noteworthy-Bold",
-    paddingTop: 25,
-    flex: 1,
+    paddingTop: 15,
   },
   scroll: {
     flex: 1,
+    backgroundColor: colors.yellow,
   },
 });
 
