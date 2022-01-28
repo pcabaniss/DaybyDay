@@ -56,7 +56,7 @@ const AppNavigator = () => {
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
-                name="calendar-search"
+                name="briefcase-search"
                 color={color}
                 size={size}
               />

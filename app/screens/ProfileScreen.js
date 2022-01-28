@@ -15,8 +15,6 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SpaceSeperator from "../components/SpaceSeperator";
 import Icon from "../components/Icon";
-import ListItemSeperator from "../components/ListItemSeperator";
-import SelectedIcon from "../components/SelectedIcon";
 import listings from "../api/listings";
 import SelectedIconViewed from "../components/SelectedIconViewed";
 
@@ -64,77 +62,46 @@ function ProfileScreen({ route, navigation }) {
 
   const [selected, setSelected] = useState("About");
   const [image, setImage] = useState(pic);
+  const [about, setAbout] = useState(" ");
 
+  const pullAboutInfo = async (email) => {
+    const data = await listings.getAboutFor(email);
+    if (data != undefined || data != null) {
+      setAbout(data);
+    } else {
+      setAbout("No information yet!");
+    }
+  };
+  pullAboutInfo(email);
   return (
-    <ScrollView
-      scrollEnabled
-      style={{ backgroundColor: colors.white, flex: 1 }}
-    >
-      <View style={styles.container}>
-        <View style={styles.bgContainer}>
-          <ImageBackground
-            source={require("../assets/couch.jpg")}
-            resizeMode="cover"
-            style={styles.image}
-          >
-            <View style={styles.picContainer}>
-              <Image source={{ uri: image }} style={styles.profilePic} />
-            </View>
-          </ImageBackground>
+    <ScrollView scrollEnabled style={{ backgroundColor: colors.dark }}>
+      <View style={styles.picContainer}>
+        <Image source={{ uri: image }} style={styles.profilePic} />
+        <View style={{ paddingLeft: 10, flex: 1 }}>
+          <Text style={styles.aboutText}>{about}</Text>
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "99%",
-          backgroundColor: colors.white,
-          alignSelf: "center",
-        }}
-      >
+      <View style={styles.nameBox}>
         <View style={{ paddingRight: 10 }}>
           <Text style={styles.nameText}>{name}</Text>
 
-          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>{email}</Text>
-        </View>
-
-        <FlatList
-          data={menuItems}
-          horizontal
-          scrollEnabled={false}
-          contentContainerStyle={styles.icon}
-          renderItem={() => {
-            return (
-              <MaterialCommunityIcons
-                name="star"
-                size={40}
-                color={colors.yellow}
-              />
-            );
-          }}
-        />
-      </View>
-      <ListItemSeperator />
-      <View style={{ alignSelf: "center", paddingTop: 10, height: 80 }}>
-        <FlatList
-          horizontal
-          scrollEnabled={false}
-          data={menuItems}
-          contentContainerStyle={{
-            height: 60,
-          }}
-          ItemSeparatorComponent={SpaceSeperator}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => setSelected(item.title)}>
-                <Icon
-                  name={item.icon.name}
-                  size={60}
-                  backgroundColor={item.icon.backgroundColor}
+          <Text style={{ paddingLeft: 5, color: colors.light }}>{email}</Text>
+          <FlatList
+            data={menuItems}
+            horizontal
+            scrollEnabled={false}
+            contentContainerStyle={styles.icon}
+            renderItem={() => {
+              return (
+                <MaterialCommunityIcons
+                  name="star"
+                  size={20}
+                  color={colors.yellow}
                 />
-              </TouchableOpacity>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        </View>
       </View>
       <View style={styles.boxContainer}>
         {
@@ -150,55 +117,56 @@ function ProfileScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  bgContainer: {
-    // borderRadius: 10,
-    borderWidth: 5,
-    borderColor: colors.white,
+  aboutText: {
+    fontSize: 18,
+    paddingTop: 10,
+    color: colors.white,
+    borderRadius: 10,
+    padding: 15,
+    flex: 1,
+  },
+  nameBox: {
+    backgroundColor: colors.black,
+    width: "100%",
+    paddingLeft: 10,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
   boxContainer: {
-    backgroundColor: colors.blue,
-    borderRadius: 10,
-    borderColor: colors.medium,
-    borderWidth: 1,
-    alignSelf: "center",
-    height: "100%",
-    width: "98%",
+    height: 500,
   },
-  image: {
-    height: 250,
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    borderRadius: 10,
-    overflow: "hidden",
-  },
+
   picContainer: {
-    justifyContent: "center",
-    width: 180,
+    flex: 1,
+    flexDirection: "row",
+
+    //width: "100%",
+    padding: 5,
+    backgroundColor: colors.black,
   },
   profilePic: {
-    height: 180,
-    width: 180,
-    borderColor: colors.white,
+    height: 120,
+    width: 120,
+    borderColor: colors.medium,
     borderRadius: 90,
-    borderWidth: 5,
+    borderWidth: 1,
     overflow: "hidden",
   },
   nameText: {
     fontSize: 30,
     paddingLeft: 3,
-    color: colors.black,
+    fontWeight: "bold",
+    color: colors.dark,
   },
   icon: {
-    borderColor: colors.light,
     borderRadius: 17,
-    alignSelf: "center",
-    flex: 1,
-    justifyContent: "flex-end",
+    paddingLeft: 4,
+    paddingTop: 5,
+    //flex: 1,
+    //backgroundColor: colors.white,
+    width: "100%",
   },
 });
 

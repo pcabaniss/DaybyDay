@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert } from "react-native";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import listings from "../../api/listings";
+import colors from "../../config/colors";
 
 function ViewSchedulingCalendar({ navigation, email }) {
   const [daySelected, setDaySelected] = useState(new Date());
@@ -137,6 +138,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
   return (
     <View style={styles.container}>
       <Calendar
+        style={styles.calendar}
         markingType={"period"}
         onDayPress={dayPressed}
         current={daySelected}
@@ -149,6 +151,11 @@ function ViewSchedulingCalendar({ navigation, email }) {
 }
 
 const styles = StyleSheet.create({
+  calendar: {
+    borderColor: colors.black,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
   container: {
     padding: 10,
     width: "100%",

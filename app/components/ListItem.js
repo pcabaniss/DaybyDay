@@ -64,12 +64,16 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
+    backgroundColor: colors.dark,
+    borderWidth: 1,
   },
   subTitle: {
     color: colors.medium,
+    fontSize: 18,
   },
   title: {
     fontWeight: "600",
+    fontSize: 22,
   },
 });
 

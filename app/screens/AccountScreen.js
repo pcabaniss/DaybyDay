@@ -21,7 +21,7 @@ const menuItems = [
     targetScreen: "Dates",
   },
   {
-    title: "My Messages",
+    title: "Messages",
     icon: {
       name: "email",
       backgroundColor: colors.secondary,
@@ -67,6 +67,7 @@ function AccountScreen({ navigation }) {
     const name = await listings.getName(user.email);
     setName(name);
   };
+  var email = user.email.charAt(0).toUpperCase() + user.email.slice(1);
 
   const getPic = async () => {
     const pic = await listings.pullImage(user.email);
@@ -82,7 +83,7 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <ListItem
           title={name}
-          subTitle={user.email}
+          subTitle={email}
           image={pic}
           onPress={() =>
             navigation.navigate("Edit Profile", {
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 30,
     overflow: "hidden",
-    backgroundColor: colors.blue,
+    backgroundColor: colors.white,
     borderWidth: 3,
     width: "97%",
     alignSelf: "center",

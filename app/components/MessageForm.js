@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TextInput, Button } from "react-native";
 import colors from "../config/colors";
+import AppButton from "./AppButton";
 import AppPicker from "./AppPicker";
 
 function MessageForm(props) {
   const [value, setValue] = useState("Reason");
   const [about, setAbout] = useState("");
-  const [pressed, setPressed] = useState(false);
 
   const menuItems = [
     {
@@ -59,17 +59,16 @@ function MessageForm(props) {
         placeholder="Type message here."
         style={styles.aboutText}
       ></TextInput>
-      <Button
-        title="Send Message"
+      <AppButton
         color={colors.black}
         onPress={submitPressed}
+        title={"Send Message"}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
   aboutText: {
     fontSize: 18,
     fontWeight: "400",

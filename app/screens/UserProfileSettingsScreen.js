@@ -17,6 +17,8 @@ function UserProfileSettingsScreen({ route }) {
   const { name, pic, email } = route.params;
   const [image, setImage] = useState(pic);
 
+  var capitalEmail = email.charAt(0).toUpperCase() + email.slice(1);
+
   const takePhoto = async () => {
     try {
       const result = await ImagePicker.launchCameraAsync({
@@ -81,7 +83,6 @@ function UserProfileSettingsScreen({ route }) {
   const check = () => {
     return (
       <MaterialCommunityIcons
-        style={{ paddingLeft: 5 }}
         name="check-circle"
         size={30}
         color={colors.greenCheck}
@@ -93,10 +94,11 @@ function UserProfileSettingsScreen({ route }) {
       <TouchableOpacity onPress={() => imagePressed()}>
         <Image source={{ uri: image }} style={styles.profilePic} />
       </TouchableOpacity>
-      <Text style={styles.name}>
-        {name}
-        {check()}
-      </Text>
+      <View style={styles.title}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.icon}>{check()}</Text>
+      </View>
+      <Text style={styles.smallText}>{capitalEmail}</Text>
     </View>
   );
 }
@@ -108,18 +110,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  icon: {
+    paddingTop: 15,
+    paddingLeft: 10,
+    alignSelf: "center",
+  },
   name: {
     paddingTop: 15,
     fontSize: 30,
     fontWeight: "500",
   },
+  title: {
+    flexDirection: "row",
+  },
   profilePic: {
     height: 180,
     width: 180,
-    borderColor: colors.black,
+    borderColor: colors.dark,
     borderRadius: 90,
     borderWidth: 5,
     overflow: "hidden",
+  },
+  smallText: {
+    paddingTop: 10,
+    fontSize: 22,
+    fontWeight: "500",
   },
 });
 

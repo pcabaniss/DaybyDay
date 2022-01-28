@@ -18,17 +18,30 @@ function AvailabilityScreen({ route, navigation }) {
   const { day, hours, business, duration } = route.params;
   const [dayHours, setDayHours] = useState(hours);
   const [pendingArray, setPendingArray] = useState([]);
+  const [accepted, setAcceptedArray] = useState([]);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
       var arg = [];
+      var accept = [];
       hours.forEach(async (time) => {
-        var pending = await getPending(business, day.dateString, time.time);
+        var pending = await listings.getPendingRequests(
+          business,
+          day.dateString,
+          time.time
+        );
+        var availiableSpots = await listings.getAcceptedRequests(
+          business,
+          day.dateString,
+          time.time
+        );
         arg.push(pending);
+        accept.push(availiableSpots);
       });
       setPendingArray(arg);
+      setAcceptedArray(accept);
     });
     return refresh;
   }, [isFocused]);
@@ -38,13 +51,12 @@ function AvailabilityScreen({ route, navigation }) {
     .utcOffset(360)
     .format("ddd MMM DD, yyyy");
 
-  const highlighter = (isEmpty, isFull, almostFull) => {
-    if (isEmpty == true) {
-      return colors.green;
-    } else if (isFull == true) {
+  const highlighter = (slots, taken) => {
+    const total = slots - taken;
+    if (total == 0) {
       return colors.danger;
-    } else if (almostFull == true) {
-      return colors.orange;
+    } else if (total <= slots) {
+      return colors.green;
     }
   };
 
@@ -58,23 +70,18 @@ function AvailabilityScreen({ route, navigation }) {
     navigation.goBack(null);
   };
 
-  const getPending = async (business, day, time) => {
-    const pending = await listings.getPendingRequests(business, day, time);
-
-    return pending;
-  };
-
-  const onPressTime = async (time) => {
+  const onPressTime = async (time, slots, taken) => {
     //An alert will pop up asking if you are sure that you want to
     //apply for this time slot? and if yes then send business a message
     //asking to confirm.
+    const total = slots - taken;
 
     const count = await listings.getNumberOfRequest(day.dateString, business);
     var current = 2 - count;
     if (count == undefined) {
       current = 2;
     }
-    if (count < 2) {
+    if (count < 2 && total > 0) {
       Alert.alert(
         "Are you sure you want to request this slot?",
         "You have " + current + " remaining requests for today.",
@@ -92,7 +99,9 @@ function AvailabilityScreen({ route, navigation }) {
           },
         ]
       );
-    } else {
+    } else if (total == 0) {
+      Alert.alert("There are no remaing spots for this time slot.");
+    } else if (current == 0) {
       Alert.alert("You have no remaing requests today.");
     }
   };
@@ -112,14 +121,14 @@ function AvailabilityScreen({ route, navigation }) {
           //Needs a function here checking the date for any matching times.
           //CheckRequests()
           return (
-            <TouchableOpacity onPress={() => onPressTime(item.time)}>
+            <TouchableOpacity
+              onPress={() =>
+                onPressTime(item.time, item.slots, accepted[item.key])
+              }
+            >
               <View
                 style={{
-                  backgroundColor: highlighter(
-                    item.isEmpty,
-                    item.isFull,
-                    item.almostFull
-                  ),
+                  backgroundColor: highlighter(item.slots, accepted[item.key]),
                   alignSelf: "center",
                   height: 75,
                   borderWidth: 2,
@@ -131,7 +140,9 @@ function AvailabilityScreen({ route, navigation }) {
                 }}
               >
                 <Text style={styles.header}>{item.time}</Text>
-                <Text style={styles.footer}>Available slots: {item.slots}</Text>
+                <Text style={styles.footer}>
+                  Available slots: {item.slots - accepted[item.key]}
+                </Text>
                 <Text style={styles.footer}>
                   Pending requests: {pendingArray[item.key]}
                 </Text>

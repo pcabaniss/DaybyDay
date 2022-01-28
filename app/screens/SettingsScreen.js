@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 30,
     overflow: "hidden",
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
     borderWidth: 3,
     width: "97%",
     alignSelf: "center",

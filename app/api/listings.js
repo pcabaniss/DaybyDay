@@ -574,6 +574,31 @@ const getPendingRequests = async (business, day, time) => {
   return count;
 };
 
+const getAcceptedRequests = async (business, day, time) => {
+  var count = 0;
+  const safeBusEmail = safetyFirst(business);
+
+  await firebase.default
+    .firestore()
+    .collection(safeBusEmail)
+    .doc("requests/")
+    .collection("list/")
+    .get()
+    .then((request) => {
+      request.forEach((doc) => {
+        const data = doc.data();
+        if (
+          data.request == "accepted" &&
+          data.timeRequested == time &&
+          data.dateRequested == day
+        ) {
+          count += 1;
+        }
+      });
+    });
+  return count;
+};
+
 const getNumberOfRequest = async (day, business) => {
   var count = 0;
   await getUser()
@@ -725,5 +750,6 @@ export default {
   getUserRequests,
   getBusRequests,
   getPendingRequests,
+  getAcceptedRequests,
   updateRequest,
 };
