@@ -5,16 +5,11 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  ImageBackground,
-  TouchableOpacity,
   FlatList,
-  Alert,
 } from "react-native";
-import colors from "../config/colors";
-import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SpaceSeperator from "../components/SpaceSeperator";
-import Icon from "../components/Icon";
+
+import colors from "../config/colors";
 import listings from "../api/listings";
 import SelectedIconViewed from "../components/SelectedIconViewed";
 
@@ -64,6 +59,8 @@ function ProfileScreen({ route, navigation }) {
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
 
+  var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
+
   const pullAboutInfo = async (email) => {
     const data = await listings.getAboutFor(email);
     if (data != undefined || data != null) {
@@ -85,7 +82,9 @@ function ProfileScreen({ route, navigation }) {
         <View style={{ paddingRight: 10 }}>
           <Text style={styles.nameText}>{name}</Text>
 
-          <Text style={{ paddingLeft: 5, color: colors.light }}>{email}</Text>
+          <Text style={{ paddingLeft: 5, color: colors.light }}>
+            {capEmail}
+          </Text>
           <FlatList
             data={menuItems}
             horizontal
@@ -104,13 +103,7 @@ function ProfileScreen({ route, navigation }) {
         </View>
       </View>
       <View style={styles.boxContainer}>
-        {
-          <SelectedIconViewed
-            prop={selected}
-            navigation={navigation}
-            email={email}
-          />
-        }
+        {<SelectedIconViewed navigation={navigation} email={email} />}
       </View>
     </ScrollView>
   );

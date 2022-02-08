@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Button } from "react-native";
+import { View, StyleSheet, TextInput, Alert, Text } from "react-native";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 import AppPicker from "./AppPicker";
+import ListItemSeperator from "./ListItemSeperator";
 
-function MessageForm(props) {
+function MessageForm(type) {
   const [value, setValue] = useState("Reason");
   const [about, setAbout] = useState("");
 
@@ -33,7 +34,15 @@ function MessageForm(props) {
   };
   // This will be in charge of sending the message to the business.
   const submitPressed = () => {
-    console.log("Pressed submit!");
+    if (type == "user") {
+      console.log("Pressed submit!");
+    } else {
+      Alert.alert(
+        "Lonely?",
+        "Sending a message to yourself isnt very productive.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
   };
   /**
    * Add functionality that checks if user has already messaged business
@@ -42,6 +51,10 @@ function MessageForm(props) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>
+        Have any questions, concerns, or inquiries?
+      </Text>
+      <ListItemSeperator />
       <AppPicker
         items={menuItems}
         numberOfColumns={1}
@@ -49,7 +62,7 @@ function MessageForm(props) {
         onSelectItem={(value) => {
           setValue(value.label);
         }}
-        width="100%"
+        width="94%"
       />
       <TextInput
         editable
@@ -74,11 +87,21 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: colors.black,
     padding: 10,
+    paddingTop: 10,
     borderRadius: 10,
     borderColor: colors.dark,
     borderWidth: 1,
-    width: "98%",
+    width: "92%",
     alignSelf: "center",
+  },
+  container: {
+    alignItems: "center",
+  },
+  header: {
+    textAlign: "center",
+    fontSize: 30,
+    padding: 5,
+    paddingBottom: 10,
   },
 });
 

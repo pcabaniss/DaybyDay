@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import {
   Text,
+  TextInput,
   View,
   Image,
   StyleSheet,
   ScrollView,
-  ImageBackground,
   TouchableOpacity,
   FlatList,
   Alert,
 } from "react-native";
-import colors from "../config/colors";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SpaceSeperator from "../components/SpaceSeperator";
-import Icon from "../components/Icon";
-import ListItemSeperator from "../components/ListItemSeperator";
+
+import colors from "../config/colors";
 import SelectedIcon from "../components/SelectedIcon";
 import listings from "../api/listings";
 
@@ -61,28 +59,31 @@ function ProfileSettingsScreen({ route, navigation }) {
 
   const { name, pic, email } = route.params;
 
+  var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
+
   const [selected, setSelected] = useState("About");
   const [image, setImage] = useState(pic);
+  const [about, setAbout] = useState(" ");
 
-  const backgroundPressed = () => {
-    Alert.alert("Change background picture?", "This funtion is not finished.", [
-      {
-        text: "Photo Library",
-        onPress: () => {
-          selectImage();
-        },
-      },
-      {
-        text: "Take Picture",
-        onPress: () => {
-          takePhoto();
-        },
-      },
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]);
+  const pullAboutInfo = async (email) => {
+    const data = await listings.getAboutFor(email);
+    if (data != undefined || data != null) {
+      setAbout(data);
+    } else {
+      setAbout("No information yet!");
+    }
+  };
+  pullAboutInfo(email);
+
+  const changeText = (text) => {
+    setAbout(text);
+
+    saveAbout(text);
+  };
+
+  const saveAbout = (text) => {
+    pullAboutInfo();
+    listings.saveAbout(text);
   };
 
   const alertButton = () => {
@@ -146,6 +147,53 @@ function ProfileSettingsScreen({ route, navigation }) {
   };
 
   return (
+    <ScrollView scrollEnabled style={{ backgroundColor: colors.dark }}>
+      <View style={styles.picContainer}>
+        <TouchableOpacity onPress={() => alertButton()}>
+          <Image source={{ uri: image }} style={styles.profilePic} />
+        </TouchableOpacity>
+        <View style={{ paddingLeft: 10, flex: 1 }}>
+          <TextInput
+            editable
+            multiline
+            onChangeText={changeText}
+            value={about}
+            placeholder="This is where the about goes."
+            style={styles.aboutText}
+          ></TextInput>
+        </View>
+      </View>
+      <View style={styles.nameBox}>
+        <View style={{ paddingRight: 10 }}>
+          <Text style={styles.nameText}>{name}</Text>
+
+          <Text style={{ paddingLeft: 5, color: colors.light }}>
+            {capEmail}
+          </Text>
+          <FlatList
+            data={menuItems}
+            horizontal
+            scrollEnabled={false}
+            contentContainerStyle={styles.icon}
+            renderItem={() => {
+              return (
+                <MaterialCommunityIcons
+                  name="star"
+                  size={20}
+                  color={colors.yellow}
+                />
+              );
+            }}
+          />
+        </View>
+      </View>
+      <View style={styles.boxContainer}>
+        {<SelectedIcon email={email} navigation={navigation} />}
+      </View>
+    </ScrollView>
+  );
+
+  /*return (
     <ScrollView
       scrollEnabled
       style={{ backgroundColor: colors.white, flex: 1 }}
@@ -181,7 +229,7 @@ function ProfileSettingsScreen({ route, navigation }) {
         <View style={{ paddingRight: 10 }}>
           <Text style={styles.nameText}>{name}</Text>
 
-          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>{email}</Text>
+          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>{capE}</Text>
         </View>
 
         <FlatList
@@ -228,60 +276,60 @@ function ProfileSettingsScreen({ route, navigation }) {
         {<SelectedIcon prop={selected} navigation={navigation} />}
       </View>
     </ScrollView>
-  );
+  );*/
 }
 
 const styles = StyleSheet.create({
-  bgContainer: {
-    // borderRadius: 10,
-    borderWidth: 5,
-    borderColor: colors.white,
+  aboutText: {
+    fontSize: 16,
+    paddingTop: 10,
+    color: colors.white,
+    borderRadius: 10,
+    padding: 15,
+    flex: 1,
+  },
+  nameBox: {
+    backgroundColor: colors.black,
+    width: "100%",
+    paddingLeft: 10,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.black,
   },
   boxContainer: {
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    borderColor: colors.medium,
-    paddingTop: 10,
-    //borderWidth: 1,
-    alignSelf: "center",
-    height: "100%",
-    width: "92%",
+    height: 500,
   },
-  image: {
-    height: 250,
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    borderRadius: 10,
-    overflow: "hidden",
-  },
+
   picContainer: {
-    justifyContent: "center",
-    width: 180,
+    flex: 1,
+    flexDirection: "row",
+
+    //width: "100%",
+    padding: 5,
+    backgroundColor: colors.black,
   },
   profilePic: {
-    height: 180,
-    width: 180,
-    borderColor: colors.white,
+    height: 120,
+    width: 120,
+    borderColor: colors.medium,
     borderRadius: 90,
-    borderWidth: 5,
+    borderWidth: 1,
     overflow: "hidden",
   },
   nameText: {
     fontSize: 30,
     paddingLeft: 3,
-    color: colors.black,
+    fontWeight: "bold",
+    color: colors.dark,
   },
   icon: {
-    borderColor: colors.light,
     borderRadius: 17,
-    alignSelf: "center",
-    flex: 1,
-    justifyContent: "flex-end",
+    paddingLeft: 4,
+    paddingTop: 5,
+    //flex: 1,
+    //backgroundColor: colors.white,
+    width: "100%",
   },
 });
 

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import listings from "../api/listings";
+
+import colors from "../config/colors";
 import MessageForm from "./MessageForm";
 import ViewSchedulingCalendar from "./calendar/ViewSchedulingCalendar";
+import PhotoGallery from "./PhotoGallery";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,9 +34,9 @@ function SelectedIconViewed({ navigation, email }) {
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
-                name="calendar"
+                name="calendar-month"
                 color={color}
-                size={size}
+                size={25}
               />
             ),
           }}
@@ -46,17 +47,18 @@ function SelectedIconViewed({ navigation, email }) {
         </Tab.Screen>
         <Tab.Screen
           name="Message"
-          component={MessageForm}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
-                name="email-outline"
+                name="message-text"
                 color={color}
-                size={size}
+                size={25}
               />
             ),
           }}
-        />
+        >
+          {(props) => <MessageForm type="user" />}
+        </Tab.Screen>
         <Tab.Screen
           name="Reviews"
           component={MessageForm}
@@ -65,20 +67,20 @@ function SelectedIconViewed({ navigation, email }) {
               <MaterialCommunityIcons
                 name="star-circle-outline"
                 color={color}
-                size={size}
+                size={25}
               />
             ),
           }}
         />
         <Tab.Screen
           name="Pictures"
-          component={MessageForm}
+          component={PhotoGallery}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
                 name="image-multiple-outline"
                 color={color}
-                size={size}
+                size={22}
               />
             ),
           }}

@@ -42,7 +42,7 @@ const AppNavigator = () => {
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
-                name="calendar"
+                name="briefcase-clock"
                 color={color}
                 size={size}
               />
@@ -70,11 +70,7 @@ const AppNavigator = () => {
         options={{
           //tabBarButton: ({ color }) => <NewListingButton color={color} onPress={() => navigation.navigate("WeekCalendar")} />,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="calendar-text"
-              color={color}
-              size={size}
-            />
+            <MaterialCommunityIcons name="notebook" color={color} size={size} />
           ),
         }}
       />

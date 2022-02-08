@@ -6,6 +6,7 @@ import MyDatesScreen from "../screens/RequestsScreen";
 import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";
+import PhotoGallery from "../components/PhotoGallery";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,7 @@ const UserAccountNavigator = () => (
     />
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="Dates" component={MyDatesScreen} />
-    <Stack.Screen name="Help" component={HelpAndSupport} />
+    <Stack.Screen name="Help" component={PhotoGallery} />
   </Stack.Navigator>
 );
 

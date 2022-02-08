@@ -70,9 +70,9 @@ function AccountScreen({ navigation }) {
   var email = user.email.charAt(0).toUpperCase() + user.email.slice(1);
 
   const getPic = async () => {
-    const pic = await listings.pullImage(user.email);
-    pic.replace("file://", "");
-    setPic(pic);
+    const picture = await listings.pullImage(user.email);
+
+    setPic(picture);
   };
 
   getName();

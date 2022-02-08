@@ -229,6 +229,28 @@ const replaceImage = async (email, pic) => {
     .then(console.log("Saved new photo!" + pic));
 };
 
+const saveImages = (email, image) => {
+  const safeEmail = safetyFirst(email);
+  const pic = currentUser()
+    .ref("users/" + safeEmail + "/pictures")
+    .push(image)
+    .then(console.log("Saved picture!!"));
+};
+const getImages = async (email) => {
+  var gallery = [];
+
+  const safeEmail = safetyFirst(email);
+  const pic = await currentUser()
+    .ref("users/" + safeEmail + "/pictures")
+    .get()
+    .then((image) => {
+      if (image.exists()) {
+        gallery.push(image);
+      }
+    });
+  return gallery;
+};
+
 const pullImage = async (email) => {
   const safeEmail = safetyFirst(email);
   const pic = currentUser()
@@ -731,6 +753,8 @@ export default {
   deleteListing,
   updateListing,
   pullImage,
+  saveImages,
+  getImages,
   getName,
   pullProfileType,
   saveSchedule,
