@@ -53,14 +53,7 @@ function AddImages({ email, pic }) {
     });
   };
 
-  const getFileName = (name, path) => {
-    if (name != null) {
-      return name;
-    }
-
-    if (Platform.OS === "ios") {
-      path = "~" + path.substring(path.indexOf("/Documents"));
-    }
+  const getFileName = (path) => {
     return path.split("/").pop();
   };
 
@@ -72,11 +65,11 @@ function AddImages({ email, pic }) {
         //aspect: [4,3],
         quality: 1,
       });
-
+      const jpg = getFileName(result.uri);
       const path = getPlatformPath(result).value;
+      //console.log(path);
+      listings.saveImages(email, jpg, path);
 
-      console.log(path);
-      listings.saveImages(email, path);
       await listings.getImages(email);
 
       //Send a promise to save the picture to storage once register button is clicked
@@ -95,6 +88,10 @@ function AddImages({ email, pic }) {
 
 const styles = StyleSheet.create({
   container: {},
+  image: {
+    width: "50%",
+    height: "50%",
+  },
 });
 
 export default AddImages;

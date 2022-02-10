@@ -220,35 +220,87 @@ const getName = (email) => {
   return name;
 };
 
-const replaceImage = async (email, pic) => {
-  const safeEmail = safetyFirst(email);
-  await currentUser()
-    .ref("users/" + safeEmail + "/UserInfo/")
-    .update({ profilePic: pic })
-
-    .then(console.log("Saved new photo!" + pic));
+const replaceImage = async (email, filePath) => {
+  const response = await fetch(filePath);
+  const blob = await response.blob();
+  var ref = firebase
+    .storage()
+    .ref()
+    .child(email + "/images/profilePic/");
+  ref.put(blob);
 };
 
-const saveImages = (email, image) => {
-  const safeEmail = safetyFirst(email);
-  const pic = currentUser()
-    .ref("users/" + safeEmail + "/pictures")
-    .push(image)
-    .then(console.log("Saved picture!!"));
+const saveProfilePic = async (email, filePath) => {
+  const response = await fetch(filePath);
+  const blob = await response.blob();
+  var ref = firebase
+    .storage()
+    .ref()
+    .child(email + "/images/profilePic/");
+  ref.put(blob);
 };
+
+const getProfilePic = async (email) => {
+  return firebase.default
+    .storage()
+    .ref()
+    .child(email + "/images/profilePic")
+    .getDownloadURL();
+};
+
+const saveImages = async (email, jpg, filePath) => {
+  const safeEmail = safetyFirst(email);
+
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("images")
+    .collection("gallery")
+    .add({
+      imageName: jpg,
+    })
+    .then(console.log("Saved image!"));
+
+  const response = await fetch(filePath);
+  const blob = await response.blob();
+  var ref = firebase
+    .storage()
+    .ref()
+    .child(email + "/images/gallery/" + jpg);
+  ref.put(blob);
+};
+
 const getImages = async (email) => {
-  var gallery = [];
-
   const safeEmail = safetyFirst(email);
-  const pic = await currentUser()
-    .ref("users/" + safeEmail + "/pictures")
+  var gallery = [];
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("images")
+    .collection("gallery")
     .get()
     .then((image) => {
-      if (image.exists()) {
-        gallery.push(image);
-      }
+      image.forEach(async (url) => {
+        if (url.exists) {
+          const data = url.data();
+          const fbPic = await firebase.default
+            .storage()
+            .ref(email + "/images/gallery/" + data.imageName)
+            .getDownloadURL();
+
+          gallery.push(fbPic);
+        }
+      });
     });
   return gallery;
+};
+
+const testGet = async (email) => {
+  return await firebase.default
+    .storage()
+    .ref()
+    .child("FolderName")
+    .getDownloadURL();
 };
 
 const pullImage = async (email) => {
@@ -755,6 +807,8 @@ export default {
   pullImage,
   saveImages,
   getImages,
+  saveProfilePic,
+  getProfilePic,
   getName,
   pullProfileType,
   saveSchedule,
@@ -776,4 +830,5 @@ export default {
   getPendingRequests,
   getAcceptedRequests,
   updateRequest,
+  testGet,
 };

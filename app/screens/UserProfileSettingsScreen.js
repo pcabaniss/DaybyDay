@@ -19,6 +19,10 @@ function UserProfileSettingsScreen({ route }) {
 
   var capitalEmail = email.charAt(0).toUpperCase() + email.slice(1);
 
+  const getFileName = (path) => {
+    return path.split("/").pop();
+  };
+
   const takePhoto = async () => {
     try {
       const result = await ImagePicker.launchCameraAsync({
@@ -26,7 +30,7 @@ function UserProfileSettingsScreen({ route }) {
         mediaTypes: "Images",
       });
       console.log("Got picture from camera: " + result);
-      const source = result.uri;
+      const source = getFileName(result.uri);
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
@@ -47,7 +51,7 @@ function UserProfileSettingsScreen({ route }) {
         //aspect: [4,3],
         quality: 1,
       });
-      const source = result.uri;
+      const source = getFileName(result.uri);
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }

@@ -14,36 +14,29 @@ function PhotoGallery({ email }) {
 
   const [indexSelected, setIndexSelected] = useState(0);
   const [images, setImages] = useState([{}]);
+  const [temp, setTemp] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const openGallery = () => {
+    var i = 0;
+    var boat = [];
     getGallery();
     setIsOpen(true);
-    // console.log(images);
+    temp.forEach((pic) => {
+      boat.push({ id: i, url: pic });
+      i++;
+    });
+    setImages(boat);
   };
   const closeGallery = () => setIsOpen(false);
 
   const getGallery = async () => {
     var i = 0;
     var boat = [];
+    //const test = await listings.testGet(email);
     const gallery = await listings.getImages(email);
-    console.log(gallery[0]);
-    gallery[0].forEach((pic) => {
-      boat.push({ id: i, url: pic.val() });
-      i++;
-    });
 
-    setImages(boat);
-
-    //return boat;
-  };
-
-  const IMAGES = {
-    image2: require("../assets/chair.jpg"),
-    image3: require("../assets/chair.jpg"),
-    image4: require("../assets/chair.jpg"),
-    image5: require("../assets/chair.jpg"),
-    image6: require("../assets/chair.jpg"),
-    image7: require("../assets/chair.jpg"),
+    console.log("recieved gallery: ");
+    setTemp(gallery);
   };
 
   const onSelect = (indexSelected) => {
@@ -73,6 +66,15 @@ function PhotoGallery({ email }) {
         close={closeGallery}
         isOpen={isOpen}
         images={images}
+        renderCustomImage={(item, index, isSelected) => {
+          return (
+            <Image
+              source={{ uri: item.url }}
+              key={index}
+              style={styles.image}
+            />
+          );
+        }}
         resizeMode="contain"
         renderHeaderComponent={renderHeaderComponent}
       />
@@ -87,8 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   image: {
-    width: "75%",
-    height: "75%",
+    width: "100%",
+    height: "100%",
     //borderRadius: 300,
   },
 });

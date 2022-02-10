@@ -1,5 +1,6 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
+import listings from "./listings";
 //const register = (userInfo) => client.post("/users", userInfo);
 const register = (userInfo) => (
   client.post("/users", userInfo),
@@ -28,19 +29,7 @@ const register = (userInfo) => (
           isBusiness: userInfo.business,
         })
     )
-    .then(
-      firebase.default
-        .storage()
-        .ref(userInfo.safeEmail + "/profilePicture/")
-        .put(userInfo.image, { contentType: "image/jpg" })
-        .then(() => {
-          console.log("Image uplaoded!");
-        })
-        .catch((e) => {
-          console.log("Something went  wrong.");
-          console.log("Uploading image error => ", e);
-        })
-    )
+    .then(listings.saveProfilePic(userInfo.email, userInfo.image))
     .then(console.log("Registered " + userInfo))
 );
 

@@ -65,6 +65,10 @@ function ProfileSettingsScreen({ route, navigation }) {
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
 
+  const getFileName = (path) => {
+    return path.split("/").pop();
+  };
+
   const pullAboutInfo = async (email) => {
     const data = await listings.getAboutFor(email);
     if (data != undefined || data != null) {
@@ -114,7 +118,7 @@ function ProfileSettingsScreen({ route, navigation }) {
         mediaTypes: "Images",
       });
       console.log("Got picture from camera: " + result);
-      const source = result.uri;
+      const source = getFileName(result.uri);
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
@@ -134,7 +138,7 @@ function ProfileSettingsScreen({ route, navigation }) {
         //aspect: [4,3],
         quality: 1,
       });
-      const source = result.uri;
+      const source = getFileName(result.uri);
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
