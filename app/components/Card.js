@@ -1,23 +1,25 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
 import { TouchableOpacity } from "react-native";
-import { Image } from "react-native-expo-image-cache";
+//import { Image } from "react-native-expo-image-cache";
 
 function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
+  const email = title.charAt(0).toUpperCase() + title.slice(1);
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
         <Image
           style={styles.image}
-          tint="light"
-          preview={{ uri: thumbnailUrl }}
-          uri={imageUrl}
+          //preview={{ uri: imageUrl }}
+          //resizeMode="contain"
+          source={{ uri: imageUrl }}
         />
         <View style={styles.detailContainer}>
-          <AppText style={styles.title}>{title}</AppText>
+          <AppText style={styles.title}>{email}</AppText>
           <AppText style={styles.subTitle}>{subTitle}</AppText>
         </View>
       </View>

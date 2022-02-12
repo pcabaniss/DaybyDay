@@ -25,7 +25,6 @@ const register = (userInfo) => (
         .set({
           name: userInfo.name,
           email: userInfo.email,
-          profilePic: userInfo.image,
           isBusiness: userInfo.business,
         })
     )

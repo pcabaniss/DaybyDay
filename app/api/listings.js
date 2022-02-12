@@ -230,18 +230,30 @@ const replaceImage = async (email, filePath) => {
   ref.put(blob);
 };
 
+const pushProfilePic = (email, pic) => {
+  const safeEmail = safetyFirst(email);
+  firebase.default
+    .database()
+    .ref()
+    .child("users/" + safeEmail + "/profilePicture")
+    .set({ profilePicture: pic });
+};
+
 const saveProfilePic = async (email, filePath) => {
   const response = await fetch(filePath);
   const blob = await response.blob();
-  var ref = firebase
+  var ref = firebase.default
     .storage()
     .ref()
     .child(email + "/images/profilePic/");
-  ref.put(blob);
+  ref.put(blob).then(async () => {
+    const pic = await getProfilePic(email);
+    pushProfilePic(email, pic);
+  });
 };
 
 const getProfilePic = async (email) => {
-  return firebase.default
+  return await firebase.default
     .storage()
     .ref()
     .child(email + "/images/profilePic")
@@ -293,33 +305,6 @@ const getImages = async (email) => {
       });
     });
   return gallery;
-};
-
-const testGet = async (email) => {
-  return await firebase.default
-    .storage()
-    .ref()
-    .child("FolderName")
-    .getDownloadURL();
-};
-
-const pullImage = async (email) => {
-  const safeEmail = safetyFirst(email);
-  const pic = currentUser()
-    .ref("users/" + safeEmail + "/UserInfo")
-    .get()
-    .then((image) => {
-      return image.child("profilePic").val();
-    });
-  /*
-  
-    const pic = await firebase.default
-      .storage()
-      .ref(safeEmail + "/profilePicture")
-      .getDownloadURL();
-   
-      */
-  return pic;
 };
 
 const pullProfileType = (email) => {
@@ -515,31 +500,28 @@ const getInbox = async () => {
 
 const getSearchResults = async (text = "null") => {
   var info = [];
-  const names = await currentUser()
-    .ref("users/")
+  await currentUser()
+    .ref()
+    .child("users/")
     .get()
     .then((name) => {
       name.forEach((user) => {
         const email = user.child("UserInfo/email").val();
         const name = user.child("UserInfo/name").val();
-
+        const pic = user.child("profilePicture/profilePicture").val();
         if (
           email.toLowerCase().includes(text.toLowerCase()) ||
           name.toLowerCase().includes(text.toLowerCase())
         ) {
-          console.log(name);
           //should be true
           if (user.child("UserInfo/isBusiness").val() == true) {
             info.push({
               email: email,
               name: name,
               key: 0,
-              pic: user.child("UserInfo/profilePic").val(),
+              pic: pic,
             });
           }
-        } else {
-          info = undefined;
-          return info;
         }
       });
     });
@@ -804,7 +786,6 @@ export default {
   getDate,
   deleteListing,
   updateListing,
-  pullImage,
   saveImages,
   getImages,
   saveProfilePic,
@@ -830,5 +811,4 @@ export default {
   getPendingRequests,
   getAcceptedRequests,
   updateRequest,
-  testGet,
 };

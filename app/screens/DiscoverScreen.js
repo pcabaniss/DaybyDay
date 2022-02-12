@@ -18,10 +18,9 @@ function DiscoverScreen({ navigation }) {
   const [didSearch, setDidSearch] = useState("Search by name or email.");
   const [tempResults, setTempResults] = useState([
     {
-      email: "none",
+      email: "",
       key: 0,
-      id: "",
-      pic: "",
+      name: "",
     },
   ]);
 
@@ -37,14 +36,16 @@ function DiscoverScreen({ navigation }) {
       setResults(false);
     } else {
       const results = await listings.getSearchResults(text);
-      if (results == undefined || results === []) {
+      console.log("these are results: ");
+      console.log(results);
+
+      if (results == undefined || results == []) {
         setDidSearch("No results found.");
         setResults(false);
       } else {
         setTempResults(results);
         setResults(true);
-        setDidSearch("Search by name or email.");
-        console.log(tempResults);
+        console.log("Results found, loading....");
       }
     }
   };
@@ -76,17 +77,14 @@ function DiscoverScreen({ navigation }) {
             keyExtractor={(item) => "" + item.id}
             style={styles.list}
             renderItem={({ item }) => {
-              const newEmail =
-                item.email.charAt(0).toUpperCase() + item.email.slice(1);
               return (
                 <Card
-                  title={newEmail}
+                  title={item.email}
                   subTitle={"business"}
                   onPress={() =>
                     clickedProfile(item.email, item.pic, item.name)
                   }
-                  thumbnailUrl={item.pic}
-                  imageUrl={item.pic.replace("file://", "")}
+                  imageUrl={item.pic}
                 />
               );
             }}

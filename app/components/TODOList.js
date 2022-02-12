@@ -1,11 +1,6 @@
 /**
  *
- * create api that reads through bus. names and displays them for the
- * discover tab.
- *
  * Go back and redo, the add listing screen in agenda.
- *
- * finish setting up the storage of the background photo.
  *
  * create functionality to only allow 2 time requests per business, per
  * customer.
@@ -28,8 +23,6 @@
  *
  * get notifications working
  *
- * implement picture gallery on bus profile
- *
  * make it to where you can only edit scheduled activities that havent
  * happened yet.
  *
@@ -38,7 +31,7 @@
  * Check to see if you can rework textinput to be more responsive and
  * not so buggy.
  *
- * implement picture gallery.
+ * Incorperate image caching
  *
  * Get reviews implemented and working along with start system on profile
  *

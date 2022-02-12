@@ -118,7 +118,7 @@ function ProfileSettingsScreen({ route, navigation }) {
         mediaTypes: "Images",
       });
       console.log("Got picture from camera: " + result);
-      const source = getFileName(result.uri);
+      const source = result.uri;
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
@@ -138,7 +138,7 @@ function ProfileSettingsScreen({ route, navigation }) {
         //aspect: [4,3],
         quality: 1,
       });
-      const source = getFileName(result.uri);
+      const source = result.uri;
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
