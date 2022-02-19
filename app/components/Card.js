@@ -4,7 +4,6 @@ import { View, StyleSheet, Image } from "react-native";
 import AppText from "./AppText";
 import colors from "../config/colors";
 import { TouchableOpacity } from "react-native";
-//import { Image } from "react-native-expo-image-cache";
 
 function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
   const email = title.charAt(0).toUpperCase() + title.slice(1);

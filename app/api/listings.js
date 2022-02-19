@@ -350,9 +350,10 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
       messages: {
         _id: user._id,
         createdAt: createdAt,
+        key: Math.round(Math.random() * 1000000),
         text: message[0].text,
         user: {
-          _id: "DXD" + otherUsers._id,
+          _id: otherUsers._id,
           email: otherUsers.email,
           name: otherUsers.name,
         },
@@ -528,12 +529,20 @@ const getSearchResults = async (text = "null") => {
   return info;
 };
 
-const sendRequest = async (time, date, business, timeOfRequest, duration) => {
+const sendRequest = async (
+  time,
+  date,
+  business,
+  timeOfRequest,
+  duration,
+  picture
+) => {
   //console.log(time, date, business, timeRequested);
   const safeEmail = safetyFirst(business);
   //may have to come back and change this to be more fluid.
   const user = firebase.default.auth().currentUser.email;
   const userEmail = safetyFirst(user);
+  const userPic = await getProfilePic(user);
   console.log(user);
   await firebase.default
     .firestore()
@@ -547,6 +556,7 @@ const sendRequest = async (time, date, business, timeOfRequest, duration) => {
       user: user,
       timeOfRequest: timeOfRequest,
       duration: duration,
+      picture: userPic,
     });
 
   await getUser().doc("myRequests/").collection("list/").add({
@@ -557,6 +567,7 @@ const sendRequest = async (time, date, business, timeOfRequest, duration) => {
     timeOfRequest: timeOfRequest,
     business: business,
     duration: duration,
+    picture: picture,
   });
 
   await getUser().doc(date).collection("/requests").add({

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, SafeAreaView, View, Text } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 import { Searchbar } from "react-native-paper";
 
 import ActivityIndicator from "../components/ActivityIndicator";
-import AppText from "../components/AppText";
-import Button from "../components/AppButton";
 import Card from "../components/Card";
 import colors from "../config/colors";
 import listings from "../api/listings";
-import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useApi from "../hooks/useApi";
 

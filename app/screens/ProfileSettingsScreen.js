@@ -3,12 +3,12 @@ import {
   Text,
   TextInput,
   View,
-  Image,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   FlatList,
   Alert,
+  Image,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

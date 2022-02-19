@@ -8,7 +8,13 @@ import colors from "../../config/colors";
 function ViewSchedulingCalendar({ navigation, email }) {
   const [daySelected, setDaySelected] = useState(new Date());
   const [duration, setDuration] = useState(30);
+  const [pic, setPic] = useState(" ");
 
+  const getPicture = async () => {
+    const pic = await listings.getProfilePic(email);
+    setPic(pic);
+  };
+  getPicture();
   //Pull if all slots are full I want to highlight
   //the date red.
 
@@ -131,6 +137,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         hours: sched,
         business: email,
         duration: duration,
+        picture: pic,
       });
     }
   };

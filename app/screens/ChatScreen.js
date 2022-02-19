@@ -1,10 +1,5 @@
-import React, {
-  useEffect,
-  useCallback,
-  useState,
-  useLayoutEffect,
-} from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useCallback, useState } from "react";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import listings from "../api/listings";
 import colors from "../config/colors";
@@ -43,14 +38,26 @@ import colors from "../config/colors";
 
 function ChatScreen({ navigation, route }) {
   const { name, email, otherUser } = route.params;
-  //navigation.setOptions({ headerTitle: "Bob the stanger" });
   const [messages, setMessages] = useState([]);
-  const [sent, setSent] = useState(false);
+  const [userAvatar, setUserAvatar] = useState(" ");
+  const [otherAvatar, setOtherAvatar] = useState(" ");
 
+  const getUserPic = async () => {
+    const pic = await listings.getProfilePic(email);
+    setUserAvatar(pic);
+  };
+
+  const getOtherPic = async () => {
+    const pic = await listings.getProfilePic(otherUser);
+    setOtherAvatar(pic);
+  };
+  getOtherPic();
+  getUserPic();
   const sender = {
     _id: email,
     name: name,
     email: email,
+    avatar: userAvatar,
   };
 
   //Will send otherUser credentials when i pull from database
@@ -58,7 +65,7 @@ function ChatScreen({ navigation, route }) {
     _id: otherUser,
     name: "Other User Name",
     email: otherUser,
-    //avatar: "https://facebook.github.io/react/img/logo_og.png",
+    avatar: otherAvatar,
   };
 
   setInterval(() => {
@@ -85,10 +92,10 @@ function ChatScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <GiftedChat
-        user={reciever}
+        user={{ _id: otherUser }}
         onSend={(messages) => onSend(messages, sender, reciever)}
         messages={messages}
-        inverted={false}
+        key={Math.round(Math.random() * 1000000)}
       />
     </View>
   );

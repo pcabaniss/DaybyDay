@@ -55,7 +55,6 @@ function ProfileScreen({ route, navigation }) {
 
   const { name, pic, email } = route.params;
 
-  const [selected, setSelected] = useState("About");
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
 

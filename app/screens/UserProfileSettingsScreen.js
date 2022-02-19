@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -51,7 +52,7 @@ function UserProfileSettingsScreen({ route }) {
       if (Platform.OS === "ios") {
         source.replace("file://", "");
       }
-      listings.replaceImage(email, source);
+      await listings.replaceImage(email, source);
       //Send a promise to save the picture to storage once register button is clicked
       if (!result.cancelled) setImage(source);
     } catch (error) {

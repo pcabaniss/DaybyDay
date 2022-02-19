@@ -15,10 +15,11 @@ import SpaceSeperator from "../components/SpaceSeperator";
 import listings from "../api/listings";
 
 function AvailabilityScreen({ route, navigation }) {
-  const { day, hours, business, duration } = route.params;
+  const { day, hours, business, duration, picture } = route.params;
   const [dayHours, setDayHours] = useState(hours);
   const [pendingArray, setPendingArray] = useState([]);
   const [accepted, setAcceptedArray] = useState([]);
+  const [pic, setPic] = useState(picture);
 
   const isFocused = useIsFocused();
 
@@ -63,7 +64,14 @@ function AvailabilityScreen({ route, navigation }) {
   const clickedYes = (time) => {
     console.log("I clicked yes for " + time + " on " + day.dateString);
     const currentTime = moment().format("MM-DD hh:mm:ss a");
-    listings.sendRequest(time, day.dateString, business, currentTime, duration);
+    listings.sendRequest(
+      time,
+      day.dateString,
+      business,
+      currentTime,
+      duration,
+      pic
+    );
     /**users name: {
      * request: 'approved', 'denied', or 'pending'
      * } */

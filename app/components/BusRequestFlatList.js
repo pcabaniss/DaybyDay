@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   FlatList,
+  KeyboardAvoidingView,
 } from "react-native";
 import colors from "../config/colors";
 import ListItem from "./ListItem";
@@ -12,7 +13,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
 
-function BusRequestFlatList(data, status, pic, navigation) {
+function BusRequestFlatList(data, status, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
 
   const pressedListing = (item) => {
@@ -33,7 +34,7 @@ function BusRequestFlatList(data, status, pic, navigation) {
 
   //add onclick event to be able to make a decision on the request.
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <TouchableOpacity
         onPress={() => {
           setStatusPressed(!statusPressed);
@@ -70,7 +71,7 @@ function BusRequestFlatList(data, status, pic, navigation) {
                       //Work on the onclick function!
                       //Picture from User
                       onPress={() => pressedListing(item)}
-                      image={pic}
+                      image={item.picture}
                     />
                   </View>
                 </TouchableOpacity>
@@ -81,7 +82,7 @@ function BusRequestFlatList(data, status, pic, navigation) {
       ) : (
         <View></View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

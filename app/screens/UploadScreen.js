@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Modal } from "react-native";
-import AppText from "../components/AppText";
 import * as Progress from "react-native-progress";
 import LottieView from "lottie-react-native";
 

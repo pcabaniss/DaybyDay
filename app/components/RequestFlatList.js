@@ -11,8 +11,9 @@ import ListItem from "./ListItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
+import listings from "../api/listings";
 
-function RequestFlatList(data, status, pic) {
+function RequestFlatList(data, status) {
   const [statusPressed, setStatusPressed] = useState(true);
 
   const iconTurn = () => {
@@ -60,7 +61,7 @@ function RequestFlatList(data, status, pic) {
                       }
                       //Make a delete function
                       //Picture from business
-                      image={pic}
+                      image={item.picture}
                     />
                   </View>
                 </TouchableOpacity>
