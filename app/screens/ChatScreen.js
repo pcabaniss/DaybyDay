@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import React, { useCallback, useState, useEffect } from "react";
+import { View, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
+import { useIsFocused } from "@react-navigation/core";
+
 import { GiftedChat } from "react-native-gifted-chat";
 import listings from "../api/listings";
 import colors from "../config/colors";
@@ -37,6 +39,8 @@ import colors from "../config/colors";
  */
 
 function ChatScreen({ navigation, route }) {
+  const isFocused = useIsFocused();
+
   const { name, email, otherUser } = route.params;
   const [messages, setMessages] = useState([]);
   const [userAvatar, setUserAvatar] = useState(" ");
@@ -51,30 +55,35 @@ function ChatScreen({ navigation, route }) {
     const pic = await listings.getProfilePic(otherUser);
     setOtherAvatar(pic);
   };
-  getOtherPic();
+  useEffect(() => {
+    const refreshed = navigation.addListener("focus", () => {
+      getMessages();
+    });
+
+    return refreshed;
+  });
   getUserPic();
+  getOtherPic();
+
   const sender = {
     _id: email,
     name: name,
-    email: email,
     avatar: userAvatar,
+    key: Math.round(Math.random() * 1000000),
   };
 
   //Will send otherUser credentials when i pull from database
   const reciever = {
     _id: otherUser,
     name: "Other User Name",
-    email: otherUser,
     avatar: otherAvatar,
+    key: Math.round(Math.random() * 1000000),
   };
-
-  setInterval(() => {
-    getMessages();
-  }, 10000);
 
   const getMessages = async () => {
     const messageArray = await listings.getMessages(otherUser);
-    setMessages(messageArray);
+    //setMessages([]);
+    setMessages((previousMessages) => GiftedChat.append([], messageArray));
   };
 
   const onSend = useCallback((messages = [], sender, recipients) => {
@@ -95,7 +104,9 @@ function ChatScreen({ navigation, route }) {
         user={{ _id: otherUser }}
         onSend={(messages) => onSend(messages, sender, reciever)}
         messages={messages}
+        showUserAvatar
         key={Math.round(Math.random() * 1000000)}
+        inverted={false}
       />
     </View>
   );

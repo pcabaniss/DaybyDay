@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Image, Text } from "react-native";
 import { firebase } from "../auth/firebaseConfig";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Yup from "yup";
 
 import authApi from "../api/auth";
@@ -52,7 +53,12 @@ function LoginScreen(props) {
 
   return (
     <Screen style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/logo1.png")} />
+      <MaterialCommunityIcons
+        name="calendar-clock"
+        size={100}
+        color={colors.green}
+        style={styles.logo}
+      />
 
       <AppForm
         initialValues={{ email: "", password: "" }}
@@ -82,7 +88,7 @@ function LoginScreen(props) {
           textContentType="password"
         />
         <Text style={styles.text}>Forgotten anything? Click here</Text>
-        <SubmitButton title="Login" />
+        <SubmitButton title="Login" color={colors.greenCheck} />
       </AppForm>
     </Screen>
   );
@@ -91,17 +97,18 @@ function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     alignSelf: "center",
     marginTop: 50,
     marginBottom: 20,
   },
   text: {
     textAlign: "center",
+    color: colors.white,
   },
 });
 

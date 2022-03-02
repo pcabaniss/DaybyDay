@@ -64,7 +64,7 @@ function MessageScreen({ navigation, route }) {
               <ListItem
                 title={newEmail}
                 subTitle={inbox.latestMessage}
-                //image={item.image}
+                image={inbox.avatar}
                 onPress={() =>
                   navigation.navigate("Chat", {
                     email: email,

@@ -7,6 +7,7 @@ import {
   FlatList,
   Switch,
   Alert,
+  Platform,
 } from "react-native";
 import AppPicker from "./AppPicker";
 
@@ -140,7 +141,7 @@ function CurrentSchedule({ navigation }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -199,33 +200,27 @@ function CurrentSchedule({ navigation }) {
 
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
-    setShow(Platform.OS === "ios");
+    //setShow(Platform.OS === "ios");
+    if (Platform.OS === "android") {
+      setShow(false);
+    }
     setStartDate(startDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
     const endDate = selectedDate;
-    setShow(Platform.OS === "ios");
-    setShow(Platform.OS === "android");
+    //setShow(Platform.OS === "ios");
+    if (Platform.OS === "android") {
+      setShow(false);
+    }
     setEndDate(endDate);
+
     console.log(endDate);
   };
 
   const formatString = (date) => {
     const format = new Date(date);
     console.log(format);
-  };
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showTimepicker = () => {
-    showMode("time");
   };
 
   const toggleSwitch = () => {
@@ -273,6 +268,18 @@ function CurrentSchedule({ navigation }) {
     } catch (error) {}
   };
 
+  const getValue = (status) => {
+    if (Platform.OS == "ios") {
+      if (status == "start") {
+        return dateStart;
+      } else if (status == "end") {
+        return dateEnd;
+      }
+    } else if (Platform.OS == "android") {
+      return new Date();
+    }
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -288,7 +295,7 @@ function CurrentSchedule({ navigation }) {
               return (
                 <TouchableOpacity
                   style={{
-                    backgroundColor: colors.medium,
+                    backgroundColor: colors.green,
                     width: "99%",
                     borderRadius: 5,
                   }}
@@ -299,7 +306,7 @@ function CurrentSchedule({ navigation }) {
                   )}
                 >
                   <View>
-                    <Text style={styles.text}>{day.item.letter}</Text>
+                    <Text style={styles.selectedLetter}>{day.item.letter}</Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -325,7 +332,13 @@ function CurrentSchedule({ navigation }) {
       <Text style={styles.text}>{daySelected}</Text>
       <View style={styles.containerOne}>
         <Text style={styles.titleText}>Open?</Text>
-        <Switch onValueChange={toggleSwitch} value={isOpen} />
+        <Switch
+          onValueChange={toggleSwitch}
+          value={isOpen}
+          thumbColor={colors.light}
+          ios_backgroundColor={colors.red}
+          trackColor={{ true: colors.green, false: colors.red }}
+        />
       </View>
       {isOpen ? (
         <>
@@ -333,25 +346,36 @@ function CurrentSchedule({ navigation }) {
             <View style={styles.open}>
               <Text style={styles.titleText}>Open</Text>
               <DateTimePicker
-                value={dateStart}
+                value={getValue("start")}
                 mode={"time"}
                 is24Hour={false}
                 minuteInterval={30}
-                display="default"
+                display={Platform.OS === "ios" ? "default" : "spinner"}
                 onChange={onChangeStart}
-                style={{ width: 100 }}
+                style={{
+                  width: "140%",
+                  //height: "100%",
+                  overflow: "hidden",
+                  backgroundColor: colors.white,
+                  borderRadius: 10,
+                }}
               />
             </View>
             <View>
               <Text style={styles.titleText}>Close</Text>
               <DateTimePicker
-                value={dateEnd}
+                value={getValue("end")}
                 mode={"time"}
                 is24Hour={true}
                 minuteInterval={30}
-                display="default"
+                display={Platform.OS === "ios" ? "default" : "spinner"}
                 onChange={onChangeEnd}
-                style={{ width: 100 }}
+                style={{
+                  width: "140%",
+                  overflow: "hidden",
+                  backgroundColor: colors.white,
+                  borderRadius: 10,
+                }}
               />
             </View>
           </View>
@@ -397,7 +421,7 @@ function CurrentSchedule({ navigation }) {
             numberOfValue.value
           )
         }
-        color={colors.black}
+        color={colors.red}
       />
     </>
   );
@@ -411,6 +435,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
   },
+
   containerOne: {
     //flex: 1,
     flexDirection: "row",
@@ -420,12 +445,14 @@ const styles = StyleSheet.create({
   },
 
   titleText: {
+    color: colors.white,
     fontSize: 25,
     alignSelf: "center",
     fontWeight: "bold",
     paddingBottom: 10,
   },
   footer: {
+    color: colors.white,
     alignSelf: "flex-start",
     height: 20,
     fontSize: 15,
@@ -440,12 +467,20 @@ const styles = StyleSheet.create({
   text: {
     height: 20,
     fontSize: 15,
+    color: colors.white,
     textAlign: "center",
     fontWeight: "bold",
   },
   selected: {
     width: "99%",
     borderRadius: 5,
+  },
+  selectedLetter: {
+    height: 20,
+    fontSize: 15,
+    color: colors.dark,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   view: {
     width: "99%",

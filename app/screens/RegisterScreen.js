@@ -176,9 +176,8 @@ function RegisterScreen() {
         <Text style={styles.header}>Customer</Text>
         <ListItemSeperator />
         <Text style={styles.description}>
-          If you're a customer and will be using this app for scheduling
-          appointments with businesses then fill out the information below to
-          get started!
+          If you will be using DxD for discovering businesses and making
+          appointments.
         </Text>
         <ListItemSeperator />
 
@@ -241,7 +240,7 @@ function RegisterScreen() {
               secureTextEntry
               textContentType="password"
             />
-            <SubmitButton title="Register" color={colors.dark} />
+            <SubmitButton title="Lets get started" color={colors.greenCheck} />
           </Form>
         </Screen>
       </ScrollView>
@@ -254,15 +253,16 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.black,
   },
   description: {
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.black,
     fontSize: 18,
     padding: 5,
     paddingTop: 15,
     paddingBottom: 15,
     textAlign: "center",
+    color: colors.white,
   },
   imageContainer: {
     backgroundColor: colors.light,
@@ -284,15 +284,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.black,
     fontSize: 80,
     textAlign: "center",
-    fontFamily: "Noteworthy-Bold",
+    fontFamily: "Kohinoor Bangla",
     paddingTop: 15,
+    color: colors.green,
   },
   scroll: {
     flex: 1,
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.black,
   },
 });
 

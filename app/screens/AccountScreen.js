@@ -115,7 +115,11 @@ function AccountScreen({ navigation }) {
             <ListItem
               title={item.title}
               IconComponent={
-                <Icon name={item.icon.name} backgroundColor={colors.medium} />
+                <Icon
+                  name={item.icon.name}
+                  backgroundColor={colors.black}
+                  iconColor={colors.green}
+                />
               }
               onPress={() =>
                 navigation.navigate(item.targetScreen, {
@@ -131,7 +135,13 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <ListItem
           title="Log Out"
-          IconComponent={<Icon name="logout" backgroundColor={colors.red} />}
+          IconComponent={
+            <Icon
+              name="logout"
+              backgroundColor={colors.black}
+              iconColor={colors.danger}
+            />
+          }
           onPress={() => logOut()}
         />
       </View>
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
     borderColor: colors.black,
   },
   screen: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
 });
 

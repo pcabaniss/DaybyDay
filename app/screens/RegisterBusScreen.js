@@ -179,9 +179,8 @@ function RegisterScreen() {
         <Text style={styles.header}>Business</Text>
         <ListItemSeperator />
         <Text style={styles.description}>
-          If you're a business and will be using this app for scheduling
-          appointments with customers then fill out the information below to get
-          started!
+          If you will be using DxD as a service to schedule appointments and a
+          platform to host your business.
         </Text>
         <ListItemSeperator />
 
@@ -234,7 +233,7 @@ function RegisterScreen() {
               placeholder="Email"
               textContentType="emailAddress"
             />
-            <Text style={{ color: colors.dark, flex: 1 }}>
+            <Text style={{ color: colors.orange, flex: 1 }}>
               **This email will be displayed to customers for contact.
             </Text>
             <FormField
@@ -246,7 +245,7 @@ function RegisterScreen() {
               secureTextEntry
               textContentType="password"
             />
-            <SubmitButton title="Register" color={colors.dark} />
+            <SubmitButton title="Lets get started" color={colors.greenCheck} />
           </Form>
         </Screen>
       </ScrollView>
@@ -259,7 +258,7 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
   imageContainer: {
     backgroundColor: colors.white,
@@ -272,7 +271,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   description: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
+    color: colors.white,
     fontSize: 18,
     padding: 5,
     paddingTop: 15,
@@ -289,15 +289,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
+    color: colors.green,
     fontSize: 80,
     textAlign: "center",
-    fontFamily: "Noteworthy-Bold",
+    fontFamily: "Kohinoor Bangla",
     paddingTop: 15,
   },
   scroll: {
     flex: 1,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
 });
 

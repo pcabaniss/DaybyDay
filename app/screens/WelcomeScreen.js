@@ -6,21 +6,25 @@ import colors from "../config/colors";
 
 function WelcomeScreen({ navigation }) {
   return (
-    <ImageBackground style={styles.background} blurRadius={7}>
+    <ImageBackground
+      style={styles.background}
+      blurRadius={7}
+      source={require("../assets/mainPic.jpg")}
+    >
       <View style={styles.logoContainer}>
         <Image style={styles.logo} />
-        <Text style={styles.tagline}>All Your Scheduling Needs </Text>
+        <Text style={styles.tagline}>Day X Day</Text>
       </View>
       <View style={styles.buttonContainer}>
         <AppButton
           title="Login"
           onPress={() => navigation.navigate("Login")}
-          color={colors.primary}
+          color={colors.blue}
         />
         <AppButton
           title="Register"
           onPress={() => navigation.navigate("Registration")}
-          color={colors.secondary}
+          color={colors.orange}
         />
       </View>
     </ImageBackground>

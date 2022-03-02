@@ -15,7 +15,15 @@ import moment from "moment";
 
 function BusRequestFlatList(data, status, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
-
+  const colorSelect = () => {
+    if (status == "Pending") {
+      return colors.medium;
+    } else if (status == "Accepted") {
+      return colors.green;
+    } else {
+      return colors.red;
+    }
+  };
   const pressedListing = (item) => {
     if (status == "Pending") {
       navigation.navigate("Answer", { item: item });
@@ -39,7 +47,15 @@ function BusRequestFlatList(data, status, navigation) {
         onPress={() => {
           setStatusPressed(!statusPressed);
         }}
-        style={styles.titleContainer}
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          borderColor: colors.dark,
+          borderWidth: 1,
+          borderRadius: 5,
+          backgroundColor: colorSelect(),
+          overflow: "hidden",
+        }}
       >
         <Text style={styles.titleText}>{status}</Text>
         <MaterialCommunityIcons
@@ -88,21 +104,14 @@ function BusRequestFlatList(data, status, navigation) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
   noDice: {
     backgroundColor: colors.black,
     width: "100%",
     height: 50,
   },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: colors.background,
-    borderColor: colors.medium,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
+
   titleText: {
     fontSize: 30,
     textAlign: "center",

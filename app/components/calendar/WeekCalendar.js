@@ -209,7 +209,7 @@ const WeekCalendar = ({ navigation }) => {
               transform: [{ rotateX: "180deg" }],
             }}
             size={35}
-            color={colors.white}
+            color={colors.green}
             onPress={() => navigation.navigate("Add", { day: dayString })}
           />
         </View>
@@ -237,13 +237,14 @@ const WeekCalendar = ({ navigation }) => {
         onDayChange={loadItems}
         monthFormat={"MMMM" + "  yyyy"}
         theme={{
-          backgroundColor: colors.blue,
+          backgroundColor: colors.black,
           calendarBackground: colors.light,
           agendaKnobColor: colors.medium,
           agendaDayNumColor: colors.white,
           agendaDayTextColor: colors.white,
           dayTextColor: colors.black,
           selectedDayTextColor: colors.danger,
+          agendaTodayColor: colors.green,
         }}
         refreshing
         hideExtraDays

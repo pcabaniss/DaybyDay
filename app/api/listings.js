@@ -340,21 +340,22 @@ const pullProfileType = (email) => {
 const saveMessages = (message, otherUsers, createdAt, user) => {
   //console.log(message[0]);
 
-  const otherSafeEmail = safetyFirst(otherUsers.email);
+  const otherSafeEmail = safetyFirst(otherUsers._id);
 
   //main sender of the message
   getUser()
     .doc("messages")
-    .collection(otherUsers.email)
+    .collection(otherUsers._id)
     .add({
       messages: {
         _id: user._id,
+        avatar: user.avatar,
         createdAt: createdAt,
         key: Math.round(Math.random() * 1000000),
         text: message[0].text,
         user: {
           _id: otherUsers._id,
-          email: otherUsers.email,
+          avatar: user.avatar,
           name: otherUsers.name,
         },
       },
@@ -365,15 +366,17 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .firestore()
         .collection(otherSafeEmail)
         .doc("messages")
-        .collection(user.email)
+        .collection(user._id)
         .add({
           messages: {
             _id: user._id,
+            avatar: user.avatar,
+            key: Math.round(Math.random() * 1000000),
             createdAt: createdAt,
             text: message[0].text,
             user: {
-              _id: "DXD" + otherUsers._id,
-              email: otherUsers.email,
+              _id: otherUsers._id,
+              avatar: user.avatar,
               name: otherUsers.name,
             },
           },
@@ -384,8 +387,9 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .doc("inbox")
         .set({
           email: {
-            email: otherUsers.email,
+            email: otherUsers._id,
             latestMessage: message[0].text,
+            avatar: otherUsers.avatar,
           },
         })
     )
@@ -396,8 +400,9 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .doc("inbox")
         .set({
           email: {
-            email: user.email,
+            email: user._id,
             latestMessage: message[0].text,
+            avatar: user.avatar,
           },
         })
     );
@@ -682,6 +687,8 @@ const updateRequest = async (text, response, request) => {
   const businessName = firebase.default.auth().currentUser.email;
   const userSafeEmail = safetyFirst(request.user);
 
+  const profilePic = await getProfilePic(businessName);
+
   await getUser()
     .doc("requests/")
     .collection("list/")
@@ -744,11 +751,13 @@ const updateRequest = async (text, response, request) => {
         }
       });
     });
+
   if (response == "accepted") {
     const sender = {
       _id: businessName,
       name: "No name",
       email: businessName,
+      avatar: profilePic,
     };
 
     //Will send otherUser credentials when i pull from database
@@ -756,7 +765,7 @@ const updateRequest = async (text, response, request) => {
       _id: request.user,
       name: "no name",
       email: request.user,
-      //avatar: "https://facebook.github.io/react/img/logo_og.png",
+      avatar: request.picture,
     };
     const message = {
       _id: businessName,
@@ -765,7 +774,7 @@ const updateRequest = async (text, response, request) => {
       user: {
         _id: request.user,
         name: "no name yet",
-        //avatar: "https://placeimg.com/140/140/any",
+        avatar: request.picture,
       },
     };
     if (text != " ") {
@@ -774,15 +783,13 @@ const updateRequest = async (text, response, request) => {
     const [time, ampm] = "02:18 am".split(" ");
 
     const listing = {
-      title: "Scheduled appointment.",
+      title: "Scheduled appointment with " + request.user,
       timeStart: request.timeRequested,
       timeFinish: calculateHours(
         "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CST)",
         request.duration,
         ampm
       ),
-      categoryID: "Camera",
-      isRepeating: "Never",
       description: "An accepted scheduling request with " + request.user,
       id: request.user + request.timeRequested,
       dateClicked: request.dateRequested,

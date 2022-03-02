@@ -23,16 +23,8 @@ function SceduleScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.black,
     //alignItems: "center"
-  },
-  header: {
-    height: 150, //Noteworthy-Bold
-    backgroundColor: colors.blue,
-    fontSize: 40,
-    textAlign: "center",
-    fontFamily: "Noteworthy-Bold",
-    paddingTop: 50,
   },
   nada: {
     textAlign: "center",
@@ -52,15 +44,25 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.black,
   },
+  header: {
+    height: 105, //Noteworthy-Bold
+    backgroundColor: colors.green,
+    fontSize: 40,
+    textAlign: "center",
+    fontFamily: "Kohinoor Bangla",
+    paddingTop: 50,
+  },
   subText: {
-    fontSize: 15,
+    fontSize: 13,
+    backgroundColor: colors.green,
     textAlign: "center",
     paddingBottom: 10,
   },
   saved: {
     padding: 10,
     fontSize: 25,
-    fontFamily: "Noteworthy-Bold",
+    color: colors.white,
+    fontFamily: "Kohinoor Bangla",
     alignSelf: "center",
   },
 });

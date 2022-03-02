@@ -78,18 +78,7 @@ function BusRequestScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   pending: {
     flex: 1,
-    backgroundColor: colors.blue,
-  },
-  accepted: {},
-  denied: {},
-  titleText: {
-    fontSize: 30,
-    textAlign: "center",
-    backgroundColor: colors.green,
-  },
-  requestBox: {
-    backgroundColor: colors.white,
-    padding: 5,
+    backgroundColor: colors.black,
   },
 });
 
