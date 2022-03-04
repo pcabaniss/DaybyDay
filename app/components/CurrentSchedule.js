@@ -9,6 +9,8 @@ import {
   Alert,
   Platform,
 } from "react-native";
+import moment from "moment";
+
 import AppPicker from "./AppPicker";
 
 import colors from "../config/colors";
@@ -17,6 +19,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import DaySeperator from "./DaySeprator";
 import { useIsFocused } from "@react-navigation/core";
 import listings from "../api/listings";
+import TestPicker from "./TestPicker";
 
 function CurrentSchedule({ navigation }) {
   var dayOfTheWeek = [
@@ -129,6 +132,17 @@ function CurrentSchedule({ navigation }) {
   const [letterSelected, setLetterSelected] = useState("S");
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
+  const [isAndroid, setIsAndroid] = useState(Platform.OS === "android");
+  const [isShowingStart, setIsShowingStart] = useState(false);
+  const [isShowingEnd, setIsShowingEnd] = useState(false);
+
+  const showPickerStart = () => {
+    setIsShowingStart(true);
+  };
+
+  const showPickerEnd = () => {
+    setIsShowingEnd(true);
+  };
 
   const [value, setValue] = useState({
     label: "Please select a time.",
@@ -140,8 +154,6 @@ function CurrentSchedule({ navigation }) {
   });
 
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(true);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -198,29 +210,27 @@ function CurrentSchedule({ navigation }) {
     }
   };
 
+  const timeFormatter = (recieved) => {
+    const time = moment(recieved).format("LT");
+    return time;
+  };
+
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
-    //setShow(Platform.OS === "ios");
-    if (Platform.OS === "android") {
-      setShow(false);
+
+    console.log(moment(startDate).format("LT"));
+    if (isAndroid) {
+      setIsShowingStart(false);
     }
     setStartDate(startDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
     const endDate = selectedDate;
-    //setShow(Platform.OS === "ios");
-    if (Platform.OS === "android") {
-      setShow(false);
+    if (isAndroid) {
+      setIsShowingEnd(false);
     }
     setEndDate(endDate);
-
-    console.log(endDate);
-  };
-
-  const formatString = (date) => {
-    const format = new Date(date);
-    console.log(format);
   };
 
   const toggleSwitch = () => {
@@ -288,15 +298,19 @@ function CurrentSchedule({ navigation }) {
           data={dayOfTheWeek}
           ItemSeparatorComponent={DaySeperator}
           contentContainerStyle={{
-            width: "14%",
+            width: "100%",
+            height: 20,
+            alignSelf: "center",
           }}
+          //style={{ width: "100%" }}
           renderItem={(day) => {
             if (day.item.day == daySelected) {
               return (
                 <TouchableOpacity
                   style={{
                     backgroundColor: colors.green,
-                    width: "99%",
+                    width: 50,
+                    height: 20,
                     borderRadius: 5,
                   }}
                   onPress={() => (
@@ -310,22 +324,26 @@ function CurrentSchedule({ navigation }) {
                   </View>
                 </TouchableOpacity>
               );
+            } else {
+              return (
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    height: 20,
+                    borderRadius: 5,
+                  }}
+                  onPress={() => (
+                    setDaySelected(day.item.day),
+                    setLetterSelected(day.item.letter),
+                    getSchedule(day.item.day)
+                  )}
+                >
+                  <View>
+                    <Text style={styles.text}>{day.item.letter}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
             }
-
-            return (
-              <TouchableOpacity
-                style={styles.view}
-                onPress={() => (
-                  setDaySelected(day.item.day),
-                  setLetterSelected(day.item.letter),
-                  getSchedule(day.item.day)
-                )}
-              >
-                <View>
-                  <Text style={styles.text}>{day.item.letter}</Text>
-                </View>
-              </TouchableOpacity>
-            );
           }}
         />
       </View>
@@ -342,43 +360,66 @@ function CurrentSchedule({ navigation }) {
       </View>
       {isOpen ? (
         <>
-          <View style={styles.containerOne}>
-            <View style={styles.open}>
-              <Text style={styles.titleText}>Open</Text>
-              <DateTimePicker
-                value={getValue("start")}
-                mode={"time"}
-                is24Hour={false}
-                minuteInterval={30}
-                display={Platform.OS === "ios" ? "default" : "spinner"}
-                onChange={onChangeStart}
-                style={{
-                  width: "140%",
-                  //height: "100%",
-                  overflow: "hidden",
-                  backgroundColor: colors.white,
-                  borderRadius: 10,
-                }}
-              />
+          {isAndroid ? (
+            <View style={styles.containerOne}>
+              <View style={styles.open}>
+                <Text style={styles.titleText}>Open</Text>
+                <TestPicker
+                  dateProp={dateStart}
+                  isShowing={isShowingStart}
+                  onChange={onChangeStart}
+                  showPicker={showPickerStart}
+                />
+              </View>
+              <View>
+                <Text style={styles.titleText}>Close</Text>
+                <TestPicker
+                  dateProp={dateEnd}
+                  isShowing={isShowingEnd}
+                  onChange={onChangeEnd}
+                  showPicker={showPickerEnd}
+                />
+              </View>
             </View>
-            <View>
-              <Text style={styles.titleText}>Close</Text>
-              <DateTimePicker
-                value={getValue("end")}
-                mode={"time"}
-                is24Hour={true}
-                minuteInterval={30}
-                display={Platform.OS === "ios" ? "default" : "spinner"}
-                onChange={onChangeEnd}
-                style={{
-                  width: "140%",
-                  overflow: "hidden",
-                  backgroundColor: colors.white,
-                  borderRadius: 10,
-                }}
-              />
+          ) : (
+            <View style={styles.containerOne}>
+              <View style={styles.open}>
+                <Text style={styles.titleText}>Open</Text>
+                <DateTimePicker
+                  value={getValue("start")}
+                  mode={"time"}
+                  is24Hour={false}
+                  minuteInterval={30}
+                  display={Platform.OS === "ios" ? "default" : "spinner"}
+                  onChange={onChangeStart}
+                  style={{
+                    width: "140%",
+                    //height: "100%",
+                    overflow: "hidden",
+                    backgroundColor: colors.white,
+                    borderRadius: 10,
+                  }}
+                />
+              </View>
+              <View>
+                <Text style={styles.titleText}>Close</Text>
+                <DateTimePicker
+                  value={getValue("end")}
+                  mode={"time"}
+                  is24Hour={true}
+                  minuteInterval={30}
+                  display={Platform.OS === "ios" ? "default" : "spinner"}
+                  onChange={onChangeEnd}
+                  style={{
+                    width: "140%",
+                    overflow: "hidden",
+                    backgroundColor: colors.white,
+                    borderRadius: 10,
+                  }}
+                />
+              </View>
             </View>
-          </View>
+          )}
           <View style={styles.questions}>
             <Text style={styles.footer}>
               How long should each appointment take?
@@ -482,8 +523,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  view: {
-    width: "99%",
+
+  btnCont: {
+    width: 110,
+  },
+  // This only works on iOS
+  picker: {
+    width: 320,
+    height: 260,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
 });
 

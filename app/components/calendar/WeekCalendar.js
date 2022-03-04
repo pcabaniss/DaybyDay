@@ -223,7 +223,7 @@ const WeekCalendar = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <Screen style={styles.safe}>
       <Agenda
         items={items}
         loadItemsForMonth={loadItems}
@@ -250,7 +250,7 @@ const WeekCalendar = ({ navigation }) => {
         hideExtraDays
         showClosingKnob
       />
-    </SafeAreaView>
+    </Screen>
   );
 };
 

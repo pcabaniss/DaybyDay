@@ -2,9 +2,6 @@
  *
  * Go back and redo, the add listing screen in agenda.
  *
- * create functionality to only allow 2 time requests per business, per
- * customer.
- *
  * Have it to where the customer can select a time slot and it’s like
  * applying to get that spot and the business has to confirm it to be
  * sent then it shows up on the calendar for others to see.
@@ -26,8 +23,6 @@
  * make it to where you can only edit scheduled activities that havent
  * happened yet.
  *
- * finish implementing messaging system in message form.
- *
  * Check to see if you can rework textinput to be more responsive and
  * not so buggy.
  *
@@ -42,9 +37,6 @@
  * implement app tutorial screens/ bubbles throughout app for first-time users
  *
  * set up database and fix privacy settings
- *
- * Finish fixing the image issue where it only loads locally and dynamically
- * in the searching and user profile
  *
  * get images for app to use.
  */

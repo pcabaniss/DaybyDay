@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
-import { StyleSheet } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 
 import navigationTheme from "./app/navigation/NavigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
@@ -10,13 +10,15 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
 
 import { firebase } from "./app/auth/firebaseConfig";
-import authStorage from "./app/auth/storage";
 import colors from "./app/config/colors";
-import listings from "./app/api/listings";
 
 export default function App() {
   const [user, setUser] = useState();
   const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["Setting a timer"]);
+  });
 
   const restoreUser = async () => {
     firebase.default.auth().onAuthStateChanged(function (user) {
