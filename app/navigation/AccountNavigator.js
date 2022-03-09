@@ -9,6 +9,7 @@ import AvailabilityScreen from "../screens/AvailabilityScreen";
 import BusRequestScreen from "../screens/BusRequestsScreen";
 import AnswerScreen from "../screens/AnswerScreen";
 import colors from "../config/colors";
+import Reviewer from "../components/Reviewer";
 
 const Stack = createStackNavigator();
 
@@ -81,6 +82,17 @@ const AccountNavigator = () => (
     <Stack.Screen
       name="Answer"
       component={AnswerScreen}
+      options={{
+        headerShown: false,
+        cardStyle: {
+          backgroundColor: "transparent",
+          opacity: 0.99,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="input"
+      component={Reviewer}
       options={{
         headerShown: false,
         cardStyle: {

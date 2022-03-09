@@ -1,16 +1,15 @@
 /**
  *
- * Go back and redo, the add listing screen in agenda.
+ * Add cancel functionality to the edit listing screen in agenda.
  *
- * Have it to where the customer can select a time slot and it’s like
- * applying to get that spot and the business has to confirm it to be
- * sent then it shows up on the calendar for others to see.
+ * Have it to where the customer can select a time slot and
+ *  it shows up on the calendar for others to see.
  *
  * reevaluate the calendar component and make it render better.
  *
  * test test test and then test some more to find bugs.
  *
- * make sure messaging isnt buggy and reading properly.
+ * Make improvement on updates in messaging
  *
  * Make the necessary changes to run on android successfully
  *
@@ -25,8 +24,6 @@
  *
  * Check to see if you can rework textinput to be more responsive and
  * not so buggy.
- *
- * Incorperate image caching
  *
  * Get reviews implemented and working along with start system on profile
  *

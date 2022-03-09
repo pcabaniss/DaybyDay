@@ -14,7 +14,7 @@ import listings from "../api/listings";
 function AnswerScreen({ route, navigation }) {
   const { item } = route.params;
 
-  const [background, setbackground] = useState(colors.background);
+  const [background, setbackground] = useState(colors.black);
   const [about, setAbout] = useState(" ");
   const [response, setResponse] = useState(" ");
 
@@ -40,7 +40,7 @@ function AnswerScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View
-        style={{ height: "40%", width: "100%", backgroundColor: background }}
+        style={{ height: "42%", width: "100%", backgroundColor: background }}
       >
         <TouchableOpacity
           style={styles.header}
@@ -76,7 +76,7 @@ function AnswerScreen({ route, navigation }) {
         </View>
         <Button
           title="Submit"
-          color={colors.black}
+          color={colors.white}
           onPress={() => submitPressed(about, response)}
         />
       </View>
@@ -98,19 +98,13 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: colors.white,
-    borderColor: colors.black,
-    borderWidth: 2,
+    borderColor: colors.dark,
+    borderWidth: 3,
     borderRadius: 5,
     height: 50,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  inside: {
-    height: "40%",
-    width: "100%",
-    backgroundColor: colors.yellow,
-    //justifyContent: "center",
   },
   reason: {
     width: "95%",

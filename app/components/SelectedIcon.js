@@ -7,6 +7,7 @@ import colors from "../config/colors";
 import MessageForm from "./MessageForm";
 import SchedulingCalendar from "./calendar/SchedulingCalendar";
 import PhotoGallery from "./PhotoGallery";
+import ReviewScreen from "../screens/ReviewScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +60,6 @@ function SelectedIcon({ email, navigation }) {
         </Tab.Screen>
         <Tab.Screen
           name="Reviews"
-          component={MessageForm}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
@@ -69,7 +69,9 @@ function SelectedIcon({ email, navigation }) {
               />
             ),
           }}
-        />
+        >
+          {(props) => <ReviewScreen navigation={navigation} />}
+        </Tab.Screen>
         <Tab.Screen
           name="Pictures"
           options={{
