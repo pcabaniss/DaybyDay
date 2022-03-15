@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,11 +8,27 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { Rating, AirbnbRating } from "react-native-ratings";
+import { AirbnbRating } from "react-native-ratings";
 import colors from "../config/colors";
+import listings from "../api/listings";
 
-function Reviewer({ navigation }) {
-  const pressedSubmit = () => {};
+function Reviewer({ navigation, route }) {
+  const { business } = route.params;
+  const [stars, setStars] = useState(3);
+  const [review, setReview] = useState(" ");
+
+  const pressedSubmit = async () => {
+    listings.saveRating(business, stars, review);
+    navigation.goBack();
+  };
+
+  const starPressed = (rating) => {
+    setStars(rating);
+  };
+
+  const onChangeText = (text) => {
+    setReview(text);
+  };
 
   return (
     <View style={styles.container}>
@@ -38,6 +54,7 @@ function Reviewer({ navigation }) {
           ]}
           reviewColor={colors.green}
           starContainerStyle={{ paddingBottom: 15 }}
+          onFinishRating={starPressed}
         />
         <TextInput
           style={styles.text}
@@ -45,6 +62,7 @@ function Reviewer({ navigation }) {
           autoCapitalize="sentences"
           multiline
           textAlignVertical="top"
+          onChangeText={onChangeText}
         />
         <Button title="Submit" onPress={pressedSubmit} color={colors.white} />
       </View>

@@ -36,6 +36,10 @@ const currentUser = () => {
   return firebase.default.database();
 };
 
+const returnEmail = () => {
+  return firebase.default.auth().currentUser.email;
+};
+
 const saveAbout = (text) => {
   getUser().doc("About").set({
     aboutText: text,
@@ -798,9 +802,40 @@ const updateRequest = async (text, response, request) => {
   }
 };
 
+const saveRating = (business, rating, review) => {
+  const safeBus = safetyFirst(business);
+  const user = firebase.default.auth().currentUser.email;
+  currentUser()
+    .ref()
+    .child("reviews/" + safeBus)
+    .push({
+      rating: rating,
+      review: review,
+      user: user,
+    });
+};
+
+const getRatings = async (business) => {
+  var train = [];
+  const user = firebase.default.auth().currentUser.email;
+  const safeBus = safetyFirst(business);
+  await currentUser()
+    .ref()
+    .child("reviews/" + safeBus)
+    .get()
+    .then((review) => {
+      review.forEach((item) => {
+        if (item.exists()) {
+          train.push(item.val());
+        }
+      });
+    });
+  return train;
+};
 export default {
   getListings,
   addListing,
+  returnEmail,
   getDate,
   deleteListing,
   updateListing,
@@ -829,4 +864,6 @@ export default {
   getPendingRequests,
   getAcceptedRequests,
   updateRequest,
+  saveRating,
+  getRatings,
 };

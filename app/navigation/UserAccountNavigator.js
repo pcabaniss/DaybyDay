@@ -7,6 +7,7 @@ import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";
 import PhotoGallery from "../components/PhotoGallery";
+import Reviewer from "../components/Reviewer";
 
 const Stack = createStackNavigator();
 

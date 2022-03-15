@@ -102,7 +102,7 @@ function ProfileScreen({ route, navigation }) {
         </View>
       </View>
       <View style={styles.boxContainer}>
-        {<SelectedIconViewed navigation={navigation} email={email} />}
+        {<SelectedIconViewed navigation={navigation} business={email} />}
       </View>
     </ScrollView>
   );

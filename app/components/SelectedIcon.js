@@ -70,7 +70,13 @@ function SelectedIcon({ email, navigation }) {
             ),
           }}
         >
-          {(props) => <ReviewScreen navigation={navigation} />}
+          {(props) => (
+            <ReviewScreen
+              navigation={navigation}
+              business={email}
+              isUser={false}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen
           name="Pictures"
