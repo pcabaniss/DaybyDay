@@ -139,6 +139,11 @@ function ReviewScreen({ navigation, business, isUser }) {
           percentage={totalStars(total, onesStar)}
         />
       </View>
+      <Button
+        title="See what people are saying"
+        color={colors.blue}
+        onPress={() => navigation.navigate("ViewReview", { reviews: reviews })}
+      />
     </View>
   );
 }
@@ -146,6 +151,7 @@ function ReviewScreen({ navigation, business, isUser }) {
 const styles = StyleSheet.create({
   bars: {
     marginTop: 40,
+    paddingBottom: 20,
   },
   container: {
     backgroundColor: "#FFFFFF",

@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Rating } from "react-native-ratings";
 
 import colors from "../config/colors";
 import listings from "../api/listings";
@@ -84,20 +85,15 @@ function ProfileScreen({ route, navigation }) {
           <Text style={{ paddingLeft: 5, color: colors.light }}>
             {capEmail}
           </Text>
-          <FlatList
-            data={menuItems}
-            horizontal
-            scrollEnabled={false}
-            contentContainerStyle={styles.icon}
-            renderItem={() => {
-              return (
-                <MaterialCommunityIcons
-                  name="star"
-                  size={20}
-                  color={colors.yellow}
-                />
-              );
-            }}
+          <Rating
+            type="custom"
+            ratingCount={5}
+            showRating={false}
+            tintColor="#F5F8FF"
+            startingValue={4}
+            style={{ padding: 10 }}
+            ratingColor={colors.yellow}
+            ratingBackgroundColor={colors.light}
           />
         </View>
       </View>

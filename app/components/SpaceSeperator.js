@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   seperator: {
     width: 20,
     height: 20,
-    backgroundColor: colors.white,
+    backgroundColor: "transparent",
   },
 });
 export default SpaceSeperator;

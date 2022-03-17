@@ -4,6 +4,7 @@ import DiscoverScreen from "../screens/DiscoverScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AvailabilityScreen from "../screens/AvailabilityScreen";
 import Reviewer from "../components/Reviewer";
+import ViewReviewScreen from "../screens/ViewReviewScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const ProfileViewNavigator = () => {
         }}
       />
       <Stack.Screen name="Schedule" component={AvailabilityScreen} />
+      <Stack.Screen name="ViewReview" component={ViewReviewScreen} />
     </Stack.Navigator>
   );
 };

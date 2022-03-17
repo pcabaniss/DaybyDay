@@ -127,6 +127,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingTop: 30,
     position: "absolute",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+    shadowColor: "rgba(193, 211, 251, 0.5)",
+    elevation: 5,
   },
 });
 
