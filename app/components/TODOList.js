@@ -25,8 +25,6 @@
  * Check to see if you can rework textinput to be more responsive and
  * not so buggy.
  *
- * Get reviews implemented and working along with start system on profile
- *
  * implement necessary changes for settings
  *
  * implement loading animations wherever needed

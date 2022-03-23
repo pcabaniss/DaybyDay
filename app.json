@@ -1,6 +1,9 @@
 {
   "expo": {
     "name": "PracticingCode",
+    "plugins": [
+      "@notifee/react-native"
+    ],
     "slug": "PracticingCode",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,13 +20,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pcabaniss93.PracticingCode"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/logo-red.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.pcabaniss93.PracticingCode"
     },
     "web": {
       "favicon": "./assets/favicon.png"

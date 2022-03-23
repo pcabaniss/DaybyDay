@@ -30,15 +30,13 @@ function DiscoverScreen({ navigation }) {
   const searchFuntion = async (text) => {
     setSearchQuery(text);
     if (text == "") {
+      setDidSearch("Search by name or email.");
       setResults(false);
     } else {
       const results = await listings.getSearchResults(text);
-      console.log("these are results: ");
-      console.log(results);
-
-      if (results == undefined || results == []) {
-        setDidSearch("No results found.");
+      if (results.length == 0) {
         setResults(false);
+        setDidSearch("No results found.");
       } else {
         setTempResults(results);
         setResults(true);
@@ -106,11 +104,16 @@ const styles = StyleSheet.create({
   beforeSearch: {
     textAlign: "center",
     fontSize: 30,
-    color: "#1D3D72",
+    color: colors.medium,
     fontWeight: "bold",
+    shadowOffset: { width: 1, height: 3 },
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+    shadowColor: colors.dark,
+    elevation: 5,
   },
   container: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
     padding: 10,
   },
   list: {
@@ -127,10 +130,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingTop: 30,
     position: "absolute",
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1.0,
     shadowRadius: 2,
-    shadowColor: "rgba(193, 211, 251, 0.5)",
+    shadowColor: colors.dark,
     elevation: 5,
   },
 });

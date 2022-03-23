@@ -22,7 +22,7 @@ const UserAccountNavigator = () => (
     />
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="Dates" component={MyDatesScreen} />
-    <Stack.Screen name="Help" component={PhotoGallery} />
+    <Stack.Screen name="Help" component={HelpAndSupport} />
   </Stack.Navigator>
 );
 
