@@ -832,6 +832,19 @@ const getRatings = async (business) => {
     });
   return train;
 };
+
+//Make it to where on startup and log out all notifications are deleted on device and then
+//when logging back in you will re-set all the notifications in your DB.
+
+const addReminder = (identifier, title, body, date) => {
+  getUser().doc("Reminders").collection("Scheduled").add({
+    identifier: identifier,
+    title: title,
+    body: body,
+    date: date,
+  });
+};
+
 export default {
   getListings,
   addListing,
@@ -866,4 +879,5 @@ export default {
   updateRequest,
   saveRating,
   getRatings,
+  addReminder,
 };

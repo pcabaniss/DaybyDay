@@ -14,6 +14,7 @@ import Screen from "../components/Screen";
 import listingsApi from "../api/listings";
 import UploadScreen from "./UploadScreen";
 import moment from "moment";
+import Notifications from "../api/Notifications";
 
 //This screen needs to be a searchable database of businesses that are
 // currently signed up in the app and go from there. Including the scheduling
@@ -70,9 +71,13 @@ function ListingEditScreen({ navigation, route }) {
   const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (listing, { resetForm }) => {
+    Notifications.scheduleNotification(
+      listing.title,
+      listing.description,
+      dateStart
+    );
     setProgress(0);
     setUploadVisible(true);
-    console.log(dateStart, dateEnd);
 
     listing.timeStart = timeFormatter(dateStart);
     listing.timeFinish = timeFormatter(dateEnd);
@@ -151,7 +156,7 @@ function ListingEditScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.black,
   },
   date: {
     flexDirection: "row",

@@ -1,8 +1,19 @@
 {
   "expo": {
     "name": "PracticingCode",
-    "plugins": [
-      "@notifee/react-native"
+    "plugins": 
+    [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ]
     ],
     "slug": "PracticingCode",
     "version": "1.0.0",

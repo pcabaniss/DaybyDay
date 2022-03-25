@@ -16,6 +16,8 @@ import listings from "../api/listings";
 
 function AvailabilityScreen({ route, navigation }) {
   const { day, hours, business, duration, picture } = route.params;
+  console.log("This is the day ");
+  console.log(day);
   const [dayHours, setDayHours] = useState(hours);
   const [pendingArray, setPendingArray] = useState([]);
   const [accepted, setAcceptedArray] = useState([]);
