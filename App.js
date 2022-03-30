@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
-import { LogBox, StyleSheet } from "react-native";
+import { Alert, LogBox, StyleSheet } from "react-native";
 import * as Notifications from "expo-notifications";
 import Device from "expo-device";
 
@@ -38,7 +38,6 @@ export default function App() {
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
       });
-
     return () => {
       Notifications.removeNotificationSubscription(
         notificationListener.current

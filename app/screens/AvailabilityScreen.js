@@ -13,6 +13,7 @@ import colors from "../config/colors";
 import moment from "moment";
 import SpaceSeperator from "../components/SpaceSeperator";
 import listings from "../api/listings";
+import Notifications from "../api/Notifications";
 
 function AvailabilityScreen({ route, navigation }) {
   const { day, hours, business, duration, picture } = route.params;
@@ -74,6 +75,8 @@ function AvailabilityScreen({ route, navigation }) {
       duration,
       pic
     );
+    //Send notification to business device
+
     /**users name: {
      * request: 'approved', 'denied', or 'pending'
      * } */

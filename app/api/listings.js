@@ -2,6 +2,7 @@ import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
 import moment from "moment";
 import { format } from "date-fns";
+import Notifications from "./Notifications";
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -845,6 +846,25 @@ const addReminder = (identifier, title, body, date) => {
   });
 };
 
+const getReminders = async (email) => {
+  const safeEmail = safetyFirst(email);
+  var temp = [];
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("Reminders")
+    .collection("Scheduled")
+    .get()
+    .then((reminder) => {
+      reminder.forEach((item) => {
+        const data = item.data();
+        if (item.exists) {
+          Notifications.scheduleNotification(data.title, data.body, -data.date);
+        }
+      });
+    });
+};
+
 export default {
   getListings,
   addListing,
@@ -880,4 +900,5 @@ export default {
   saveRating,
   getRatings,
   addReminder,
+  getReminders,
 };

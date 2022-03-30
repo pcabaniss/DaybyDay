@@ -31,6 +31,7 @@ function AnswerScreen({ route, navigation }) {
   };
 
   const submitPressed = (text, response) => {
+    //Set a reminder here to be sent to user.
     //put in function that checks if answer is pressed.
     listings.updateRequest(text, response, item);
     console.log("Going to save " + text + " and  " + response);

@@ -14,6 +14,7 @@ import {
 } from "../components/forms/index";
 import useAuth from "../auth/useAuth";
 import colors from "../config/colors";
+import Notifications from "../api/Notifications";
 
 //With Yup we can set the scheme for each of our text fields easily since
 //it is intigrated with Formik
@@ -29,7 +30,7 @@ function LoginScreen(props) {
 
   const handleSubmit = async ({ email, password }) => {
     const result = await authApi.login(email, password);
-    firebase.default
+    await firebase.default
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(function (error) {
@@ -43,7 +44,9 @@ function LoginScreen(props) {
           alert(errorMessage);
         }
         console.log(error);
-      });
+      })
+      .then(Notifications.loadAllNotifications(email));
+
     if (!result.ok) {
       return setLoginFailed(true);
     }

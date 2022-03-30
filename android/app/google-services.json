@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "431024329793",
+    "firebase_url": "https://slate-e5529-default-rtdb.firebaseio.com",
+    "project_id": "slate-e5529",
+    "storage_bucket": "slate-e5529.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431024329793:android:c5eea83568d4e7395da2c0",
+        "android_client_info": {
+          "package_name": "com.pcabaniss93.PracticingCode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431024329793-l84l5eg20h8p18kf7vns08ioso0tjjjd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACE-g39XcExGoKWrhCOKRAQOWXS17U7mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431024329793-l84l5eg20h8p18kf7vns08ioso0tjjjd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

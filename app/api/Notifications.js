@@ -15,6 +15,29 @@ const scheduleNotification = async (title, body, date) => {
   listings.addReminder(identifier, title, body, date);
 };
 
+const deleteAllNotifications = () => {
+  Notifications.cancelAllScheduledNotificationsAsync();
+};
+
+const loadAllNotifications = async (email) => {
+  // Go through all notifications in DB and re-schedule them
+  listings.getReminders(email);
+};
+
+const sendImmediateNotification = async (title, body) => {
+  //Send whenever request is sent to business and when business updates
+  //status of that request + if accepted, schedule that notification
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: body,
+    },
+    trigger: {
+      seconds: 5,
+    },
+  });
+};
+
 /*async function sendPushNotification(expoPushToken) {
     const message = {
       to: expoPushToken,
@@ -37,4 +60,7 @@ const scheduleNotification = async (title, body, date) => {
 
 export default {
   scheduleNotification,
+  deleteAllNotifications,
+  loadAllNotifications,
+  sendImmediateNotification,
 };
