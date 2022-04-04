@@ -1,66 +1,41 @@
-import React, { useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import { Rating } from "react-native-ratings";
+import { useIsFocused } from "@react-navigation/core";
 
 import colors from "../config/colors";
 import listings from "../api/listings";
 import SelectedIconViewed from "../components/SelectedIconViewed";
 
 function ProfileScreen({ route, navigation }) {
-  const menuItems = [
-    {
-      title: "Schedule",
-      icon: {
-        name: "calendar-month",
-        backgroundColor: colors.black,
-      },
-      key: "schedule",
-      onPress: () => console.log("Schedule"),
-    },
-    {
-      title: "Message",
-      icon: {
-        name: "email-outline",
-        backgroundColor: colors.black,
-      },
-      key: "Message",
-      onPress: () => console.log("Message"),
-    },
-    {
-      title: "Reviews",
-      icon: {
-        name: "star-circle-outline",
-        backgroundColor: colors.black,
-      },
-      key: "reviews",
-      onPress: () => console.log("Reviews"),
-    },
-    {
-      title: "About",
-      icon: {
-        name: "information-outline",
-        backgroundColor: colors.black,
-      },
-      key: "About",
-      onPress: () => console.log("About"),
-    },
-  ];
-
   const { name, pic, email } = route.params;
+
+  const isFocused = useIsFocused();
 
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
+  const [rating, setRating] = useState(4);
+
+  useEffect(() => {
+    getRating();
+  }, [isFocused]);
 
   var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
+  const getRating = async () => {
+    const gotRating = await listings.getRatings(email);
 
+    var count = 0;
+    var total = 0;
+
+    gotRating.map((item) => {
+      count++;
+      total = total + item.rating;
+    });
+
+    const totalStars = (total / count).toFixed(1);
+    //console.log(totalStars);
+    setRating(totalStars);
+  };
   const pullAboutInfo = async (email) => {
     const data = await listings.getAboutFor(email);
     if (data != undefined || data != null) {
@@ -85,15 +60,18 @@ function ProfileScreen({ route, navigation }) {
           <Text style={{ paddingLeft: 5, color: colors.light }}>
             {capEmail}
           </Text>
+
           <Rating
             type="custom"
             ratingCount={5}
             showRating={false}
-            tintColor="#F5F8FF"
-            startingValue={4}
-            style={{ padding: 10 }}
+            tintColor={colors.black}
+            startingValue={rating}
             ratingColor={colors.yellow}
+            style={{ padding: 10, alignSelf: "flex-start" }}
             ratingBackgroundColor={colors.light}
+            readonly
+            imageSize={20}
           />
         </View>
       </View>
@@ -155,6 +133,13 @@ const styles = StyleSheet.create({
     //flex: 1,
     //backgroundColor: colors.white,
     width: "100%",
+  },
+  stars: {
+    backgroundColor: colors.black,
+    borderRadius: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    justifyContent: "center",
   },
 });
 

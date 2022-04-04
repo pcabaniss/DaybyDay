@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   TextInput,
@@ -6,64 +6,48 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  FlatList,
   Alert,
   Image,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Rating } from "react-native-ratings";
+import { useIsFocused } from "@react-navigation/core";
 
 import colors from "../config/colors";
 import SelectedIcon from "../components/SelectedIcon";
 import listings from "../api/listings";
 
 function ProfileSettingsScreen({ route, navigation }) {
-  const menuItems = [
-    {
-      title: "Schedule",
-      icon: {
-        name: "calendar-month",
-        backgroundColor: colors.black,
-      },
-      key: "schedule",
-      onPress: () => console.log("Schedule"),
-    },
-    {
-      title: "Message",
-      icon: {
-        name: "email-outline",
-        backgroundColor: colors.black,
-      },
-      key: "Message",
-      onPress: () => console.log("Message"),
-    },
-    {
-      title: "Reviews",
-      icon: {
-        name: "star-circle-outline",
-        backgroundColor: colors.black,
-      },
-      key: "reviews",
-      onPress: () => console.log("Reviews"),
-    },
-    {
-      title: "About",
-      icon: {
-        name: "information-outline",
-        backgroundColor: colors.black,
-      },
-      key: "About",
-      onPress: () => console.log("About"),
-    },
-  ];
-
   const { name, pic, email } = route.params;
+
+  const isFocused = useIsFocused();
 
   var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
 
   const [selected, setSelected] = useState("About");
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
+  const [rating, setRating] = useState(4);
+
+  useEffect(() => {
+    getRating();
+  }, [isFocused]);
+
+  const getRating = async () => {
+    const gotRating = await listings.getRatings(email);
+
+    var count = 0;
+    var total = 0;
+
+    gotRating.map((item) => {
+      count++;
+      total = total + item.rating;
+    });
+
+    const totalStars = (total / count).toFixed(1);
+    //console.log(totalStars);
+    setRating(totalStars);
+  };
 
   const getFileName = (path) => {
     return path.split("/").pop();
@@ -174,20 +158,17 @@ function ProfileSettingsScreen({ route, navigation }) {
           <Text style={{ paddingLeft: 5, color: colors.light }}>
             {capEmail}
           </Text>
-          <FlatList
-            data={menuItems}
-            horizontal
-            scrollEnabled={false}
-            contentContainerStyle={styles.icon}
-            renderItem={() => {
-              return (
-                <MaterialCommunityIcons
-                  name="star"
-                  size={20}
-                  color={colors.yellow}
-                />
-              );
-            }}
+          <Rating
+            type="custom"
+            ratingCount={5}
+            showRating={false}
+            tintColor={colors.black}
+            startingValue={rating}
+            ratingColor={colors.yellow}
+            style={{ padding: 10, alignSelf: "flex-start" }}
+            ratingBackgroundColor={colors.light}
+            readonly
+            imageSize={20}
           />
         </View>
       </View>

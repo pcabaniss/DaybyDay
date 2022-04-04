@@ -1,8 +1,9 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
 import moment from "moment";
-import { format } from "date-fns";
+import { compareAsc, format } from "date-fns";
 import Notifications from "./Notifications";
+import { date } from "yup";
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -765,7 +766,7 @@ const updateRequest = async (text, response, request) => {
       avatar: profilePic,
     };
 
-    //Will send otherUser credentials when i pull from database
+    //Will send otherUser credentials when I pull from database
     const reciever = {
       _id: request.user,
       name: "no name",
@@ -800,6 +801,22 @@ const updateRequest = async (text, response, request) => {
       dateClicked: request.dateRequested,
     };
     addListing(listing);
+
+    Notifications.sendNotification(
+      request.user,
+      "Request accepted!",
+      "Congratulations! Your appointment was accepted and scheduled.",
+      Date(),
+      true
+    );
+  }
+  if (response == "denied") {
+    Notifications.sendNotification(
+      request.user,
+      "Request denied.",
+      "Unfortunately, your request was denied. Request a different time or contact the business.",
+      true
+    );
   }
 };
 
@@ -827,6 +844,7 @@ const getRatings = async (business) => {
     .then((review) => {
       review.forEach((item) => {
         if (item.exists()) {
+          console.log(item.val());
           train.push(item.val());
         }
       });
@@ -837,13 +855,31 @@ const getRatings = async (business) => {
 //Make it to where on startup and log out all notifications are deleted on device and then
 //when logging back in you will re-set all the notifications in your DB.
 
-const addReminder = (identifier, title, body, date) => {
+const addReminder = (identifier, title, body, date, isImmediate) => {
   getUser().doc("Reminders").collection("Scheduled").add({
     identifier: identifier,
     title: title,
     body: body,
     date: date,
+    isImmediate: isImmediate,
   });
+};
+
+const sendReminder = (business, identifier, title, body, date, isImmediate) => {
+  const safeEmail = safetyFirst(business);
+
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("Reminders")
+    .collection("Scheduled")
+    .add({
+      identifier: identifier,
+      title: title,
+      body: body,
+      date: date,
+      isImmediate: isImmediate,
+    });
 };
 
 const getReminders = async (email) => {
@@ -859,10 +895,42 @@ const getReminders = async (email) => {
       reminder.forEach((item) => {
         const data = item.data();
         if (item.exists) {
-          Notifications.scheduleNotification(data.title, data.body, -data.date);
+          if (data.isImmediate == true) {
+            Notifications.sendImmediateNotification(data.title, data.body);
+          } else {
+            Notifications.scheduleNotification(
+              data.title,
+              data.body,
+              -data.date,
+              false
+            );
+          }
         }
       });
-    });
+    })
+    .then(
+      firebase.default
+        .firestore()
+        .collection(safeEmail)
+        .doc("Reminders")
+        .collection("Scheduled")
+        .get()
+        .then((reminder) => {
+          reminder.forEach((item) => {
+            const data = item.data();
+            if (item.exists) {
+              if (data.isImmediate == true)
+                firebase.default
+                  .firestore()
+                  .collection(safeEmail)
+                  .doc("Reminders")
+                  .collection("Scheduled")
+                  .doc(item.id)
+                  .delete();
+            }
+          });
+        })
+    );
 };
 
 export default {
@@ -901,4 +969,5 @@ export default {
   getRatings,
   addReminder,
   getReminders,
+  sendReminder,
 };

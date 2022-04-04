@@ -77,6 +77,13 @@ function AvailabilityScreen({ route, navigation }) {
     );
     //Send notification to business device
 
+    Notifications.sendNotification(
+      business,
+      "New request!",
+      "Respond quickly to book the appointment.",
+      currentTime,
+      true
+    );
     /**users name: {
      * request: 'approved', 'denied', or 'pending'
      * } */

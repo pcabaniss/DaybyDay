@@ -1,18 +1,21 @@
 import * as Notifications from "expo-notifications";
 import listings from "./listings";
 
-const scheduleNotification = async (title, body, date) => {
-  const identifier = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: title,
-      body: body,
-    },
-    trigger: {
-      date: date,
-    },
-  });
-
-  listings.addReminder(identifier, title, body, date);
+const scheduleNotification = async (title, body, date, isImmediate) => {
+  if (isImmediate == false) {
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+      },
+      trigger: {
+        date: date,
+      },
+    });
+    listings.addReminder(identifier, title, body, date, isImmediate);
+  } else {
+    listings.addReminder("identifier", title, body, date, isImmediate);
+  }
 };
 
 const deleteAllNotifications = () => {
@@ -24,9 +27,27 @@ const loadAllNotifications = async (email) => {
   listings.getReminders(email);
 };
 
+const sendNotification = async (email, title, body, date, isImmediate) => {
+  if (isImmediate == false) {
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+      },
+      trigger: {
+        date: date,
+      },
+    });
+    listings.sendReminder(email, identifier, title, body, date, isImmediate);
+  } else {
+    listings.sendReminder(email, "identifier", title, body, date, isImmediate);
+  }
+};
+
 const sendImmediateNotification = async (title, body) => {
   //Send whenever request is sent to business and when business updates
   //status of that request + if accepted, schedule that notification
+
   await Notifications.scheduleNotificationAsync({
     content: {
       title: title,
@@ -63,4 +84,5 @@ export default {
   deleteAllNotifications,
   loadAllNotifications,
   sendImmediateNotification,
+  sendNotification,
 };

@@ -10,6 +10,8 @@ function ViewSchedulingCalendar({ navigation, email }) {
   const [duration, setDuration] = useState(30);
   const [pic, setPic] = useState(" ");
 
+  const today = moment().format("YYYY-MM-DD");
+
   const getPicture = async () => {
     const pic = await listings.getProfilePic(email);
     setPic(pic);
@@ -106,11 +108,9 @@ function ViewSchedulingCalendar({ navigation, email }) {
     return null;
   };
   const emptyDate = () => {
-    Alert.alert(
-      "The date you selected is not available.",
-      "Please try another date.",
-      [{ text: "OK", style: "cancel" }]
-    );
+    Alert.alert("Looks like they're closed.", "Please try another date.", [
+      { text: "OK", style: "cancel" },
+    ]);
   };
 
   const dayPressed = async (day) => {
@@ -149,6 +149,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         markingType={"period"}
         onDayPress={dayPressed}
         current={daySelected}
+        minDate={today}
         //make a quick function that runs through the weekly schedule and
         //returns null on closed days.
         //markedDates={markedDates}

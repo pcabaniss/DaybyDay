@@ -74,7 +74,8 @@ function ListingEditScreen({ navigation, route }) {
     Notifications.scheduleNotification(
       listing.title,
       listing.description,
-      dateStart
+      dateStart,
+      false
     );
     setProgress(0);
     setUploadVisible(true);
