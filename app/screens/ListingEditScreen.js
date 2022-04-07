@@ -33,7 +33,7 @@ function ListingEditScreen({ navigation, route }) {
   const [dateEnd, setEndDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  console.log(day);
+
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");

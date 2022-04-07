@@ -4,6 +4,9 @@ import moment from "moment";
 import { compareAsc, format } from "date-fns";
 import Notifications from "./Notifications";
 import { date } from "yup";
+import { Linking } from "react-native";
+import qs from "qs";
+
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -391,8 +394,10 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
     .then(
       getUser()
         .doc("inbox")
+        .collection("recents")
+        .doc(otherSafeEmail)
         .set({
-          email: {
+          business: {
             email: otherUsers._id,
             latestMessage: message[0].text,
             avatar: otherUsers.avatar,
@@ -404,8 +409,10 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .firestore()
         .collection(otherSafeEmail)
         .doc("inbox")
+        .collection("recents")
+        .doc(firebase.default.auth().currentUser.email)
         .set({
-          email: {
+          business: {
             email: user._id,
             latestMessage: message[0].text,
             avatar: user.avatar,
@@ -428,6 +435,7 @@ const getMessages = async (otherEmail) => {
         info.sort((a, b) => b.createdAt - a.createdAt);
       });
     });
+
   return info;
 };
 
@@ -497,21 +505,54 @@ const getHoursFor = async (dayOf, email) => {
 };
 
 const getInbox = async () => {
-  var info = {};
+  const blockedList = [];
 
   await getUser()
-    .doc("inbox/")
+    .doc("privacy")
+    .collection("blockedList")
     .get()
-    .then((collection) => {
-      const data = collection.data();
-      info = data.email;
+    .then((item) => {
+      item.forEach((name) => {
+        if (name.exists) {
+          const data = name.data();
+          blockedList.push(data.businessEmail);
+        }
+      });
     });
 
+  var info = [];
+  var count = 0;
+  await getUser()
+    .doc("inbox")
+    .collection("recents")
+    .get()
+    .then((email) => {
+      email.forEach((item) => {
+        if (item.exists) {
+          const data = item.data();
+          info.push(data.business);
+        }
+      });
+    });
+
+  blockedList.forEach((blocked) => {
+    info.forEach((business) => {
+      if (business.email == blocked.toLowerCase()) {
+        info.splice(count, 1);
+      }
+    });
+    count = count + 1;
+  });
+  console.log(info);
   return info;
 };
 
 const getSearchResults = async (text = "null") => {
   var info = [];
+  var count = 0;
+
+  const blockedList = await getBlockedList();
+
   await currentUser()
     .ref()
     .child("users/")
@@ -537,6 +578,16 @@ const getSearchResults = async (text = "null") => {
         }
       });
     });
+
+  info.forEach((item) => {
+    blockedList.forEach((business) => {
+      console.log(business);
+      if (item.email == business.toLowerCase()) {
+        info.splice(count, 1);
+      }
+    });
+    count = count + 1;
+  });
   return info;
 };
 
@@ -802,6 +853,24 @@ const updateRequest = async (text, response, request) => {
     };
     addListing(listing);
 
+    firebase.default
+      .firestore()
+      .collection(userSafeEmail)
+      .doc(listing.dateClicked)
+      .collection("listing")
+      .add({
+        title: "Scheduled appointment with " + businessName,
+        timeStart: request.timeRequested,
+        timeFinish: calculateHours(
+          "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CST)",
+          request.duration,
+          ampm
+        ),
+        description: "An accepted scheduling request with " + businessName,
+        id: request.user + request.timeRequested,
+        dateClicked: request.dateRequested,
+      });
+
     Notifications.sendNotification(
       request.user,
       "Request accepted!",
@@ -815,6 +884,7 @@ const updateRequest = async (text, response, request) => {
       request.user,
       "Request denied.",
       "Unfortunately, your request was denied. Request a different time or contact the business.",
+      Date(),
       true
     );
   }
@@ -933,6 +1003,80 @@ const getReminders = async (email) => {
     );
 };
 
+const reportBusiness = async (businessEmail, reason, email) => {
+  let url = `mailto:${email}`;
+
+  //Replace email with business email once created.
+  const user = firebase.default.auth().currentUser.email;
+
+  const query = qs.stringify({
+    subject: "DAY X DAY ALERT: Reported business",
+    body:
+      "User " +
+      user +
+      " has reported " +
+      businessEmail +
+      " for the following reason: " +
+      "ENTER REASON(S) HERE." +
+      " Please respond immediately.",
+    cc: "cc",
+    bcc: "bcc",
+  });
+
+  if (query.length) {
+    url += `?${query}`;
+  }
+
+  // check if we can use this link
+  const canOpen = await Linking.canOpenURL(url);
+
+  if (!canOpen) {
+    throw new Error("Provided URL can not be handled");
+  }
+
+  return Linking.openURL(url);
+};
+
+const blockBusiness = (business) => {
+  const safeBus = safetyFirst(business);
+  firebase.default
+    .firestore()
+    .collection(safeBus.toLowerCase())
+    .doc("privacy")
+    .collection("blockedList")
+    .add({
+      businessEmail: business,
+      blockedBy: firebase.default.auth().currentUser.email,
+    });
+
+  getUser()
+    .doc("privacy")
+    .collection("blockedList")
+    .add({
+      businessEmail: business,
+    })
+    .then(console.log("Successfully blocked!"));
+};
+
+const getBlockedList = async () => {
+  var temp = [];
+
+  await getUser()
+    .doc("privacy")
+    .collection("blockedList")
+    .get()
+    .then((item) => {
+      item.forEach((name) => {
+        if (name.exists) {
+          const data = name.data();
+          temp.push(data.businessEmail);
+        }
+      });
+    });
+
+  return temp;
+};
+
 export default {
   getListings,
   addListing,
@@ -970,4 +1114,7 @@ export default {
   addReminder,
   getReminders,
   sendReminder,
+  reportBusiness,
+  blockBusiness,
+  getBlockedList,
 };

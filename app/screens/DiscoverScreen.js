@@ -12,6 +12,7 @@ import useApi from "../hooks/useApi";
 function DiscoverScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState();
   const [results, setResults] = useState(false);
+  const [blockedList, setBlockedList] = useState([]);
   const [didSearch, setDidSearch] = useState("Search by name or email.");
   const [tempResults, setTempResults] = useState([
     {
@@ -25,7 +26,14 @@ function DiscoverScreen({ navigation }) {
 
   useEffect(() => {
     listings.getSearchResults();
+    getBlockedList();
   }, []);
+
+  const getBlockedList = async () => {
+    const blocked = await listings.getBlockedList();
+
+    setBlockedList(blocked);
+  };
 
   const searchFuntion = async (text) => {
     setSearchQuery(text);

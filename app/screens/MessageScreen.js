@@ -26,7 +26,7 @@ function MessageScreen({ navigation, route }) {
   const { email, name } = route.params;
   const [messages, setMessages] = useState(initialMessage);
   const [refreshing, setRefreshing] = useState(false);
-  const [inbox, setInbox] = useState();
+  const [inbox, setInbox] = useState([{}]);
 
   //Next step is to pull the other user informatio from somewhere
 
@@ -55,21 +55,21 @@ function MessageScreen({ navigation, route }) {
     return (
       <Screen>
         <FlatList
-          data={messages}
-          keyExtractor={(message) => message.id.toString()}
+          data={inbox}
+          //keyExtractor={(message) => message.id.toString()}
           renderItem={({ item }) => {
-            const newEmail =
-              inbox.email.charAt(0).toUpperCase() + inbox.email.slice(1);
+            // const newEmail =
+            // item.email.charAt(0).toUpperCase() + item.email.slice(1);
             return (
               <ListItem
-                title={newEmail}
-                subTitle={inbox.latestMessage}
-                image={inbox.avatar}
+                title={item.email}
+                subTitle={item.latestMessage}
+                image={item.avatar}
                 onPress={() =>
                   navigation.navigate("Chat", {
                     email: email,
                     name: name,
-                    otherUser: inbox.email,
+                    otherUser: item.email,
                   })
                 }
                 renderRightActions={() => (

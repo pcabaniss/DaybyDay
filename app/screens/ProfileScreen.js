@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import { Rating } from "react-native-ratings";
 import { useIsFocused } from "@react-navigation/core";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import listings from "../api/listings";
@@ -36,6 +37,7 @@ function ProfileScreen({ route, navigation }) {
     //console.log(totalStars);
     setRating(totalStars);
   };
+
   const pullAboutInfo = async (email) => {
     const data = await listings.getAboutFor(email);
     if (data != undefined || data != null) {
@@ -44,7 +46,13 @@ function ProfileScreen({ route, navigation }) {
       setAbout("No information yet!");
     }
   };
+
+  const pressedDots = () => {
+    navigation.navigate("Extra", { business: capEmail });
+  };
+
   pullAboutInfo(email);
+
   return (
     <ScrollView scrollEnabled style={{ backgroundColor: colors.dark }}>
       <View style={styles.picContainer}>
@@ -61,18 +69,30 @@ function ProfileScreen({ route, navigation }) {
             {capEmail}
           </Text>
 
-          <Rating
-            type="custom"
-            ratingCount={5}
-            showRating={false}
-            tintColor={colors.black}
-            startingValue={rating}
-            ratingColor={colors.yellow}
-            style={{ padding: 10, alignSelf: "flex-start" }}
-            ratingBackgroundColor={colors.light}
-            readonly
-            imageSize={20}
-          />
+          <View style={styles.dotDotDot}>
+            <View style={{ justifyContent: "flex-start" }}>
+              <Rating
+                type="custom"
+                ratingCount={5}
+                showRating={false}
+                tintColor={colors.black}
+                startingValue={rating}
+                ratingColor={colors.yellow}
+                style={{ padding: 5, alignSelf: "flex-start" }}
+                ratingBackgroundColor={colors.light}
+                readonly
+                imageSize={20}
+              />
+            </View>
+            <View style={{ justifyContent: "flex-end" }}>
+              <MaterialCommunityIcons
+                name="dots-horizontal"
+                size={35}
+                color={colors.white}
+                onPress={() => pressedDots()}
+              />
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.boxContainer}>
@@ -102,6 +122,11 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     height: 500,
+  },
+  dotDotDot: {
+    //backgroundColor: colors.green,
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
 
   picContainer: {

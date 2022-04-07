@@ -14,4 +14,5 @@ export default {
   green: "#B2FFA8",
   orange: "#F2A65A",
   greenCheck: "#4AAD52",
+  softWhite: "#F5F8FF",
 };

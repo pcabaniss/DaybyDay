@@ -5,6 +5,7 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -39,8 +40,8 @@ function AnswerScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView
         style={{ height: "42%", width: "100%", backgroundColor: background }}
       >
         <TouchableOpacity
@@ -71,8 +72,7 @@ function AnswerScreen({ route, navigation }) {
             editable
             multiline
             onChangeText={setAbout}
-
-            //style={styles.reason}
+            blurOnSubmit={true}
           />
         </View>
         <Button
@@ -80,8 +80,8 @@ function AnswerScreen({ route, navigation }) {
           color={colors.white}
           onPress={() => submitPressed(about, response)}
         />
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -5,6 +5,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import AvailabilityScreen from "../screens/AvailabilityScreen";
 import Reviewer from "../components/Reviewer";
 import ViewReviewScreen from "../screens/ViewReviewScreen";
+import ProfilePrivacy from "../components/ProfilePrivacy";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,17 @@ const ProfileViewNavigator = () => {
       <Stack.Screen
         name="input"
         component={Reviewer}
+        options={{
+          headerShown: false,
+          cardStyle: {
+            backgroundColor: "transparent",
+            opacity: 0.99,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Extra"
+        component={ProfilePrivacy}
         options={{
           headerShown: false,
           cardStyle: {
