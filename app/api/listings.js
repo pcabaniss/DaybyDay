@@ -20,14 +20,14 @@ const safetyFirst = (notSafeEmail) => {
 
 const calculateHours = (open, interval, ampm) => {
   if (interval > 45 || interval == undefined) {
-    var temp = open;
-    const another = moment(temp).add(interval, "minutes");
-    return another.format("hh:mm ") + ampm;
-  } else {
-    var temp = open;
+    const another = moment(open).add(interval, "minutes");
 
-    const another = moment(temp).add(30, "minutes");
-    return another.format("hh:mm ") + ampm;
+    return another.toString();
+  } else {
+    const another = moment(open).add(30, "minutes");
+    //console.log(another.utcOffset(480).toString());
+
+    return another.toString();
   }
 };
 
@@ -837,13 +837,13 @@ const updateRequest = async (text, response, request) => {
     if (text != " ") {
       saveMessages([message], reciever, new Date().valueOf(), sender);
     }
-    const [time, ampm] = "02:18 am".split(" ");
+    const [time, ampm] = request.timeRequested.split(" ");
 
     const listing = {
-      title: "Scheduled appointment with " + request.user,
-      timeStart: request.timeRequested,
+      title: "Scheduled appointment.",
+      timeStart: "Tue Dec 21 2021 " + time + ":22 GMT-0600",
       timeFinish: calculateHours(
-        "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CST)",
+        "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CDT)",
         request.duration,
         ampm
       ),
@@ -859,10 +859,10 @@ const updateRequest = async (text, response, request) => {
       .doc(listing.dateClicked)
       .collection("listing")
       .add({
-        title: "Scheduled appointment with " + businessName,
-        timeStart: request.timeRequested,
+        title: "Scheduled appointment.",
+        timeStart: "Tue Dec 21 2021 " + time + ":22 GMT-0600",
         timeFinish: calculateHours(
-          "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CST)",
+          "Tue Dec 21 2021 " + time + ":22 GMT-0600 (CDT)",
           request.duration,
           ampm
         ),

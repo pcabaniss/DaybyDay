@@ -139,7 +139,7 @@ function AvailabilityScreen({ route, navigation }) {
         ItemSeparatorComponent={SpaceSeperator}
         renderItem={({ item }) => {
           //Needs a function here checking the date for any matching times.
-          //CheckRequests()
+          console.log(item.key);
           return (
             <TouchableOpacity
               onPress={() =>

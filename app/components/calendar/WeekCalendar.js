@@ -25,7 +25,7 @@ import Screen from "../Screen";
 const testIDs = require("../Test");
 
 const timeFormatter = (date) => {
-  let d = moment(date).utcOffset(date);
+  let d = moment(date);
   return d.format("hh:mm A");
 };
 const markedDay = {};
@@ -62,8 +62,6 @@ const WeekCalendar = ({ navigation }) => {
           const result = pullDate(strTime).then((result) => {
             if (result != undefined) {
               result.forEach((item) => {
-                const timeSt = timeFormatter(item.timeStart);
-                const timeEn = timeFormatter(item.timeFinish);
                 markedDay[strTime] = {
                   marked: true,
                   startingDay: true,
@@ -73,7 +71,10 @@ const WeekCalendar = ({ navigation }) => {
                 };
                 items[strTime].push({
                   name: item.title,
-                  time: item.timeStart + " - " + item.timeFinish,
+                  time:
+                    timeFormatter(item.timeStart) +
+                    " - " +
+                    timeFormatter(item.timeFinish),
                   subText: item.description,
                   height: "100%",
                   date: strTime,
@@ -162,8 +163,8 @@ const WeekCalendar = ({ navigation }) => {
                           navigation.navigate("View", {
                             day: item.date,
                             title: item.name,
-                            timeStart: item.timeStart,
-                            timeEnd: item.timeEnd,
+                            timeStart: timeFormatter(item.timeStart),
+                            timeEnd: timeFormatter(item.timeEnd),
                             description: item.subText,
                             id: item.id,
                             isCustom: custom,

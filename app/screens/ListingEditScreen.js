@@ -80,8 +80,8 @@ function ListingEditScreen({ navigation, route }) {
     setProgress(0);
     setUploadVisible(true);
 
-    listing.timeStart = timeFormatter(dateStart);
-    listing.timeFinish = timeFormatter(dateEnd);
+    listing.timeStart = dateStart.toString();
+    listing.timeFinish = dateEnd.toString();
     listing.dateClicked = day;
     const result = await listingsApi.addListing({ ...listing }, (progress) =>
       setProgress(progress)

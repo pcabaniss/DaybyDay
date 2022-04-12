@@ -11,7 +11,7 @@
  *
  * Make the necessary changes to run on android successfully
  *
- * Finish implementing profile/ message blocking and favoriting
+ * Finish implementing profile favoriting and reflect status in settings
  *
  * Finsih up the gallery component.
  *

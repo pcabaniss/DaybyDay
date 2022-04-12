@@ -9,6 +9,7 @@ import {
   AppFormField as FormField,
   SubmitButton,
 } from "../components/forms";
+import Notifications from "../api/Notifications";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../config/colors";
@@ -17,7 +18,8 @@ import listingsApi from "../api/listings";
 import UploadScreen from "./UploadScreen";
 
 const timeFormatter = (date) => {
-  let d = moment(date).utcOffset(date);
+  console.log(date);
+  let d = moment(date);
   return d.format("dddd MMMM D, YYYY");
 };
 
@@ -33,11 +35,13 @@ function AgendaDetailsScreen({ navigation, route }) {
     route.params;
 
   const currentDate = timeFormatter(day);
-  const [dateStart, setStartDate] = useState(new Date());
-  const [dateEnd, setEndDate] = useState(new Date());
+  const [dateStart, setStartDate] = useState(timeStart);
+  const [dateEnd, setEndDate] = useState(new Date(timeEnd));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+
   console.log(day);
+
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");
@@ -73,6 +77,13 @@ function AgendaDetailsScreen({ navigation, route }) {
   const [progress, setProgress] = useState(0);
 
   const handleUpdate = async (listing) => {
+    Notifications.scheduleNotification(
+      listing.title,
+      listing.description,
+      dateStart,
+      false
+    );
+
     setProgress(0);
     setUploadVisible(true);
     listing.timeStart = dateStart.toString();
@@ -106,10 +117,10 @@ function AgendaDetailsScreen({ navigation, route }) {
       </View>
       <Form
         initialValues={{
-          title: "",
+          title: title,
           timeStart: "",
           timeFinish: "",
-          description: "",
+          description: description,
           dateClicked: "",
         }}
         onSubmit={handleUpdate}
@@ -214,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   picker: {
-    width: "23%",
+    width: "25%",
     backgroundColor: "white",
     borderWidth: 3,
     borderColor: "black",
