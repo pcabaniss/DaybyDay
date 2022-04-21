@@ -1,6 +1,7 @@
 /**
  *
- * Add cancel functionality to the edit listing screen in agenda.
+ * Make it to where we can pull the clients name and the businesses name
+ * instead of emails.
  *
  * Have it to where the customer can select a time slot and
  *  it shows up on the calendar for others to see.

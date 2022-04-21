@@ -161,22 +161,26 @@ const deleteListing = (listing) => {
     });
 };
 
-const addListing = (listing, onUploadProgress) => {
+const addListing = (listing, business, onUploadProgress) => {
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
+
+  const startingTime = moment(listing.timeStart).format("hh:mm A");
   const data = new FormData();
   data.append("title", listing.title);
 
   getUser()
     .doc(listing.dateClicked)
     .collection("listing")
-    .add({
+    .doc(business + "_" + startingTime)
+    .set({
       title: listing.title,
       timeStart: listing.timeStart,
       timeFinish: listing.timeFinish,
       description: listing.description,
       id: listing.dateClicked + listing.title,
+      business: business,
     });
 
   return client.post(endPoint, data, {
@@ -313,6 +317,7 @@ const getImages = async (email) => {
         }
       });
     });
+
   return gallery;
 };
 
@@ -851,14 +856,15 @@ const updateRequest = async (text, response, request) => {
       id: request.user + request.timeRequested,
       dateClicked: request.dateRequested,
     };
-    addListing(listing);
+    addListing(listing, request.user);
 
     firebase.default
       .firestore()
       .collection(userSafeEmail)
       .doc(listing.dateClicked)
       .collection("listing")
-      .add({
+      .doc(businessName + "_" + request.timeRequested.toUpperCase())
+      .set({
         title: "Scheduled appointment.",
         timeStart: "Tue Dec 21 2021 " + time + ":22 GMT-0600",
         timeFinish: calculateHours(
@@ -1077,6 +1083,49 @@ const getBlockedList = async () => {
   return temp;
 };
 
+const cancelAppointment = (day, startTime, description) => {
+  /**
+   * remove from both databases, will have to pull business name from user DB.
+   * cancel any notifications with this date
+   * send notification to business or user, whichever canceled.
+   *
+   */
+
+  const [text, cancelee] = description.split("with ");
+
+  const safeEmail = safetyFirst(cancelee);
+  var canceler = firebase.default.auth().currentUser.email;
+
+  getUser()
+    .doc(day)
+    .collection("listing")
+    .doc(cancelee + "_" + startTime)
+    .delete()
+    .then(console.log("Deleted from canceler..."));
+
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc(day)
+    .collection("listing")
+    .doc(canceler + "_" + startTime)
+    .delete()
+    .then(console.log("Deleted from cancelee!"));
+
+  Notifications.sendNotification(
+    cancelee,
+    "Appointment Canceled",
+    "Unfortunatly, " +
+      canceler +
+      " has canceled your appointment with them at " +
+      startTime +
+      "on " +
+      day,
+    new Date(),
+    true
+  );
+};
+
 export default {
   getListings,
   addListing,
@@ -1117,4 +1166,5 @@ export default {
   reportBusiness,
   blockBusiness,
   getBlockedList,
+  cancelAppointment,
 };

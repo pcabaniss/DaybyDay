@@ -83,8 +83,10 @@ function ListingEditScreen({ navigation, route }) {
     listing.timeStart = dateStart.toString();
     listing.timeFinish = dateEnd.toString();
     listing.dateClicked = day;
-    const result = await listingsApi.addListing({ ...listing }, (progress) =>
-      setProgress(progress)
+    const result = await listingsApi.addListing(
+      { ...listing },
+      "Custom",
+      (progress) => setProgress(progress)
     );
 
     if (result.ok) {

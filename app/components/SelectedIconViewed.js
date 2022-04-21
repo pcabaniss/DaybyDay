@@ -82,7 +82,6 @@ function SelectedIconViewed({ navigation, business }) {
         </Tab.Screen>
         <Tab.Screen
           name="Pictures"
-          component={PhotoGallery}
           options={{
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
@@ -92,7 +91,15 @@ function SelectedIconViewed({ navigation, business }) {
               />
             ),
           }}
-        />
+        >
+          {(props) => (
+            <PhotoGallery
+              email={business}
+              isUser={true}
+              navigation={navigation}
+            />
+          )}
+        </Tab.Screen>
       </Tab.Navigator>
     </View>
   );

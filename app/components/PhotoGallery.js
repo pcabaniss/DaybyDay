@@ -1,83 +1,125 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Button, Image, Dimensions } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { ImageGallery } from "@georstat/react-native-image-gallery";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import listings from "../api/listings";
 import AddImages from "./AddImages";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-function PhotoGallery({ email }) {
-  const { width } = Dimensions.get("window");
+import FastImage from "react-native-fast-image";
+import { useIsFocused } from "@react-navigation/core";
+import DaySeperator from "./DaySeprator";
 
-  const [indexSelected, setIndexSelected] = useState(0);
-  const [images, setImages] = useState([{}]);
+function PhotoGallery({ email, isUser, navigation }) {
+  //const [indexSelected, setIndexSelected] = useState(0);
+  const [images, setImages] = useState([]);
   const [temp, setTemp] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const openGallery = () => {
-    var i = 0;
-    var boat = [];
-    getGallery();
-    setIsOpen(true);
-    temp.forEach((pic) => {
-      boat.push({ id: i, url: pic });
-      i++;
-    });
-    setImages(boat);
-  };
-  const closeGallery = () => setIsOpen(false);
+  const [imageuri, setImageuri] = useState("");
+
+  const isFocused = useIsFocused();
 
   const getGallery = async () => {
-    var i = 0;
-    var boat = [];
     //const test = await listings.testGet(email);
-    const gallery = await listings.getImages(email);
+    const gallery = await listings
+      .getImages(email)
+      .then(console.log("Got pics..."));
 
-    console.log("recieved gallery: ");
     setTemp(gallery);
   };
 
-  const onSelect = (indexSelected) => {
-    setIndexSelected(indexSelected);
-  };
+  useEffect(() => {
+    getGallery();
 
-  const renderHeaderComponent = (image, currentIndex) => {
-    return (
-      <SafeAreaView style={{ padding: 10 }}>
-        <MaterialCommunityIcons
-          name="alpha-x-circle"
-          color={colors.white}
-          size={35}
-          onPress={() => closeGallery()}
-        />
-      </SafeAreaView>
-    );
+    setImages(temp);
+  }, [isFocused]);
+
+  const showModalFunction = (visible, imageURL) => {
+    //handler to handle the click on image of Grid
+    //and close button on modal
+    setImageuri(imageURL);
+    setIsOpen(visible);
   };
   //Redefine to have a delete images function if a bus profile
 
   return (
     <View style={styles.container}>
-      <AddImages email={email} />
-      <Button onPress={openGallery} title="View Gallery" />
-
-      <ImageGallery
-        close={closeGallery}
-        isOpen={isOpen}
-        images={images}
-        renderCustomImage={(item, index, isSelected) => {
-          return (
+      {isUser ? <View /> : <AddImages email={email} />}
+      {isOpen ? (
+        <Modal
+          transparent={false}
+          animationType={"fade"}
+          visible={isOpen}
+          onRequestClose={() => {
+            showModalFunction(!isOpen, "");
+          }}
+        >
+          <View style={styles.modelStyle}>
             <Image
-              source={{ uri: item.url }}
-              key={index}
-              style={styles.image}
+              style={styles.fullImageStyle}
+              source={{ uri: imageuri }}
+              resizeMethod={"resize"}
             />
-          );
-        }}
-        resizeMode="contain"
-        renderHeaderComponent={renderHeaderComponent}
-      />
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.closeButtonStyle}
+              onPress={() => {
+                showModalFunction(!isOpen, "");
+              }}
+            >
+              <Image
+                source={{
+                  uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/close.png",
+                }}
+                style={{ width: 35, height: 35 }}
+              />
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      ) : (
+        <View style={styles.container}>
+          <FlatList
+            data={images}
+            contentContainerStyle={{ padding: 5 }}
+            renderItem={({ item }) => {
+              console.log(item);
+              return (
+                <TouchableOpacity
+                  style={styles.imageContainerStyle}
+                  onPress={() => {
+                    showModalFunction(true, item);
+                  }}
+                >
+                  <Image
+                    style={styles.image}
+                    source={{ uri: item }}
+                    //resizeMode={"center"}
+                    resizeMethod={"resize"}
+                  />
+                </TouchableOpacity>
+              );
+            }}
+            key={Math.random()}
+            numColumns={3}
+            keyExtractor={(item) => {
+              item;
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -85,13 +127,48 @@ function PhotoGallery({ email }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-    backgroundColor: colors.white,
+    //marginTop: 5,
+    //backgroundColor: colors.green,
   },
   image: {
+    height: 120,
     width: "100%",
-    height: "100%",
+    borderColor: colors.black,
+    borderWidth: 1,
     //borderRadius: 300,
+  },
+  imageContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    margin: 1,
+    backgroundColor: colors.medium,
+  },
+  titleStyle: {
+    padding: 16,
+    fontSize: 20,
+    color: "white",
+    backgroundColor: "green",
+  },
+
+  fullImageStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "98%",
+    resizeMode: "contain",
+  },
+  modelStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+  },
+  closeButtonStyle: {
+    width: 25,
+    height: 25,
+    top: 50,
+    right: 20,
+    position: "absolute",
   },
 });
 

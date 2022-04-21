@@ -9,6 +9,8 @@ import {
   AppFormField as FormField,
   SubmitButton,
 } from "../components/forms";
+
+import AppButton from "../components/AppButton";
 import Notifications from "../api/Notifications";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -16,6 +18,7 @@ import colors from "../config/colors";
 import Screen from "../components/Screen";
 import listingsApi from "../api/listings";
 import UploadScreen from "./UploadScreen";
+import listings from "../api/listings";
 
 const timeFormatter = (date) => {
   console.log(date);
@@ -75,6 +78,28 @@ function AgendaDetailsScreen({ navigation, route }) {
 
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const cancel = () => {
+    listings.cancelAppointment(day, timeStart, description);
+
+    navigation.goBack();
+  };
+
+  const cancelPressed = () => {
+    Alert.alert(
+      "Are you sure you want to cancel?",
+      "Once you cancel, we cannot guarantee you can get the spot back.",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: () => {
+            cancel();
+          },
+        },
+      ]
+    );
+  };
 
   const handleUpdate = async (listing) => {
     Notifications.scheduleNotification(
@@ -178,6 +203,11 @@ function AgendaDetailsScreen({ navigation, route }) {
         </FormField>
 
         <SubmitButton title="Update" />
+        <AppButton
+          title="Cancel Appointment"
+          color={colors.danger}
+          onPress={cancelPressed}
+        />
       </Form>
     </Screen>
   );

@@ -90,7 +90,7 @@ function SelectedIcon({ email, navigation }) {
             ),
           }}
         >
-          {(props) => <PhotoGallery email={email} />}
+          {(props) => <PhotoGallery email={email} isUser={false} />}
         </Tab.Screen>
       </Tab.Navigator>
     </View>
