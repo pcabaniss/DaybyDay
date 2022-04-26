@@ -313,12 +313,41 @@ const getImages = async (email) => {
             .ref(email + "/images/gallery/" + data.imageName)
             .getDownloadURL();
 
-          gallery.push(fbPic);
+          gallery.push({
+            downloadURL: fbPic,
+            imageURL: data.imageName,
+          });
         }
       });
     });
 
   return gallery;
+};
+
+const deleteImage = (imageURL) => {
+  const email = returnEmail();
+
+  firebase.default
+    .storage()
+    .ref()
+    .child(email + "/images/gallery/" + imageURL)
+    .delete();
+
+  getUser()
+    .doc("images")
+    .collection("gallery")
+    .get()
+    .then((image) => {
+      image.forEach(async (url) => {
+        if (url.exists) {
+          const image = url.data().imageName;
+          if (imageURL == image) {
+            console.log(url.id);
+            getUser().doc("images").collection("gallery").doc(url.id).delete();
+          }
+        }
+      });
+    });
 };
 
 const pullProfileType = (email) => {
@@ -1167,4 +1196,5 @@ export default {
   blockBusiness,
   getBlockedList,
   cancelAppointment,
+  deleteImage,
 };
