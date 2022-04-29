@@ -96,7 +96,13 @@ function ProfileScreen({ route, navigation }) {
         </View>
       </View>
       <View style={styles.boxContainer}>
-        {<SelectedIconViewed navigation={navigation} business={email} />}
+        {
+          <SelectedIconViewed
+            navigation={navigation}
+            business={email}
+            businessPic={pic}
+          />
+        }
       </View>
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,10 +8,23 @@ import MessageForm from "./MessageForm";
 import ViewSchedulingCalendar from "./calendar/ViewSchedulingCalendar";
 import PhotoGallery from "./PhotoGallery";
 import ReviewScreen from "../screens/ReviewScreen";
+import listings from "../api/listings";
 
 const Tab = createBottomTabNavigator();
 
-function SelectedIconViewed({ navigation, business }) {
+function SelectedIconViewed({ navigation, business, businessPic }) {
+  const [images, setImages] = useState();
+
+  useEffect(() => {
+    const getGallery = async () => {
+      const gallery = await listings.getImages(business);
+
+      setImages(gallery);
+    };
+
+    getGallery();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -58,7 +71,13 @@ function SelectedIconViewed({ navigation, business }) {
             ),
           }}
         >
-          {(props) => <MessageForm type="user" />}
+          {(props) => (
+            <MessageForm
+              type="user"
+              business={business}
+              businessPic={businessPic}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen
           name="Reviews"
@@ -93,11 +112,7 @@ function SelectedIconViewed({ navigation, business }) {
           }}
         >
           {(props) => (
-            <PhotoGallery
-              email={business}
-              isUser={true}
-              navigation={navigation}
-            />
+            <PhotoGallery email={business} isUser={true} gallery={images} />
           )}
         </Tab.Screen>
       </Tab.Navigator>

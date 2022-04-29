@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,6 +12,17 @@ import ReviewScreen from "../screens/ReviewScreen";
 const Tab = createBottomTabNavigator();
 
 function SelectedIcon({ email, navigation }) {
+  const [images, setImages] = useState();
+
+  useEffect(() => {
+    const getGallery = async () => {
+      const gallery = await listings.getImages(business);
+
+      setImages(gallery);
+    };
+
+    getGallery();
+  }, []);
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -90,7 +101,9 @@ function SelectedIcon({ email, navigation }) {
             ),
           }}
         >
-          {(props) => <PhotoGallery email={email} isUser={false} />}
+          {(props) => (
+            <PhotoGallery email={email} isUser={false} gallery={images} />
+          )}
         </Tab.Screen>
       </Tab.Navigator>
     </View>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -18,38 +18,17 @@ import FastImage from "react-native-fast-image";
 import { useIsFocused } from "@react-navigation/core";
 import DaySeperator from "./DaySeprator";
 
-function PhotoGallery({ email, isUser, navigation }) {
+function PhotoGallery({ email, isUser, gallery }) {
   //const [indexSelected, setIndexSelected] = useState(0);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(gallery);
   const [temp, setTemp] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [imageuri, setImageuri] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [isEmpty, setISEmpty] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const isFocused = useIsFocused();
-
-  const getGallery = async () => {
-    //const test = await listings.testGet(email);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const gallery = await listings
-        .getImages(email)
-        .then(console.log("Got pics..."));
-
-      setTemp(gallery);
-    };
-
-    fetchData().catch(console.error);
-
-    if (temp.length == 0) {
-      setISEmpty(true);
-    } else {
-      setISEmpty(false);
-    }
-  }, []);
 
   const showModalFunction = (visible, downloadURL, imageURL) => {
     //handler to handle the click on image of Grid
@@ -93,7 +72,6 @@ function PhotoGallery({ email, isUser, navigation }) {
       ]
     );
   };
-  //Redefine to have a delete images function if a bus profile
 
   return (
     <>
@@ -146,7 +124,8 @@ function PhotoGallery({ email, isUser, navigation }) {
           ) : (
             <View style={styles.container}>
               <FlatList
-                data={temp}
+                data={images}
+                extraData={refresh}
                 contentContainerStyle={{ padding: 5 }}
                 renderItem={({ item }) => {
                   console.log(item);
@@ -174,7 +153,7 @@ function PhotoGallery({ email, isUser, navigation }) {
                 key={Math.random()}
                 numColumns={3}
                 keyExtractor={(item) => {
-                  item.imageURL;
+                  item.key;
                 }}
               />
             </View>

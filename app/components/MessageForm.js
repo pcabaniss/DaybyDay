@@ -1,13 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TextInput, Alert, Text } from "react-native";
+import listings from "../api/listings";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 import AppPicker from "./AppPicker";
 import ListItemSeperator from "./ListItemSeperator";
 
-function MessageForm(type) {
+function MessageForm({ type, business, businessPic }) {
   const [value, setValue] = useState("Reason");
   const [about, setAbout] = useState("");
+  const [userPic, setUserPic] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    const getInfo = async () => {
+      const getUserEmail = listings.returnEmail();
+
+      setUserEmail(getUserEmail);
+
+      const getUserPic = await listings.getProfilePic(userEmail);
+
+      setUserPic(getUserPic);
+    };
+
+    getInfo();
+  }, []);
+
+  //business
+  const reciever = {
+    _id: business,
+    name: "business",
+    avatar: businessPic,
+    key: Math.round(Math.random() * 1000000),
+  };
+
+  //user
+  const sender = {
+    _id: userEmail,
+    name: type,
+    avatar: userPic,
+    key: Math.round(Math.random() * 1000000),
+  };
 
   const menuItems = [
     {
@@ -35,7 +69,19 @@ function MessageForm(type) {
   // This will be in charge of sending the message to the business.
   const submitPressed = () => {
     if (type == "user") {
-      console.log("Pressed submit!");
+      var tempArray = [];
+      tempArray.push({ text: userEmail + " has " + value + ": " + about });
+
+      setTimeout(() => {
+        listings.saveMessages(
+          tempArray,
+          reciever,
+          new Date().valueOf(),
+          sender
+        );
+      }, 3000);
+
+      setSent(true);
     } else {
       Alert.alert(
         "Lonely?",
@@ -51,32 +97,40 @@ function MessageForm(type) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        Have any questions, concerns, or inquiries?
-      </Text>
-      <ListItemSeperator />
-      <AppPicker
-        items={menuItems}
-        numberOfColumns={1}
-        placeholder={value}
-        onSelectItem={(value) => {
-          setValue(value.label);
-        }}
-        width="94%"
-      />
-      <TextInput
-        editable
-        multiline
-        onChangeText={changeText}
-        value={about}
-        placeholder="Type message here."
-        style={styles.aboutText}
-      ></TextInput>
-      <AppButton
-        color={colors.black}
-        onPress={submitPressed}
-        title={"Send Message"}
-      />
+      {sent ? (
+        <>
+          <Text style={styles.header}>Sent! They'll get back to you ASAP.</Text>
+        </>
+      ) : (
+        <>
+          <Text style={styles.header}>
+            Have any questions, concerns, or inquiries?
+          </Text>
+          <ListItemSeperator />
+          <AppPicker
+            items={menuItems}
+            numberOfColumns={1}
+            placeholder={value}
+            onSelectItem={(value) => {
+              setValue(value.label);
+            }}
+            width="94%"
+          />
+          <TextInput
+            editable
+            multiline
+            onChangeText={changeText}
+            value={about}
+            placeholder="Type message here."
+            style={styles.aboutText}
+          ></TextInput>
+          <AppButton
+            color={colors.black}
+            onPress={submitPressed}
+            title={"Send Message"}
+          />
+        </>
+      )}
     </View>
   );
 }

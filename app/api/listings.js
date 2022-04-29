@@ -380,9 +380,7 @@ const pullProfileType = (email) => {
 ]
  */
 
-const saveMessages = (message, otherUsers, createdAt, user) => {
-  //console.log(message[0]);
-
+const saveMessages = (message, otherUsers, createdAt, sender) => {
   const otherSafeEmail = safetyFirst(otherUsers._id);
 
   //main sender of the message
@@ -391,14 +389,14 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
     .collection(otherUsers._id)
     .add({
       messages: {
-        _id: user._id,
-        avatar: user.avatar,
+        _id: sender._id,
+        avatar: sender.avatar,
         createdAt: createdAt,
         key: Math.round(Math.random() * 1000000),
         text: message[0].text,
         user: {
           _id: otherUsers._id,
-          avatar: user.avatar,
+          avatar: sender.avatar,
           name: otherUsers.name,
         },
       },
@@ -409,17 +407,17 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .firestore()
         .collection(otherSafeEmail)
         .doc("messages")
-        .collection(user._id)
+        .collection(sender._id)
         .add({
           messages: {
-            _id: user._id,
-            avatar: user.avatar,
+            _id: sender._id,
+            avatar: sender.avatar,
             key: Math.round(Math.random() * 1000000),
             createdAt: createdAt,
             text: message[0].text,
             user: {
               _id: otherUsers._id,
-              avatar: user.avatar,
+              avatar: sender.avatar,
               name: otherUsers.name,
             },
           },
@@ -429,7 +427,7 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
       getUser()
         .doc("inbox")
         .collection("recents")
-        .doc(otherSafeEmail)
+        .doc(otherUsers._id)
         .set({
           business: {
             email: otherUsers._id,
@@ -447,9 +445,9 @@ const saveMessages = (message, otherUsers, createdAt, user) => {
         .doc(firebase.default.auth().currentUser.email)
         .set({
           business: {
-            email: user._id,
+            email: sender._id,
             latestMessage: message[0].text,
-            avatar: user.avatar,
+            avatar: sender.avatar,
           },
         })
     );

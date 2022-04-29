@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
@@ -8,7 +8,6 @@ import CalendarNavigator from "./CalendarNavigator";
 import ScheduleScreen from "../screens/SceduleScreen";
 import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
-import { useState } from "react";
 import UserAccountNavigator from "./UserAccountNavigator";
 import ProfileViewNavigator from "./ProfileViewNavigator";
 

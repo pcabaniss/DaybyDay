@@ -14,9 +14,7 @@
  *
  * Finish implementing profile favoriting and reflect status in settings
  *
- * Finsih up the gallery component.
- *
- * finish implementing deleting messages
+ * finish implementing deleting messages and fix inbox rendering
  *
  * make it to where you can only edit scheduled activities that havent
  * happened yet.
