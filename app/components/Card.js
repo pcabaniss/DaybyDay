@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native";
 
 function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
   const email = title.charAt(0).toUpperCase() + title.slice(1);
+  const name = subTitle.charAt(0).toUpperCase() + subTitle.slice(1);
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -19,7 +20,7 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
         />
         <View style={styles.detailContainer}>
           <AppText style={styles.title}>{email}</AppText>
-          <AppText style={styles.subTitle}>{subTitle}</AppText>
+          <AppText style={styles.subTitle}>{name}</AppText>
         </View>
       </View>
     </TouchableOpacity>

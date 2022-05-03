@@ -221,15 +221,18 @@ const updateListing = (listing, onUploadProgress) => {
   });
 };
 
-const getName = (email) => {
-  const safeEmail = safetyFirst(email);
+const getMyName = async () => {
+  const myEmail = returnEmail();
+  const safeEmail = safetyFirst(myEmail);
 
-  const name = currentUser()
+  console.log(myEmail);
+  const name = await currentUser()
     .ref("users/" + safeEmail + "/UserInfo")
     .get()
     .then((doc) => {
       return doc.child("name").val();
     });
+
   return name;
 };
 
@@ -383,6 +386,9 @@ const pullProfileType = (email) => {
 const saveMessages = (message, otherUsers, createdAt, sender) => {
   const otherSafeEmail = safetyFirst(otherUsers._id);
 
+  console.log(sender);
+  console.log("------------------------");
+  console.log(otherUsers);
   //main sender of the message
   getUser()
     .doc("messages")
@@ -433,6 +439,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
             email: otherUsers._id,
             latestMessage: message[0].text,
             avatar: otherUsers.avatar,
+            name: otherUsers.name,
           },
         })
     )
@@ -448,6 +455,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
             email: sender._id,
             latestMessage: message[0].text,
             avatar: sender.avatar,
+            name: sender.name,
           },
         })
     );
@@ -469,6 +477,43 @@ const getMessages = async (otherEmail) => {
     });
 
   return info;
+};
+
+const deleteMessage = (message) => {
+  /**Message object example: 
+   * 
+  "avatar": *Profile picture Download link*
+  "email": *email to be deleted*
+  "latestMessage": *Latest message*
+   */
+  const deletion = async (deletedEmail) => {
+    //Delete from mains inbox
+    getUser().doc("inbox").collection("recents").doc(deletedEmail).delete();
+
+    //Making ref for db of messages.
+    const mesRef = getUser().doc("messages").collection(deletedEmail);
+
+    mesRef.get().then((querySnapshot) => {
+      Promise.all(querySnapshot.docs.map((d) => d.ref.delete()));
+    });
+  };
+
+  getUser()
+    .doc("inbox")
+    .collection("recents")
+    .get()
+    .then((email) => {
+      email.forEach((item) => {
+        if (item.exists) {
+          const data = item.data();
+          if (data.business.email == message.email) {
+            deletion(message.email).then(
+              console.log("Successfully deleted message threads.")
+            );
+          }
+        }
+      });
+    });
 };
 
 const getHours = async (dayOf) => {
@@ -575,7 +620,9 @@ const getInbox = async () => {
     });
     count = count + 1;
   });
-  console.log(info);
+  if (info.length == 0) {
+    return undefined;
+  }
   return info;
 };
 
@@ -1164,7 +1211,7 @@ export default {
   getImages,
   saveProfilePic,
   getProfilePic,
-  getName,
+  getMyName,
   pullProfileType,
   saveSchedule,
   getSchedule,
@@ -1175,6 +1222,7 @@ export default {
   saveMessages,
   getMessages,
   getInbox,
+  deleteMessage,
   getHours,
   getHoursFor,
   getSearchResults,

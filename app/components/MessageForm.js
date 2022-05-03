@@ -6,31 +6,28 @@ import AppButton from "./AppButton";
 import AppPicker from "./AppPicker";
 import ListItemSeperator from "./ListItemSeperator";
 
-function MessageForm({ type, business, businessPic }) {
+function MessageForm({
+  type,
+  business,
+  businessPic,
+  businessName,
+  userName,
+  userPic,
+}) {
   const [value, setValue] = useState("Reason");
   const [about, setAbout] = useState("");
-  const [userPic, setUserPic] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    const getInfo = async () => {
-      const getUserEmail = listings.returnEmail();
-
-      setUserEmail(getUserEmail);
-
-      const getUserPic = await listings.getProfilePic(userEmail);
-
-      setUserPic(getUserPic);
-    };
-
-    getInfo();
+    const getUserEmail = listings.returnEmail();
+    setUserEmail(getUserEmail);
   }, []);
 
   //business
   const reciever = {
     _id: business,
-    name: "business",
+    name: businessName,
     avatar: businessPic,
     key: Math.round(Math.random() * 1000000),
   };
@@ -38,17 +35,17 @@ function MessageForm({ type, business, businessPic }) {
   //user
   const sender = {
     _id: userEmail,
-    name: type,
+    name: userName,
     avatar: userPic,
     key: Math.round(Math.random() * 1000000),
   };
 
   const menuItems = [
     {
-      label: "Questions about services",
+      label: "Question about services",
       value: 0,
     },
-    { label: "Questions about scheduling", value: 1 },
+    { label: "Question about scheduling", value: 1 },
     {
       label: "General inquiry",
       value: 2,
@@ -68,9 +65,15 @@ function MessageForm({ type, business, businessPic }) {
   };
   // This will be in charge of sending the message to the business.
   const submitPressed = () => {
+    const capitalName = userName.charAt(0).toUpperCase() + userName.slice(1);
+    var subject = value.toLowerCase();
+
+    if (value == "Other") {
+      subject = "a question";
+    }
     if (type == "user") {
       var tempArray = [];
-      tempArray.push({ text: userEmail + " has " + value + ": " + about });
+      tempArray.push({ text: capitalName + " has " + subject + ": " + about });
 
       setTimeout(() => {
         listings.saveMessages(

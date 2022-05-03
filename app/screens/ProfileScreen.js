@@ -16,10 +16,31 @@ function ProfileScreen({ route, navigation }) {
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
   const [rating, setRating] = useState(4);
+  const [myEmail, setMyEmail] = useState("");
+  const [myUserName, setMyUserName] = useState("");
+  const [myPic, setMyPic] = useState("");
 
   useEffect(() => {
+    const getEmail = listings.returnEmail();
+
+    setMyEmail(getEmail);
+
     getRating();
   }, [isFocused]);
+
+  useEffect(() => {
+    const getInfo = async () => {
+      const un = await listings.getMyName();
+
+      setMyUserName(un);
+
+      const pp = await listings.getProfilePic(myEmail);
+
+      setMyPic(pp);
+    };
+
+    getInfo();
+  }, [myEmail]);
 
   var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
   const getRating = async () => {
@@ -101,6 +122,9 @@ function ProfileScreen({ route, navigation }) {
             navigation={navigation}
             business={email}
             businessPic={pic}
+            businessName={name}
+            myUN={myUserName}
+            myPP={myPic}
           />
         }
       </View>

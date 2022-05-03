@@ -18,6 +18,9 @@ function ListItem({
   onPress,
   renderRightActions,
 }) {
+  if (title != undefined) {
+    var capitalEmail = title.charAt(0).toUpperCase() + title.slice(1);
+  }
   return (
     //By default the flex is set to vertical but we set this one to row
     //so it will display views side by side
@@ -30,7 +33,7 @@ function ListItem({
 
           <View style={styles.detailsContainer}>
             <AppText style={styles.title} numberOfLines={1}>
-              {title}
+              {capitalEmail}
             </AppText>
             {subTitle && (
               <AppText style={styles.subTitle} numberOfLines={2}>

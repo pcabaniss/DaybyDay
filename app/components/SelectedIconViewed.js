@@ -12,17 +12,24 @@ import listings from "../api/listings";
 
 const Tab = createBottomTabNavigator();
 
-function SelectedIconViewed({ navigation, business, businessPic }) {
+function SelectedIconViewed({
+  navigation,
+  business,
+  businessPic,
+  businessName,
+  myUN,
+  myPP,
+}) {
   const [images, setImages] = useState();
 
   useEffect(() => {
-    const getGallery = async () => {
+    const getInfo = async () => {
       const gallery = await listings.getImages(business);
 
       setImages(gallery);
     };
 
-    getGallery();
+    getInfo();
   }, []);
 
   return (
@@ -76,6 +83,9 @@ function SelectedIconViewed({ navigation, business, businessPic }) {
               type="user"
               business={business}
               businessPic={businessPic}
+              businessName={businessName}
+              userName={myUN}
+              userPic={myPP}
             />
           )}
         </Tab.Screen>

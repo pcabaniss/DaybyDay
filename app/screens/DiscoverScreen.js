@@ -82,8 +82,8 @@ function DiscoverScreen({ navigation }) {
             renderItem={({ item }) => {
               return (
                 <Card
-                  title={item.email}
-                  subTitle={"business"}
+                  title={item.name}
+                  subTitle={item.email}
                   onPress={() =>
                     clickedProfile(item.email, item.pic, item.name)
                   }

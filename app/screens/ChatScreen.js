@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { View, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
-import { useIsFocused } from "@react-navigation/core";
 
 import { GiftedChat } from "react-native-gifted-chat";
 import listings from "../api/listings";
@@ -39,8 +38,6 @@ import colors from "../config/colors";
  */
 
 function ChatScreen({ navigation, route }) {
-  const isFocused = useIsFocused();
-
   const { name, email, otherUser } = route.params;
   const [messages, setMessages] = useState([]);
   const [userAvatar, setUserAvatar] = useState(" ");
