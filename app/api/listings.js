@@ -1,9 +1,7 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
 import moment from "moment";
-import { compareAsc, format } from "date-fns";
 import Notifications from "./Notifications";
-import { date } from "yup";
 import { Linking } from "react-native";
 import qs from "qs";
 
@@ -440,6 +438,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
             latestMessage: message[0].text,
             avatar: otherUsers.avatar,
             name: otherUsers.name,
+            unread: false,
           },
         })
     )
@@ -456,6 +455,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
             latestMessage: message[0].text,
             avatar: sender.avatar,
             name: sender.name,
+            unread: true,
           },
         })
     );
@@ -1081,6 +1081,27 @@ const getReminders = async (email) => {
           });
         })
     );
+  var count = 0;
+  firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("inbox")
+    .collection("recents")
+    .get()
+    .then((messageThread) => {
+      messageThread.forEach((item) => {
+        if (item.exists) {
+          const data = item.data();
+
+          if (data.business.unread == true) {
+            console.log("+++++++++++++++++++++++++++");
+            count++;
+          }
+        }
+      });
+      console.log(count);
+      Notifications.addBadge(count);
+    });
 };
 
 const reportBusiness = async (businessEmail, reason, email) => {

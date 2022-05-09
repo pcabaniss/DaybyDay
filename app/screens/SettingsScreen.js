@@ -5,6 +5,13 @@ import colors from "../config/colors";
 import ListItemSeperator from "../components/ListItemSeperator";
 import moment from "moment";
 
+/** Things to add in setting:
+ * Blocked profiles
+ * Notification settings
+ * Personal Information (Password/username)
+ * Legal information
+ * Contact info
+ */
 const settingItems = [
   {
     title: "Notifications",

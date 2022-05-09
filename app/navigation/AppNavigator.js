@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
@@ -10,19 +10,29 @@ import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
 import UserAccountNavigator from "./UserAccountNavigator";
 import ProfileViewNavigator from "./ProfileViewNavigator";
+import Notifications from "../api/Notifications";
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
   const { user } = useAuth();
   const [isBusiness, setIsBusiness] = useState();
+  const [badge, setBadge] = useState(0);
   const type = async (profile) => {
     const bool = await listings.pullProfileType(profile.email);
-    console.log(bool);
     setIsBusiness(bool);
-    console.log("Your Profile Type is? :" + bool);
   };
   type(user);
+
+  useEffect(() => {
+    const getBadges = async () => {
+      const count = await Notifications.checkBadges();
+      setBadge(count);
+    };
+    getBadges();
+
+    console.log(badge);
+  }, []);
 
   return (
     <Tab.Navigator
@@ -78,6 +88,7 @@ const AppNavigator = () => {
           name="Profile"
           component={AccountNavigator}
           options={{
+            tabBarBadge: badge,
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account"

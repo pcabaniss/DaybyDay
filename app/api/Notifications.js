@@ -18,6 +18,15 @@ const scheduleNotification = async (title, body, date, isImmediate) => {
   }
 };
 
+const checkBadges = async () => {
+  const not = await Notifications.getBadgeCountAsync();
+
+  console.log("This is the answer " + not);
+};
+const addBadge = (number) => {
+  Notifications.setBadgeCountAsync(number);
+};
+
 const deleteAllNotifications = () => {
   Notifications.cancelAllScheduledNotificationsAsync();
 };
@@ -85,4 +94,6 @@ export default {
   loadAllNotifications,
   sendImmediateNotification,
   sendNotification,
+  checkBadges,
+  addBadge,
 };

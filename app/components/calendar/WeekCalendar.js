@@ -35,19 +35,37 @@ const timeToString = (time) => {
   return date.toISOString().split("T")[0];
 };
 
-const dateInPast = (clickedDate) => {
-  const newDate = new Date(clickedDate);
-  const currentDate = new Date();
-  if (newDate.setHours(0, 0, 0, 0) <= currentDate.setHours(0, 0, 0, 0)) {
-    return Alert.alert("Cannot edit event in the past.");
-  }
-};
-
 const WeekCalendar = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [items, setItems] = useState({});
   const [date, setDate] = useState({});
   const [custom, setCustom] = useState(true);
+
+  const dateInPast = (
+    day,
+    title,
+    timeStart,
+    timeEnd,
+    description,
+    id,
+    isCustom
+  ) => {
+    const newDate = new Date(day);
+    const currentDate = new Date();
+    if (newDate <= currentDate) {
+      Alert.alert("Cannot edit event in the past.");
+    } else {
+      navigation.navigate("View", {
+        day: day,
+        title: title,
+        timeStart: timeStart,
+        timeEnd: timeEnd,
+        description: description,
+        id: id,
+        isCustom: isCustom,
+      });
+    }
+  };
 
   const loadItems = (day) => {
     console.log("Loading items....");
@@ -149,7 +167,6 @@ const WeekCalendar = ({ navigation }) => {
                   <TouchableOpacity
                     testID={testIDs.agenda.ITEM}
                     style={[styles.item, { height: item.height }]}
-                    onPress={() => dateInPast(item.date)}
                   >
                     <Text style={styles.mainText}>{item.name}</Text>
                     <Text style={styles.timeText}>{item.time}</Text>
@@ -160,15 +177,15 @@ const WeekCalendar = ({ navigation }) => {
                         style={styles.icon}
                         color={colors.medium}
                         onPress={() =>
-                          navigation.navigate("View", {
-                            day: item.date,
-                            title: item.name,
-                            timeStart: timeFormatter(item.timeStart),
-                            timeEnd: timeFormatter(item.timeEnd),
-                            description: item.subText,
-                            id: item.id,
-                            isCustom: custom,
-                          })
+                          dateInPast(
+                            item.date,
+                            item.name,
+                            new Date(item.timeStart),
+                            new Date(item.timeEnd),
+                            item.subText,
+                            item.id,
+                            custom
+                          )
                         }
                       />
                     </View>

@@ -1,14 +1,13 @@
 import React from "react";
-import * as Notifications from "expo-notifications";
 import { Text, View, StyleSheet, Button } from "react-native";
-
+import Notifications from "../api/Notifications";
 import colors from "../config/colors";
 import listings from "../api/listings";
 
 function HelpAndSupport(props) {
   const getNotifications = async () => {
-    const temp = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(temp);
+    const not = await Notifications.checkBadges();
+    console.log(not);
   };
   return (
     <View style={styles.container}>
