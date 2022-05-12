@@ -17,22 +17,59 @@ const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
   const { user } = useAuth();
   const [isBusiness, setIsBusiness] = useState();
-  const [badge, setBadge] = useState(0);
+  const [badge, setBadge] = useState();
+
+  useEffect(() => {
+    const getBadges = async () => {
+      const messages = await listings.getMessageBadges();
+
+      if (isBusiness == true) {
+        const count = await listings.getRequestBadges();
+        if (badge != count + messages) {
+          setBadge(count + messages);
+        }
+      } else {
+        if (badge != messages && messages != 0) {
+          setBadge(messages);
+        }
+      }
+    };
+    getBadges();
+
+    if (badge == 0) {
+      setBadge(undefined);
+    }
+
+    console.log("Fetched badges!");
+  }, [isBusiness]);
+
+  setInterval(() => {
+    const getBadges = async () => {
+      const messages = await listings.getMessageBadges();
+      const count = await listings.getRequestBadges();
+
+      if (isBusiness == true) {
+        if (badge != count + messages) {
+          setBadge(count + messages);
+        }
+      } else {
+        if (badge != messages && messages != 0) {
+          setBadge(messages);
+        }
+      }
+    };
+    getBadges();
+
+    if (badge === 0) {
+      setBadge(undefined);
+    }
+  }, 5000);
+
   const type = async (profile) => {
     const bool = await listings.pullProfileType(profile.email);
     setIsBusiness(bool);
   };
   type(user);
-
-  useEffect(() => {
-    const getBadges = async () => {
-      const count = await Notifications.checkBadges();
-      setBadge(count);
-    };
-    getBadges();
-
-    console.log(badge);
-  }, []);
 
   return (
     <Tab.Navigator
@@ -103,6 +140,7 @@ const AppNavigator = () => {
           name="Profile"
           component={UserAccountNavigator}
           options={{
+            tabBarBadge: badge,
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account"

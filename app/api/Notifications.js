@@ -21,7 +21,7 @@ const scheduleNotification = async (title, body, date, isImmediate) => {
 const checkBadges = async () => {
   const not = await Notifications.getBadgeCountAsync();
 
-  console.log("This is the answer " + not);
+  return not;
 };
 const addBadge = (number) => {
   Notifications.setBadgeCountAsync(number);

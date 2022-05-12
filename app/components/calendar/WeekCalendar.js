@@ -14,8 +14,6 @@ import {
 } from "react-native";
 // @ts-expect-error
 
-//Need to pull the current date that i clicked on and pass it to the database
-// for reference
 import { Agenda } from "react-native-calendars";
 import colors from "../../config/colors";
 import CalendarSeperator from "../CalendarSeperator";
@@ -25,8 +23,9 @@ import Screen from "../Screen";
 const testIDs = require("../Test");
 
 const timeFormatter = (date) => {
-  let d = moment(date);
-  return d.format("hh:mm A");
+  const temp = new Date(date);
+  const d = moment(temp).format("hh:mm A");
+  return d;
 };
 const markedDay = {};
 
@@ -53,7 +52,7 @@ const WeekCalendar = ({ navigation }) => {
     const newDate = new Date(day);
     const currentDate = new Date();
     if (newDate <= currentDate) {
-      Alert.alert("Cannot edit event in the past.");
+      Alert.alert("Cannot edit current or past events.");
     } else {
       navigation.navigate("View", {
         day: day,
@@ -70,54 +69,58 @@ const WeekCalendar = ({ navigation }) => {
   const loadItems = (day) => {
     console.log("Loading items....");
     setDate(day);
-    setTimeout(async () => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = timeToString(time);
+    setTimeout(() => {
+      const load = async () => {
+        for (let i = -15; i < 85; i++) {
+          const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+          const strTime = timeToString(time);
 
-        if (!items[strTime]) {
-          items[strTime] = [];
-          const result = pullDate(strTime).then((result) => {
-            if (result != undefined) {
-              result.forEach((item) => {
-                markedDay[strTime] = {
-                  marked: true,
-                  startingDay: true,
-                  endingDay: true,
-                  color: colors.background,
-                  dotColor: colors.background,
-                };
-                items[strTime].push({
-                  name: item.title,
-                  time:
-                    timeFormatter(item.timeStart) +
-                    " - " +
-                    timeFormatter(item.timeFinish),
-                  subText: item.description,
-                  height: "100%",
-                  date: strTime,
-                  timeStart: item.timeStart,
-                  timeEnd: item.timeFinish,
-                  id: item.id,
+          if (!items[strTime]) {
+            items[strTime] = [];
+            pullDate(strTime).then((result) => {
+              if (result != undefined) {
+                result.forEach((item) => {
+                  markedDay[strTime] = {
+                    marked: true,
+                    startingDay: true,
+                    endingDay: true,
+                    color: colors.background,
+                    dotColor: colors.background,
+                  };
+                  items[strTime].push({
+                    name: item.title,
+                    time:
+                      timeFormatter(item.timeStart) +
+                      " - " +
+                      timeFormatter(item.timeFinish),
+                    subText: item.description,
+                    height: "100%",
+                    date: strTime,
+                    timeStart: item.timeStart,
+                    timeEnd: item.timeFinish,
+                    id: item.id,
+                  });
+                  renderItem(items[strTime]);
                 });
-                renderItem(items[strTime]);
-              });
-            }
-          });
-        } else {
-          renderEmptyDate(strTime);
+              }
+            });
+          } else {
+            renderEmptyDate(strTime);
+          }
         }
-      }
-      const newItems = {};
-      Object.keys(items).forEach((key) => {
-        newItems[key] = items[key];
-      });
-      setItems(newItems);
+        const newItems = {};
+        Object.keys(items).forEach((key) => {
+          newItems[key] = items[key];
+        });
+        setItems(newItems);
+      };
+
+      load();
     }, 1000);
   };
 
   useEffect(() => {
-    setItems(items);
+    //setItems(items);
     const refresh = navigation.addListener("focus", () => {
       setItems(updateDate());
       loadItems(date);
@@ -147,6 +150,14 @@ const WeekCalendar = ({ navigation }) => {
     //resetForm();
   };
 
+  const checkType = (itemName) => {
+    if (itemName == "Scheduled appointment.") {
+      setCustom(false);
+    } else {
+      setCustom(true);
+    }
+  };
+
   const renderItem = (item) => {
     return (
       <>
@@ -157,11 +168,7 @@ const WeekCalendar = ({ navigation }) => {
             style={styles.list}
             ItemSeparatorComponent={CalendarSeperator}
             renderItem={({ item }) => {
-              if (item.name == "Scheduled appointment.") {
-                setCustom(false);
-              } else {
-                setCustom(true);
-              }
+              //checkType(item.name);
               return (
                 <>
                   <TouchableOpacity

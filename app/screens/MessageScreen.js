@@ -44,6 +44,16 @@ function MessageScreen({ navigation, route }) {
     }
   });
 
+  const pressedOn = (email, name, item) => {
+    navigation.navigate("Chat", {
+      email: email,
+      name: name,
+      otherUser: item.email,
+    });
+
+    listings.updateUnread(item);
+  };
+
   const handleDelete = (message) => {
     console.log("Pressed!");
     listings.deleteMessage(message);
@@ -84,13 +94,8 @@ function MessageScreen({ navigation, route }) {
                   title={item.name}
                   subTitle={item.latestMessage}
                   image={item.avatar}
-                  onPress={() =>
-                    navigation.navigate("Chat", {
-                      email: email,
-                      name: name,
-                      otherUser: item.email,
-                    })
-                  }
+                  onPress={() => pressedOn(email, name, item)}
+                  trigger={item.unread}
                   renderRightActions={() => (
                     <ListItemDeleteItem onPress={() => handleDelete(item)} />
                   )}

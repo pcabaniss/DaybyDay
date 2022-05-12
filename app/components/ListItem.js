@@ -17,10 +17,12 @@ function ListItem({
   IconComponent,
   onPress,
   renderRightActions,
+  trigger,
 }) {
   if (title != undefined) {
     var capitalEmail = title.charAt(0).toUpperCase() + title.slice(1);
   }
+
   return (
     //By default the flex is set to vertical but we set this one to row
     //so it will display views side by side
@@ -29,6 +31,21 @@ function ListItem({
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
         <View style={styles.container}>
           {IconComponent}
+          {trigger ? (
+            <View
+              style={{
+                backgroundColor: colors.danger,
+                height: 15,
+                width: 15,
+                borderRadius: 8,
+                marginLeft: -10,
+                marginRight: 5,
+              }}
+            ></View>
+          ) : (
+            <View></View>
+          )}
+
           {image && <Image style={styles.image} source={{ uri: image }} />}
 
           <View style={styles.detailsContainer}>

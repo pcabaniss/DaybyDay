@@ -223,7 +223,6 @@ const getMyName = async () => {
   const myEmail = returnEmail();
   const safeEmail = safetyFirst(myEmail);
 
-  console.log(myEmail);
   const name = await currentUser()
     .ref("users/" + safeEmail + "/UserInfo")
     .get()
@@ -1082,26 +1081,10 @@ const getReminders = async (email) => {
         })
     );
   var count = 0;
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
-    .doc("inbox")
-    .collection("recents")
-    .get()
-    .then((messageThread) => {
-      messageThread.forEach((item) => {
-        if (item.exists) {
-          const data = item.data();
+  const messageBadge = await getMessageBadges();
+  const requestBadge = await getRequestBadges();
 
-          if (data.business.unread == true) {
-            console.log("+++++++++++++++++++++++++++");
-            count++;
-          }
-        }
-      });
-      console.log(count);
-      Notifications.addBadge(count);
-    });
+  Notifications.addBadge(messageBadge + requestBadge);
 };
 
 const reportBusiness = async (businessEmail, reason, email) => {
@@ -1221,6 +1204,68 @@ const cancelAppointment = (day, startTime, description) => {
   );
 };
 
+const getMessageBadges = async () => {
+  var count = 0;
+
+  await getUser()
+    .doc("inbox")
+    .collection("recents")
+    .get()
+    .then((messageThread) => {
+      messageThread.forEach((item) => {
+        if (item.exists) {
+          const data = item.data();
+
+          if (data.business.unread == true) {
+            count++;
+          }
+        }
+      });
+    });
+
+  return count;
+};
+
+const getRequestBadges = async () => {
+  var count = 0;
+
+  await getUser()
+    .doc("requests")
+    .collection("list")
+    .get()
+    .then((messageThread) => {
+      messageThread.forEach((item) => {
+        if (item.exists) {
+          const data = item.data();
+
+          if (data.request == "pending") {
+            count++;
+          }
+        }
+      });
+    });
+
+  return count;
+};
+
+const updateBadgeCount = () => {};
+
+const updateUnread = (item) => {
+  getUser()
+    .doc("inbox")
+    .collection("recents")
+    .doc(item.email)
+    .set({
+      business: {
+        avatar: item.avatar,
+        email: item.email,
+        latestMessage: item.latestMessage,
+        name: item.name,
+        unread: false,
+      },
+    });
+};
+
 export default {
   getListings,
   addListing,
@@ -1264,4 +1309,7 @@ export default {
   getBlockedList,
   cancelAppointment,
   deleteImage,
+  getMessageBadges,
+  getRequestBadges,
+  updateUnread,
 };

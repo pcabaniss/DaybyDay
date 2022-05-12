@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@georstat/react-native-image-gallery": "^1.0.2",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/checkbox": "^0.5.8",
     "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-community/hooks": "^2.6.0",

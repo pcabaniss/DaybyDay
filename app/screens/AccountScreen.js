@@ -9,7 +9,7 @@ import Icon from "../components/Icon";
 import ListItemSeperator from "../components/ListItemSeperator";
 import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
-import { ActivityIndicator } from "react-native-paper";
+import Notifications from "../api/Notifications";
 
 const menuItems = [
   {
@@ -56,6 +56,7 @@ function AccountScreen({ navigation }) {
   const { user, logOut } = useAuth();
   const [name, setName] = useState("");
   const [pic, setPic] = useState(" ");
+  const [business, setBusiness] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -68,7 +69,10 @@ function AccountScreen({ navigation }) {
   }, [isFocused]);
 
   const getName = async () => {
-    const name = await listings.getName(user.email);
+    const name = await listings.getMyName();
+    const isBusiness = await listings.pullProfileType(user.email);
+
+    setBusiness(isBusiness);
     setName(name);
   };
   var email = user.email.charAt(0).toUpperCase() + user.email.slice(1);
@@ -119,6 +123,8 @@ function AccountScreen({ navigation }) {
                   name={item.icon.name}
                   backgroundColor={colors.black}
                   iconColor={colors.green}
+                  title={item.title}
+                  isBusiness={business}
                 />
               }
               onPress={() =>
