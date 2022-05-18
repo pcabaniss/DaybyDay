@@ -77,7 +77,7 @@ function CurrentSchedule({ navigation }) {
     },
     {
       day: "Saturday",
-      letter: "S",
+      letter: "Sa",
       open: new Date(),
       close: new Date(),
       marked: false,

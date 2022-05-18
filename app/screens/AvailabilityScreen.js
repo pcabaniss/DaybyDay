@@ -17,8 +17,7 @@ import Notifications from "../api/Notifications";
 
 function AvailabilityScreen({ route, navigation }) {
   const { day, hours, business, duration, picture } = route.params;
-  console.log("This is the day ");
-  console.log(day);
+
   const [dayHours, setDayHours] = useState(hours);
   const [pendingArray, setPendingArray] = useState([]);
   const [accepted, setAcceptedArray] = useState([]);
@@ -139,7 +138,6 @@ function AvailabilityScreen({ route, navigation }) {
         ItemSeparatorComponent={SpaceSeperator}
         renderItem={({ item }) => {
           //Needs a function here checking the date for any matching times.
-          console.log(item.key);
           return (
             <TouchableOpacity
               onPress={() =>

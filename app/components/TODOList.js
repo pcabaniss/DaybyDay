@@ -18,8 +18,6 @@
  *
  * implement app tutorial screens/ bubbles throughout app for first-time users
  *
- * Set up the little red bubble notifications
- *
  * set up database and fix privacy settings
  *
  * get images for app to use.

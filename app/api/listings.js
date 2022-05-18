@@ -295,6 +295,50 @@ const saveImages = async (email, jpg, filePath) => {
   ref.put(blob);
 };
 
+const getDaysOff = async (business) => {
+  const safeEmail = safetyFirst(business);
+
+  const dotw = [
+    { day: "Sunday", letter: "S", number: 0 },
+    { day: "Monday", letter: "M", number: 1 },
+    { day: "Tuesday", letter: "T", number: 2 },
+    { day: "Wednesday", letter: "W", number: 3 },
+    { day: "Thursday", letter: "Th", number: 4 },
+    { day: "Friday", letter: "F", number: 5 },
+    { day: "Saturday", letter: "Sa", number: 6 },
+  ];
+
+  var daysOff = [];
+
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("Schedule")
+    .get()
+    .then((ss) => {
+      dotw.map((day) => {
+        ss.ref
+          .collection(day.day)
+          .get()
+          //misc == info in db
+          .then((misc) => {
+            if (misc.empty) {
+              //Getting days off
+              daysOff.push(day.day);
+            } else {
+              misc.forEach((bow) => {
+                if (bow.exists) {
+                  //For getting the days of operation
+                }
+              });
+            }
+          });
+      });
+    });
+
+  return daysOff;
+};
+
 const getImages = async (email) => {
   const safeEmail = safetyFirst(email);
   var gallery = [];
@@ -993,7 +1037,6 @@ const getRatings = async (business) => {
     .then((review) => {
       review.forEach((item) => {
         if (item.exists()) {
-          console.log(item.val());
           train.push(item.val());
         }
       });
@@ -1274,6 +1317,7 @@ export default {
   deleteListing,
   updateListing,
   saveImages,
+  getDaysOff,
   getImages,
   saveProfilePic,
   getProfilePic,

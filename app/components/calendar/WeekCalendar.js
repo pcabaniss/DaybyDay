@@ -36,7 +36,7 @@ const timeToString = (time) => {
 
 const WeekCalendar = ({ navigation }) => {
   const isFocused = useIsFocused();
-  const [items, setItems] = useState({});
+  const [items, setItems] = useState();
   const [date, setDate] = useState({});
   const [custom, setCustom] = useState(true);
 

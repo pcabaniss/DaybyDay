@@ -9,6 +9,7 @@ function PercentageBar({ starText, percentage }) {
       duration: 500,
     }).start();
   }, [percentage]);
+
   return (
     <View style={{ flexDirection: "row" }}>
       <Text style={styles.progressText}>{starText}</Text>
