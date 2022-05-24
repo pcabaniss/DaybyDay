@@ -6,8 +6,9 @@ import MyDatesScreen from "../screens/RequestsScreen";
 import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";
-import PhotoGallery from "../components/PhotoGallery";
-import Reviewer from "../components/Reviewer";
+import NavigationSettings from "../screens/NavigationSettings";
+import SecuritySettings from "../screens/SecuritySettings";
+import ChangePassword from "../screens/ChangePassword";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,21 @@ const UserAccountNavigator = () => (
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="Dates" component={MyDatesScreen} />
     <Stack.Screen name="Help" component={HelpAndSupport} />
+    <Stack.Screen
+      name="notifications"
+      component={NavigationSettings}
+      options={{ title: "Notification Settings" }}
+    />
+    <Stack.Screen
+      name="security"
+      component={SecuritySettings}
+      options={{ title: "Security Settings" }}
+    />
+    <Stack.Screen
+      name="changePassword"
+      component={ChangePassword}
+      options={{ title: "Update Password" }}
+    />
   </Stack.Navigator>
 );
 

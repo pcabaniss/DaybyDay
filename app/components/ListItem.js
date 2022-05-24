@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableHighlight } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
@@ -28,7 +34,7 @@ function ListItem({
     //so it will display views side by side
     //we put a view as a child because we want the second view to be vertical
     <Swipeable renderRightActions={renderRightActions}>
-      <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
+      <TouchableOpacity underlayColor={colors.light} onPress={onPress}>
         <View style={styles.container}>
           {IconComponent}
           {trigger ? (
@@ -64,7 +70,7 @@ function ListItem({
             color={colors.medium}
           />
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     </Swipeable>
   );
 }

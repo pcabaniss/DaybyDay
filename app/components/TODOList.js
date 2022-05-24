@@ -1,8 +1,4 @@
 /**
- *
- * Have it to where the customer can select a time slot and
- *  it shows up on the calendar for others to see.
- *
  * test test test and then test some more to find bugs.
  *
  * Make the necessary changes to run on android successfully

@@ -10,6 +10,9 @@ import BusRequestScreen from "../screens/BusRequestsScreen";
 import AnswerScreen from "../screens/AnswerScreen";
 import colors from "../config/colors";
 import Reviewer from "../components/Reviewer";
+import NavigationSettings from "../screens/NavigationSettings";
+import SecuritySettings from "../screens/SecuritySettings";
+import ChangePassword from "../screens/ChangePassword";
 
 const Stack = createStackNavigator();
 
@@ -100,6 +103,21 @@ const AccountNavigator = () => (
           opacity: 0.99,
         },
       }}
+    />
+    <Stack.Screen
+      name="notifications"
+      component={NavigationSettings}
+      options={{ title: "Notification Settings" }}
+    />
+    <Stack.Screen
+      name="security"
+      component={SecuritySettings}
+      options={{ title: "Security Settings" }}
+    />
+    <Stack.Screen
+      name="changePassword"
+      component={ChangePassword}
+      options={{ title: "Update Password" }}
     />
   </Stack.Navigator>
 );

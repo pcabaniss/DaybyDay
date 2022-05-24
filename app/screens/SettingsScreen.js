@@ -13,41 +13,40 @@ import moment from "moment";
  * Contact info
  */
 const settingItems = [
+  //Display current notification settings. Instructions on how to turn off.
   {
     title: "Notifications",
-    targetScreen: "Dates",
+    targetScreen: "notifications",
   },
+
+  //Display information on blocked profiles, and reported cases.
   {
-    title: "Privacy",
+    title: "Data & Privacy",
     targetScreen: "Messages",
   },
+  /*
   {
     title: "Payment Settings",
     targetScreen: "Settings",
   },
-  {
-    title: "Password & Security",
-    targetScreen: "Settings",
-  },
-  {
-    title: "Identity Verification",
-    targetScreen: "Settings",
-  },
-  {
+   {
     title: "Membership",
     targetScreen: "Settings",
   },
+  */
+  //Change password and view information.
   {
-    title: "Legal",
-    targetScreen: "Settings",
+    title: "Password & Security",
+    targetScreen: "security",
   },
+  //Display contact info/email. Business hours, and maybe an FAQ website?
   {
     title: "Contact Us",
     targetScreen: "Settings",
   },
 ];
 
-function SettingsScreen(props) {
+function SettingsScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
@@ -70,7 +69,7 @@ function SettingsScreen(props) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.black,
   },
   container: {
     marginVertical: 20,
