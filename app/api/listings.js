@@ -5,6 +5,8 @@ import Notifications from "./Notifications";
 import { Linking } from "react-native";
 import qs from "qs";
 
+import { Alert } from "react-native";
+
 const endPoint = "/listings";
 
 const getListings = () => client.get(endPoint);
@@ -386,8 +388,12 @@ const deleteImage = (imageURL) => {
         if (url.exists) {
           const image = url.data().imageName;
           if (imageURL == image) {
-            console.log(url.id);
-            getUser().doc("images").collection("gallery").doc(url.id).delete();
+            getUser()
+              .doc("images")
+              .collection("gallery")
+              .doc(url.id)
+              .delete()
+              .then(console.log("Deleted image!"));
           }
         }
       });
@@ -427,9 +433,6 @@ const pullProfileType = (email) => {
 const saveMessages = (message, otherUsers, createdAt, sender) => {
   const otherSafeEmail = safetyFirst(otherUsers._id);
 
-  console.log(sender);
-  console.log("------------------------");
-  console.log(otherUsers);
   //main sender of the message
   getUser()
     .doc("messages")
@@ -703,7 +706,6 @@ const getSearchResults = async (text = "null") => {
 
   info.forEach((item) => {
     blockedList.forEach((business) => {
-      console.log(business);
       if (item.email == business.toLowerCase()) {
         info.splice(count, 1);
       }
@@ -727,7 +729,7 @@ const sendRequest = async (
   const user = firebase.default.auth().currentUser.email;
   const userEmail = safetyFirst(user);
   const userPic = await getProfilePic(user);
-  console.log(user);
+
   await firebase.default
     .firestore()
     .collection(safeEmail)
@@ -890,7 +892,7 @@ const updateRequest = async (text, response, request) => {
                 duration: data.duration,
               })
               .catch((error) => {
-                console.log("error saving listing to business: " + error);
+                console.log("Error saving listing to business: " + error);
               });
           }
         }
@@ -924,7 +926,7 @@ const updateRequest = async (text, response, request) => {
                 duration: data.duration,
               })
               .catch((error) => {
-                console.log("error saving listing to user: " + error);
+                console.log("Error saving listing to user: " + error);
               });
           }
         }
@@ -1309,6 +1311,126 @@ const updateUnread = (item) => {
     });
 };
 
+const changePassword = async (oldPW, newPW, onPress) => {
+  const myEmail = firebase.default.auth().currentUser.email;
+
+  const emailCred = firebase.default.auth.EmailAuthProvider.credential(
+    myEmail,
+    oldPW
+  );
+
+  await firebase.default
+    .auth()
+    .currentUser.reauthenticateWithCredential(emailCred)
+    .then(() => {
+      console.log("Updated Password");
+      //Send email to them letting them know
+
+      firebase.default.auth().currentUser.updatePassword(newPW);
+
+      return Alert.alert(
+        "Success!",
+        "Your password was successfully changed.",
+        [{ text: "Sweet!", onPress: onPress }]
+      );
+    })
+    .catch((error) => {
+      console.log("Error: " + error);
+      return Alert.alert(
+        "Something went wrong.",
+        "Usually this happens due to a wrong password or a network issue. Please try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    });
+
+  return;
+};
+
+const currentblockedList = async () => {
+  var info = [];
+  var count = 0;
+
+  const blockedList = await getBlockedList();
+
+  if (blockedList.length != 0) {
+    await currentUser()
+      .ref()
+      .child("users/")
+      .get()
+      .then((name) => {
+        name.forEach((user) => {
+          const email = user.child("UserInfo/email").val();
+          const name = user.child("UserInfo/name").val();
+          const pic = user.child("profilePicture/profilePicture").val();
+
+          //should be true
+
+          info.push({
+            email: email,
+            name: name,
+            key: 0,
+            pic: pic,
+          });
+        });
+      });
+    info.forEach((item) => {
+      blockedList.forEach((business) => {
+        if (item.email != business.toLowerCase()) {
+          info.splice(count, 1);
+        }
+      });
+      count = count + 1;
+    });
+  } else {
+    info == undefined;
+  }
+
+  return info;
+};
+
+const unblock = (blockedName) => {
+  const safeBus = safetyFirst(blockedName);
+  firebase.default
+    .firestore()
+    .collection(safeBus.toLowerCase())
+    .doc("privacy")
+    .collection("blockedList")
+    .get()
+    .then((item) => {
+      item.forEach((doc) => {
+        const data = doc.data();
+
+        if (data.businessEmail.toLowerCase() == blockedName) {
+          firebase.default
+            .firestore()
+            .collection(safeBus.toLowerCase())
+            .doc("privacy")
+            .collection("blockedList")
+            .doc(doc.id)
+            .delete();
+        }
+      });
+    });
+
+  getUser()
+    .doc("privacy")
+    .collection("blockedList")
+    .get()
+    .then((item) => {
+      item.forEach((doc) => {
+        const data = doc.data();
+
+        if (data.businessEmail.toLowerCase() == blockedName) {
+          getUser()
+            .doc("privacy")
+            .collection("blockedList")
+            .doc(doc.id)
+            .delete();
+        }
+      });
+    });
+};
+
 export default {
   getListings,
   addListing,
@@ -1356,4 +1478,7 @@ export default {
   getMessageBadges,
   getRequestBadges,
   updateUnread,
+  changePassword,
+  currentblockedList,
+  unblock,
 };

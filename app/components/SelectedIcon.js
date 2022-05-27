@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TextInput } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -8,6 +8,7 @@ import MessageForm from "./MessageForm";
 import SchedulingCalendar from "./calendar/SchedulingCalendar";
 import PhotoGallery from "./PhotoGallery";
 import ReviewScreen from "../screens/ReviewScreen";
+import listings from "../api/listings";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +17,7 @@ function SelectedIcon({ email, navigation }) {
 
   useEffect(() => {
     const getGallery = async () => {
-      const gallery = await listings.getImages(business);
+      const gallery = await listings.getImages(email);
 
       setImages(gallery);
     };
@@ -29,14 +30,21 @@ function SelectedIcon({ email, navigation }) {
         tabBarOptions={{
           tabStyle: {
             paddingBottom: 3,
-            backgroundColor: colors.black,
-            borderColor: colors.medium,
+            borderColor: colors.black,
+            backgroundColor: colors.orange,
+            //alignSelf: "center",
+            //padding: 10,
+            shadowOffset: { width: 0, height: 5 },
+            shadowOpacity: 1.0,
+            shadowRadius: 2,
+            shadowColor: "rgba(193, 211, 251, 0.5)",
+            elevation: 5,
           },
           style: {
             backgroundColor: colors.white,
             borderTopColor: colors.black,
           },
-          activeTintColor: colors.medium,
+          activeTintColor: colors.black,
           inactiveTintColor: colors.white,
           showLabel: false,
         }}

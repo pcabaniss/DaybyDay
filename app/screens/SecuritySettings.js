@@ -29,7 +29,7 @@ function SecuritySettings({ navigation }) {
         <ListItem
           title={"Blocked list"}
           subTitle={"View and edit blocked users."}
-          onPress={() => console.log("Blocked Pressed! ")}
+          onPress={() => navigation.navigate("blockedList")}
           IconComponent={
             <MaterialCommunityIcons
               name="account-cancel"

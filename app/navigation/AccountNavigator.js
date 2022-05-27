@@ -13,6 +13,7 @@ import Reviewer from "../components/Reviewer";
 import NavigationSettings from "../screens/NavigationSettings";
 import SecuritySettings from "../screens/SecuritySettings";
 import ChangePassword from "../screens/ChangePassword";
+import SettingsNavigator from "./SettingsNavigator";
 
 const Stack = createStackNavigator();
 
@@ -49,7 +50,6 @@ const AccountNavigator = () => (
       name="Messages"
       component={MessagingNavigator}
     />
-    <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen
       name="Dates"
       component={BusRequestScreen}
@@ -105,19 +105,9 @@ const AccountNavigator = () => (
       }}
     />
     <Stack.Screen
-      name="notifications"
-      component={NavigationSettings}
-      options={{ title: "Notification Settings" }}
-    />
-    <Stack.Screen
-      name="security"
-      component={SecuritySettings}
-      options={{ title: "Security Settings" }}
-    />
-    <Stack.Screen
-      name="changePassword"
-      component={ChangePassword}
-      options={{ title: "Update Password" }}
+      name="Settings"
+      component={SettingsNavigator}
+      options={{ headerShown: false }}
     />
   </Stack.Navigator>
 );

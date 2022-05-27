@@ -10,7 +10,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
   const [duration, setDuration] = useState(30);
   const [pic, setPic] = useState(" ");
   const [daysOff, setDaysOff] = useState([]);
-  const [markedDates, setMarkedDates] = useState();
+  const [markedDates, setMarkedDates] = useState({});
 
   const today = moment().format("YYYY-MM-DD");
 
@@ -50,6 +50,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
       marked: true,
       dotColor: "red",
     };
+
     while (pivot.isBefore(end)) {
       days.forEach((day) => {
         const copy = moment(pivot);
@@ -59,7 +60,6 @@ function ViewSchedulingCalendar({ navigation, email }) {
     }
 
     setMarkedDates(dates);
-    console.log(markedDates);
     return dates;
   };
 
@@ -77,8 +77,6 @@ function ViewSchedulingCalendar({ navigation, email }) {
   }, []);
 
   const calculateHours = (timeDiff, open, interval, slots) => {
-    console.log("Break______________");
-    console.log(open);
     const hours = [];
     if (interval > 45 || interval == undefined) {
       for (var i = 0; i <= timeDiff; i++) {
@@ -122,7 +120,6 @@ function ViewSchedulingCalendar({ navigation, email }) {
       if (dayArray.interval < 46) {
         const timeDiff = moment(dayArray.close).diff(dayArray.open, "minutes");
         const divide = timeDiff / dayArray.interval;
-        console.log(timeDiff);
         const calc = calculateHours(
           divide,
           dayArray.open,
@@ -132,7 +129,6 @@ function ViewSchedulingCalendar({ navigation, email }) {
         return calc;
       } else {
         const timeDiff = moment(dayArray.close).diff(dayArray.open, "hours");
-        console.log(timeDiff);
 
         const calc = calculateHours(
           timeDiff,
@@ -193,6 +189,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         onMonthChange={(date) => {
           setMarkedDates(getDaysInMonth(date.month - 1, date.year, daysOff));
         }}
+
         //make a quick function that runs through the weekly schedule and
         //returns null on closed days.
         //markedDates={getMarkedDays}

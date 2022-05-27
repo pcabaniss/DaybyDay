@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ImageBackground,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Rating } from "react-native-ratings";
@@ -47,10 +48,6 @@ function ProfileSettingsScreen({ route, navigation }) {
     const totalStars = (total / count).toFixed(1);
     //console.log(totalStars);
     setRating(totalStars);
-  };
-
-  const getFileName = (path) => {
-    return path.split("/").pop();
   };
 
   const pullAboutInfo = async (email) => {
@@ -135,133 +132,40 @@ function ProfileSettingsScreen({ route, navigation }) {
   };
 
   return (
-    <ScrollView scrollEnabled style={{ backgroundColor: colors.dark }}>
-      <View style={styles.picContainer}>
-        <TouchableOpacity onPress={() => alertButton()}>
-          <Image source={{ uri: image }} style={styles.profilePic} />
-        </TouchableOpacity>
-        <View style={{ paddingLeft: 10, flex: 1 }}>
-          <TextInput
-            editable
-            multiline
-            onChangeText={changeText}
-            value={about}
-            placeholder="This is where the about goes."
-            style={styles.aboutText}
-          ></TextInput>
+    <ScrollView scrollEnabled style={{ backgroundColor: colors.white }}>
+      <ImageBackground source={require("../assets/gradient-3.png")}>
+        <View style={styles.picContainer}>
+          <TouchableOpacity onPress={() => alertButton()}>
+            <Image source={{ uri: image }} style={styles.profilePic} />
+          </TouchableOpacity>
+          <View style={{ paddingLeft: 10, flex: 1 }}>
+            <TextInput
+              editable
+              multiline
+              onChangeText={changeText}
+              value={about}
+              placeholder="This is where the about goes."
+              style={styles.aboutText}
+            ></TextInput>
+          </View>
         </View>
-      </View>
-      <View style={styles.nameBox}>
-        <View style={{ paddingRight: 10 }}>
-          <Text style={styles.nameText}>{name}</Text>
+        <View style={styles.nameBox}>
+          <View style={{ paddingRight: 10 }}>
+            <Text style={styles.nameText}>{name}</Text>
 
-          <Text style={{ paddingLeft: 5, color: colors.light }}>
-            {capEmail}
-          </Text>
-          <Rating
-            type="custom"
-            ratingCount={5}
-            showRating={false}
-            tintColor={colors.black}
-            startingValue={rating}
-            ratingColor={colors.yellow}
-            style={{ padding: 10, alignSelf: "flex-start" }}
-            ratingBackgroundColor={colors.light}
-            readonly
-            imageSize={20}
-          />
+            <Text
+              style={{ paddingLeft: 5, color: colors.green, paddingBottom: 10 }}
+            >
+              {capEmail}
+            </Text>
+          </View>
         </View>
-      </View>
+      </ImageBackground>
       <View style={styles.boxContainer}>
         {<SelectedIcon email={email} navigation={navigation} />}
       </View>
     </ScrollView>
   );
-
-  /*return (
-    <ScrollView
-      scrollEnabled
-      style={{ backgroundColor: colors.white, flex: 1 }}
-    >
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.bgContainer}
-          onPress={() => backgroundPressed()}
-          activeOpacity={3}
-        >
-          <ImageBackground
-            source={require("../assets/couch.jpg")}
-            resizeMode="cover"
-            style={styles.image}
-          >
-            <TouchableOpacity
-              onPress={() => alertButton()}
-              style={styles.picContainer}
-            >
-              <Image source={{ uri: image }} style={styles.profilePic} />
-            </TouchableOpacity>
-          </ImageBackground>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "99%",
-          backgroundColor: colors.white,
-          alignSelf: "center",
-        }}
-      >
-        <View style={{ paddingRight: 10 }}>
-          <Text style={styles.nameText}>{name}</Text>
-
-          <Text style={{ paddingLeft: 5, paddingBottom: 15 }}>{capE}</Text>
-        </View>
-
-        <FlatList
-          data={menuItems}
-          horizontal
-          scrollEnabled={false}
-          contentContainerStyle={styles.icon}
-          renderItem={() => {
-            return (
-              <MaterialCommunityIcons
-                name="star"
-                size={40}
-                color={colors.yellow}
-              />
-            );
-          }}
-        />
-      </View>
-      <ListItemSeperator />
-      <View style={{ alignSelf: "center", paddingTop: 10, height: 80 }}>
-        <FlatList
-          horizontal
-          scrollEnabled={false}
-          data={menuItems}
-          contentContainerStyle={{
-            height: 60,
-          }}
-          ItemSeparatorComponent={SpaceSeperator}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => setSelected(item.title)}>
-                <Icon
-                  name={item.icon.name}
-                  size={60}
-                  backgroundColor={item.icon.backgroundColor}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-
-      <View style={styles.boxContainer}>
-        {<SelectedIcon prop={selected} navigation={navigation} />}
-      </View>
-    </ScrollView>
-  );*/
 }
 
 const styles = StyleSheet.create({
@@ -274,7 +178,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nameBox: {
-    backgroundColor: colors.black,
+    //backgroundColor: colors.black,
     width: "100%",
     paddingLeft: 10,
   },
@@ -292,7 +196,7 @@ const styles = StyleSheet.create({
 
     //width: "100%",
     padding: 5,
-    backgroundColor: colors.black,
+    //backgroundColor: colors.black,
   },
   profilePic: {
     height: 120,
@@ -306,7 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingLeft: 3,
     fontWeight: "bold",
-    color: colors.dark,
+    color: colors.white,
   },
   icon: {
     borderRadius: 17,

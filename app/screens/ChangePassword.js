@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TextInput, Button, Alert } from "react-native";
-import DaySeperator from "../components/DaySeprator";
+import listings from "../api/listings";
 import SimpleSeperator from "../components/SimpleSeperator";
 import colors from "../config/colors";
 
@@ -22,13 +22,34 @@ function ChangePassword({ navigation }) {
   };
 
   const checkStuff = () => {
-    //listings.checkPassword or listing.changePassword
     if (newPW != check) {
       Alert.alert(
         "New passwords dont match!",
         "Please make sure all characters are matching in new passwords.",
         [{ text: "OK", style: "cancel" }]
       );
+    } else if (newPW.length < 6) {
+      Alert.alert(
+        "Not long enough!",
+        "Passwords must be at least 6 characters long.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    } else if (current == newPW) {
+      Alert.alert(
+        "Oh no!",
+        "It looks like your new password matches your old one. Please try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    } else {
+      const func = async () => {
+        const change = await listings.changePassword(current, newPW, () =>
+          navigation.goBack()
+        );
+
+        change;
+      };
+
+      func();
     }
   };
 

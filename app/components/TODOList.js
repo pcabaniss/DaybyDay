@@ -17,4 +17,6 @@
  * set up database and fix privacy settings
  *
  * get images for app to use.
+ *
+ * Set up email sending service and connect it to firebase.
  */

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import { date } from "yup/lib/locale";
 
 function CalendarScreen(props) {
@@ -10,7 +10,6 @@ function CalendarScreen(props) {
       <View style={styles.container}>
         <Calendar
           onDayPress={(day) => {
-            console.log("selected day", day);
             selectedDates(day);
           }}
           hideDayNames={false}

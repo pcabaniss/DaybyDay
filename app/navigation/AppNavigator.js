@@ -19,51 +19,39 @@ const AppNavigator = () => {
   const [isBusiness, setIsBusiness] = useState();
   const [badge, setBadge] = useState();
 
-  useEffect(() => {
-    const getBadges = async () => {
-      const messages = await listings.getMessageBadges();
+  const getBadges = async () => {
+    const messages = await listings.getMessageBadges();
 
-      if (isBusiness == true) {
-        const count = await listings.getRequestBadges();
-        if (badge != count + messages) {
-          setBadge(count + messages);
-        }
-      } else {
-        if (badge != messages && messages != 0) {
-          setBadge(messages);
-        }
+    if (isBusiness == true) {
+      const count = await listings.getRequestBadges();
+      if (badge != count + messages) {
+        setBadge(count + messages);
       }
-    };
-    getBadges();
-
+    } else {
+      if (badge != messages && messages != 0) {
+        setBadge(messages);
+      }
+    }
     if (badge == 0) {
       setBadge(undefined);
     }
+  };
+
+  useEffect(() => {
+    getBadges();
 
     console.log("Fetched badges!");
   }, [isBusiness]);
 
-  setInterval(() => {
-    const getBadges = async () => {
-      const messages = await listings.getMessageBadges();
-      const count = await listings.getRequestBadges();
-
-      if (isBusiness == true) {
-        if (badge != count + messages) {
-          setBadge(count + messages);
-        }
-      } else {
-        if (badge != messages && messages != 0) {
-          setBadge(messages);
-        }
-      }
-    };
-    getBadges();
-
-    if (badge === 0) {
+  const checkBadges = () => {
+    if (badge == 0) {
       setBadge(undefined);
     }
-  }, 5000);
+  };
+
+  useEffect(() => {
+    checkBadges();
+  }, [badge]);
 
   const type = async (profile) => {
     const bool = await listings.pullProfileType(profile.email);
