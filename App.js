@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
-import { Alert, LogBox, StyleSheet } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 import * as Notifications from "expo-notifications";
 import Device from "expo-device";
 
@@ -90,6 +90,7 @@ export default function App() {
         listings.getReminders(user.email);
       } else {
         console.log("User not verified");
+        //setShowMain(false);
       }
     });
   };
@@ -102,6 +103,7 @@ export default function App() {
         onError={console.warn}
       />
     );
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <OfflineNotice />

@@ -38,14 +38,21 @@ function SelectedIconViewed({
         tabBarOptions={{
           tabStyle: {
             paddingBottom: 3,
-            backgroundColor: colors.black,
-            borderColor: colors.medium,
+            borderColor: colors.black,
+            backgroundColor: colors.orange,
+            //alignSelf: "center",
+            //padding: 10,
+            shadowOffset: { width: 0, height: 5 },
+            shadowOpacity: 1.0,
+            shadowRadius: 2,
+            shadowColor: "rgba(193, 211, 251, 0.5)",
+            elevation: 5,
           },
           style: {
             backgroundColor: colors.white,
             borderTopColor: colors.black,
           },
-          activeTintColor: colors.medium,
+          activeTintColor: colors.black,
           inactiveTintColor: colors.white,
           showLabel: false,
         }}

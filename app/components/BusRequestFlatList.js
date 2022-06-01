@@ -25,6 +25,7 @@ function BusRequestFlatList(data, status, navigation) {
     }
   };
   const pressedListing = (item) => {
+    console.log(item);
     if (status == "Pending") {
       navigation.navigate("Answer", { item: item });
     } else {

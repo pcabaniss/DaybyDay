@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Text } from "react-native";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import listings from "../../api/listings";
@@ -10,7 +10,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
   const [duration, setDuration] = useState(30);
   const [pic, setPic] = useState(" ");
   const [daysOff, setDaysOff] = useState([]);
-  const [markedDates, setMarkedDates] = useState({});
+  const [markedDates, setMarkedDates] = useState();
 
   const today = moment().format("YYYY-MM-DD");
 
@@ -59,21 +59,21 @@ function ViewSchedulingCalendar({ navigation, email }) {
       pivot.add(7, "days");
     }
 
-    setMarkedDates(dates);
+    //setMarkedDates(dates);
     return dates;
+  };
+
+  const getStuff = async () => {
+    const doff = await listings.getDaysOff(email);
+
+    setDaysOff(doff);
   };
 
   useEffect(() => {
     getPicture();
-
-    const getStuff = async () => {
-      const doff = await listings.getDaysOff(email);
-
-      setDaysOff(doff);
-    };
+    getStuff();
 
     setMarkedDates(getDaysInMonth(moment().month(), moment().year(), daysOff));
-    getStuff();
   }, []);
 
   const calculateHours = (timeDiff, open, interval, slots) => {
@@ -179,6 +179,9 @@ function ViewSchedulingCalendar({ navigation, email }) {
 
   return (
     <View style={styles.container}>
+      <Text style={{ alignSelf: "center", paddingBottom: 10 }}>
+        Select a date to schedule an appointment
+      </Text>
       <Calendar
         style={styles.calendar}
         markingType={"period"}

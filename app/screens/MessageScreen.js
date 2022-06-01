@@ -25,25 +25,39 @@ import colors from "../config/colors";
 
 function MessageScreen({ navigation, route }) {
   const { email, name } = route.params;
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const [inbox, setInbox] = useState([{}]);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [inbox, setInbox] = useState([]);
 
   //Next step is to pull the other user informatio from somewhere
 
-  useEffect(() => {
-    const getInbox = async () => {
-      const gets = await listings.getInbox();
-      setInbox(gets);
-    };
-    getInbox();
+  const getInbox = async () => {
+    const gets = await listings.getInbox();
 
-    if (inbox == undefined) {
+    setInbox(gets);
+    if (gets == undefined) {
       setInbox([]);
       setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
     }
-  });
+  };
 
+  useEffect(() => {
+    getInbox();
+  }, []);
+
+  /**
+   * 
+   * Array [
+  Object {
+    "avatar": "https://firebasestorage.googleapis.com/v0/b/slate-e5529.appspot.com/o/bladedaddy%40gmail.com%2Fimages%2FprofilePic?alt=media&token=e20b8a3a-8eb0-452c-8e84-48e84d1fb390",
+    "email": "bladedaddy@gmail.com",
+    "latestMessage": "",
+    "name": "No name",
+    "unread": true,
+  },
+]}
+   */
   const pressedOn = (email, name, item) => {
     navigation.navigate("Chat", {
       email: email,
@@ -87,6 +101,8 @@ function MessageScreen({ navigation, route }) {
             data={inbox}
             //keyExtractor={(message) => message.id.toString()}
             renderItem={({ item }) => {
+              console.log("This is the item");
+              console.log(item);
               // const newEmail =
               // item.email.charAt(0).toUpperCase() + item.email.slice(1);
               return (
@@ -103,10 +119,6 @@ function MessageScreen({ navigation, route }) {
               );
             }}
             ItemSeparatorComponent={ListItemSeperator}
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(!refreshing);
-            }}
           />
         </View>
       )}

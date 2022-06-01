@@ -35,7 +35,7 @@ const AuthNavigator = () => (
       name="Registration"
       component={RegisterNavigator}
       options={{
-        headerTintColor: colors.black,
+        headerTintColor: colors.white,
         headerStyle: {
           backgroundColor: colors.black,
           borderColor: colors.black,

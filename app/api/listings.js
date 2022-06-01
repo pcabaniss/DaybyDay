@@ -235,6 +235,19 @@ const getMyName = async () => {
   return name;
 };
 
+const pullName = async (email) => {
+  const safeEmail = safetyFirst(email);
+
+  const name = await currentUser()
+    .ref("users/" + safeEmail + "/UserInfo")
+    .get()
+    .then((doc) => {
+      return doc.child("name").val();
+    });
+
+  return name;
+};
+
 const replaceImage = async (email, filePath) => {
   const response = await fetch(filePath);
   const blob = await response.blob();
@@ -433,6 +446,11 @@ const pullProfileType = (email) => {
 const saveMessages = (message, otherUsers, createdAt, sender) => {
   const otherSafeEmail = safetyFirst(otherUsers._id);
 
+  var latest = message[0].text;
+
+  if (message[0].text == "") {
+    latest = "Send a message to get started!";
+  }
   //main sender of the message
   getUser()
     .doc("messages")
@@ -481,7 +499,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
         .set({
           business: {
             email: otherUsers._id,
-            latestMessage: message[0].text,
+            latestMessage: latest,
             avatar: otherUsers.avatar,
             name: otherUsers.name,
             unread: false,
@@ -498,7 +516,7 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
         .set({
           business: {
             email: sender._id,
-            latestMessage: message[0].text,
+            latestMessage: latest,
             avatar: sender.avatar,
             name: sender.name,
             unread: true,
@@ -868,6 +886,12 @@ const updateRequest = async (text, response, request) => {
   const businessName = firebase.default.auth().currentUser.email;
   const userSafeEmail = safetyFirst(request.user);
 
+  const busUserName = await pullName(businessName);
+  const userUserName = await pullName(request.user);
+
+  console.log(busUserName);
+  console.log(userUserName);
+
   const profilePic = await getProfilePic(businessName);
 
   await getUser()
@@ -936,7 +960,7 @@ const updateRequest = async (text, response, request) => {
   if (response == "accepted") {
     const sender = {
       _id: businessName,
-      name: "No name",
+      name: busUserName,
       email: businessName,
       avatar: profilePic,
     };
@@ -944,7 +968,7 @@ const updateRequest = async (text, response, request) => {
     //Will send otherUser credentials when I pull from database
     const reciever = {
       _id: request.user,
-      name: "no name",
+      name: userUserName,
       email: request.user,
       avatar: request.picture,
     };
@@ -954,7 +978,7 @@ const updateRequest = async (text, response, request) => {
       createdAt: new Date(),
       user: {
         _id: request.user,
-        name: "no name yet",
+        name: userUserName,
         avatar: request.picture,
       },
     };

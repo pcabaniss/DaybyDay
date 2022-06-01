@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { firebase } from "../auth/firebaseConfig";
+import AppIntroSlider from "react-native-app-intro-slider";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import usersApi from "../api/users";
@@ -48,12 +49,67 @@ function RegisterScreen() {
 
   const auth = useAuth();
   const [error, setError] = useState();
+  const [showMain, setShowMain] = useState(false);
   const [image, setImage] = useState();
 
   useEffect(() => {
     requestLibraryPermission();
     requestCameraPermission();
+    setShowMain(false);
   }, []);
+
+  const slides = [
+    {
+      key: "k1",
+      title: "Lets get down to business.",
+      text: "You have chosen to create a business profile. This means you'll be using this app to discover, communicate, and engage with customers.",
+      icon: "account-group-outline",
+      titleStyle: styles.title,
+      textStyle: styles.text,
+      imageStyle: styles.image,
+      backgroundColor: "#F7BB64",
+    },
+    {
+      key: "k2",
+      title: "Make your schedule.",
+      text: "With Day by Day you can set your own hours, and how many appointments you want in a day.",
+      icon: "calendar-clock",
+      titleStyle: styles.title,
+      textStyle: styles.text,
+      imageStyle: styles.image,
+      backgroundColor: "#F4B1BA",
+    },
+    {
+      key: "k3",
+      title: "Profile creation.",
+      text: "Let your customers know all about your business with your customizable profile.",
+      icon: "card-account-details-star",
+      titleStyle: styles.title,
+      textStyle: styles.text,
+      imageStyle: styles.image,
+      backgroundColor: "#4093D2",
+    },
+    {
+      key: "k4",
+      title: "Agenda.",
+      text: "Keep track of all your custom or scheduled appointments with in the agenda tab.",
+      icon: "notebook",
+      titleStyle: styles.title,
+      textStyle: styles.text,
+      imageStyle: styles.image,
+      backgroundColor: "#644EE2",
+    },
+    {
+      key: "k5",
+      title: "Settings.",
+      text: "Check on your messages, requests, and notifications in the account settings tab.",
+      icon: "cog",
+      titleStyle: styles.title,
+      textStyle: styles.text,
+      imageStyle: styles.image,
+      backgroundColor: "#644EE2",
+    },
+  ];
 
   const handleSubmit = async (userInfo) => {
     const email = userInfo.email.replace(".", "-");
@@ -172,83 +228,124 @@ function RegisterScreen() {
     ]);
   };
 
+  const onSkipSlides = () => {
+    setShowMain(true);
+  };
+
+  const onDoneWithSlides = () => {
+    setShowMain(true);
+  };
+
   return (
     <>
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
-      <ScrollView style={styles.scroll}>
-        <Text style={styles.header}>Business</Text>
-        <ListItemSeperator />
-        <Text style={styles.description}>
-          If you will be using DxD as a service to schedule appointments and a
-          platform to host your business.
-        </Text>
-        <ListItemSeperator />
+      {showMain ? (
+        <ScrollView style={styles.scroll}>
+          <Text style={styles.header}>Business</Text>
+          <ListItemSeperator />
+          <Text style={styles.description}>
+            If you will be using DxD as a service to schedule appointments and a
+            platform to host your business.
+          </Text>
+          <ListItemSeperator />
 
-        <Screen style={styles.container}>
-          <Form
-            initialValues={{
-              name: "",
-              safeEmail: "",
-              email: "",
-              password: "",
-              image: "",
-              business: true,
-            }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <View style={styles.imagePicker}>
-              <TouchableWithoutFeedback onPress={handlePress}>
-                <View style={styles.imageContainer}>
-                  {!image && (
-                    <MaterialCommunityIcons
-                      color={colors.dark}
-                      name="account-group"
-                      size={65}
-                    />
-                  )}
-                  {image && (
-                    <Image
-                      name="image"
-                      source={{ uri: image }}
-                      style={styles.image}
-                    />
-                  )}
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-            <ErrorMessage error={error} visible={error} />
-            <FormField
-              autoCorrect={false}
-              icon="shopping"
-              name="name"
-              placeholder="Business Name"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              name="email"
-              placeholder="Email"
-              textContentType="emailAddress"
-            />
-            <Text style={{ color: colors.orange, flex: 1 }}>
-              **This email will be displayed to customers for contact.
-            </Text>
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-            <SubmitButton title="Lets get started" color={colors.greenCheck} />
-          </Form>
-        </Screen>
-      </ScrollView>
+          <Screen style={styles.container}>
+            <Form
+              initialValues={{
+                name: "",
+                safeEmail: "",
+                email: "",
+                password: "",
+                image: "",
+                business: true,
+              }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              <View style={styles.imagePicker}>
+                <TouchableWithoutFeedback onPress={handlePress}>
+                  <View style={styles.imageContainer}>
+                    {!image && (
+                      <MaterialCommunityIcons
+                        color={colors.dark}
+                        name="account-group"
+                        size={65}
+                      />
+                    )}
+                    {image && (
+                      <Image
+                        name="image"
+                        source={{ uri: image }}
+                        style={styles.image}
+                      />
+                    )}
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <ErrorMessage error={error} visible={error} />
+              <FormField
+                autoCorrect={false}
+                icon="shopping"
+                name="name"
+                placeholder="Business Name"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="email"
+                keyboardType="email-address"
+                name="email"
+                placeholder="Email"
+                textContentType="emailAddress"
+              />
+              <Text style={{ color: colors.orange, flex: 1 }}>
+                **This email will be displayed to customers for contact.
+              </Text>
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+              <SubmitButton
+                title="Lets get started"
+                color={colors.greenCheck}
+              />
+            </Form>
+          </Screen>
+        </ScrollView>
+      ) : (
+        <AppIntroSlider
+          data={slides}
+          renderItem={({ item }) => {
+            return (
+              <View
+                style={{
+                  backgroundColor: item.backgroundColor,
+                  flex: 1,
+                  paddingTop: 20,
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                  padding: 20,
+                }}
+              >
+                <Text style={styles.tutorialTitle}>{item.title}</Text>
+                <MaterialCommunityIcons
+                  color={colors.black}
+                  name={item.icon}
+                  size={120}
+                />
+                <Text style={styles.tutorialText}>{item.text}</Text>
+              </View>
+            );
+          }}
+          onDone={onDoneWithSlides}
+          onSkip={onSkipSlides}
+        />
+      )}
     </>
   );
 }
@@ -299,6 +396,22 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     backgroundColor: colors.black,
+  },
+  tutorialTitle: {
+    fontSize: 40,
+    fontWeight: "bold",
+    textAlign: "center",
+    //marginTop: 20,
+    justifyContent: "flex-start",
+  },
+  tutorialText: {
+    color: "#fff",
+    fontSize: 20,
+  },
+  tutorialImage: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
   },
 });
 
