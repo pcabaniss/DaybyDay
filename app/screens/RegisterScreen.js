@@ -11,6 +11,7 @@ import {
 import * as Yup from "yup";
 import { firebase } from "../auth/firebaseConfig";
 import AppIntroSlider from "react-native-app-intro-slider";
+import LottieView from "lottie-react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import usersApi from "../api/users";
@@ -66,6 +67,7 @@ function RegisterScreen() {
       title: "Customer!",
       text: "You have chosen to create a customer profile. This means you will be using the app to search for, and schedule appointments with existing businesses. ",
       icon: "account-cash",
+      lottie: require("../assets/animations/customer.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -76,6 +78,7 @@ function RegisterScreen() {
       title: "Agenda",
       text: "See your scheduled appointments, schedule custom appointments, and keep track of daily life with the agenda.",
       icon: "notebook",
+      lottie: require("../assets/animations/agenda.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -86,6 +89,7 @@ function RegisterScreen() {
       title: "Discover",
       text: "Discover new businesses and interact with them. Schedule new appointments and keep in touch with messaging, then leave reviews when you have used their services.",
       icon: "briefcase-search",
+      lottie: require("../assets/animations/review.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -96,16 +100,18 @@ function RegisterScreen() {
       title: "Profile",
       text: "Keep your information up to date and keep track of in-app settings, requests, and messages",
       icon: "account-cog",
+      lottie: require("../assets/animations/profile.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
-      backgroundColor: "#644EE2",
+      backgroundColor: colors.orange,
     },
     {
       key: "k5",
       title: "Enjoy",
       text: "Schedule some peace of mind and enjoy having more orginization in your daily life.",
       icon: "robot-happy",
+      lottie: require("../assets/animations/relax.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -326,10 +332,11 @@ function RegisterScreen() {
                 }}
               >
                 <Text style={styles.tutorialTitle}>{item.title}</Text>
-                <MaterialCommunityIcons
-                  color={colors.black}
-                  name={item.icon}
-                  size={120}
+                <LottieView
+                  source={item.lottie}
+                  loop
+                  autoPlay
+                  style={{ width: 200, height: 200 }}
                 />
                 <Text style={styles.tutorialText}>{item.text}</Text>
               </View>

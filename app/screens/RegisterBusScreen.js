@@ -11,6 +11,7 @@ import {
 import * as Yup from "yup";
 import { firebase } from "../auth/firebaseConfig";
 import AppIntroSlider from "react-native-app-intro-slider";
+import LottieView from "lottie-react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import usersApi from "../api/users";
@@ -64,6 +65,7 @@ function RegisterScreen() {
       title: "Lets get down to business.",
       text: "You have chosen to create a business profile. This means you'll be using this app to discover, communicate, and engage with customers.",
       icon: "account-group-outline",
+      lottie: require("../assets/animations/business.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -74,6 +76,7 @@ function RegisterScreen() {
       title: "Make your schedule.",
       text: "With Day by Day you can set your own hours, and how many appointments you want in a day.",
       icon: "calendar-clock",
+      lottie: require("../assets/animations/calendar.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -84,6 +87,7 @@ function RegisterScreen() {
       title: "Profile creation.",
       text: "Let your customers know all about your business with your customizable profile.",
       icon: "card-account-details-star",
+      lottie: require("../assets/animations/profile.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -94,6 +98,7 @@ function RegisterScreen() {
       title: "Agenda.",
       text: "Keep track of all your custom or scheduled appointments with in the agenda tab.",
       icon: "notebook",
+      lottie: require("../assets/animations/agenda.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -104,6 +109,7 @@ function RegisterScreen() {
       title: "Settings.",
       text: "Check on your messages, requests, and notifications in the account settings tab.",
       icon: "cog",
+      lottie: require("../assets/animations/bell.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -333,10 +339,11 @@ function RegisterScreen() {
                 }}
               >
                 <Text style={styles.tutorialTitle}>{item.title}</Text>
-                <MaterialCommunityIcons
-                  color={colors.black}
-                  name={item.icon}
-                  size={120}
+                <LottieView
+                  source={item.lottie}
+                  loop
+                  autoPlay
+                  style={{ width: 200, height: 200 }}
                 />
                 <Text style={styles.tutorialText}>{item.text}</Text>
               </View>
