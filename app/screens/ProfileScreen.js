@@ -19,9 +19,14 @@ function ProfileScreen({ route, navigation }) {
   const [myEmail, setMyEmail] = useState("");
   const [myUserName, setMyUserName] = useState("");
   const [myPic, setMyPic] = useState("");
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const getEmail = listings.returnEmail();
+
+    const ver = listings.checkIfVerified();
+
+    setVerified(ver);
 
     setMyEmail(getEmail);
 
@@ -41,6 +46,26 @@ function ProfileScreen({ route, navigation }) {
 
     getInfo();
   }, [myEmail]);
+
+  const isVerified = () => {
+    return (
+      <MaterialCommunityIcons
+        name="check-circle"
+        size={15}
+        color={colors.greenCheck}
+      />
+    );
+  };
+
+  const isNotVerified = () => {
+    return (
+      <MaterialCommunityIcons
+        name="close-box"
+        size={15}
+        color={colors.danger}
+      />
+    );
+  };
 
   var capEmail = email.charAt(0).toUpperCase() + email.slice(1);
   const getRating = async () => {
@@ -87,7 +112,7 @@ function ProfileScreen({ route, navigation }) {
           <Text style={styles.nameText}>{name}</Text>
 
           <Text style={{ paddingLeft: 5, color: colors.light }}>
-            {capEmail}
+            {capEmail} {verified ? isVerified() : isNotVerified()}
           </Text>
 
           <View style={styles.dotDotDot}>

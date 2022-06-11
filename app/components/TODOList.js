@@ -5,13 +5,16 @@
  *
  * Finish implementing profile favoriting and reflect status in settings
  *
- * implement necessary changes for settings
+ * implement necessary changes for settings, still need data and privacy and
+ * contact screen.
  *
  * implement loading animations wherever needed
  *
- * set up database and fix privacy settings
- *
- * get images for app to use.
- *
  * Set up email sending service and connect it to firebase.
+ *
+ *
+ * Bugs found:
+ *
+ *
+ *
  */

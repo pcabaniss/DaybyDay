@@ -249,11 +249,6 @@ function RegisterScreen() {
         <ScrollView style={styles.scroll}>
           <Text style={styles.header}>Business</Text>
           <ListItemSeperator />
-          <Text style={styles.description}>
-            If you will be using DxD as a service to schedule appointments and a
-            platform to host your business.
-          </Text>
-          <ListItemSeperator />
 
           <Screen style={styles.container}>
             <Form
@@ -362,6 +357,7 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    marginTop: 10,
     backgroundColor: colors.black,
   },
   imageContainer: {

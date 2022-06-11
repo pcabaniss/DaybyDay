@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
@@ -95,11 +89,12 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     color: colors.medium,
-    fontSize: 18,
+    fontSize: 16,
   },
   title: {
     fontWeight: "600",
     fontSize: 22,
+    color: colors.dark,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   View,
@@ -6,19 +6,28 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/core";
 
 import listings from "../api/listings";
 import colors from "../config/colors";
 
-function UserProfileSettingsScreen({ route }) {
+function UserProfileSettingsScreen({ route, navigation }) {
   const { name, pic, email } = route.params;
   const [image, setImage] = useState(pic);
+  const [verified, setVerified] = useState(false);
+
+  const isFocused = useIsFocused();
 
   var capitalEmail = email.charAt(0).toUpperCase() + email.slice(1);
+
+  useEffect(() => {
+    const ver = listings.checkIfVerified();
+
+    setVerified(ver);
+  }, [isFocused]);
 
   const takePhoto = async () => {
     try {
@@ -81,7 +90,7 @@ function UserProfileSettingsScreen({ route }) {
     ]);
   };
 
-  const check = () => {
+  const isVerified = () => {
     return (
       <MaterialCommunityIcons
         name="check-circle"
@@ -90,6 +99,21 @@ function UserProfileSettingsScreen({ route }) {
       />
     );
   };
+
+  const isNotVerified = () => {
+    return (
+      <MaterialCommunityIcons
+        name="close-box"
+        size={30}
+        color={colors.danger}
+      />
+    );
+  };
+
+  const clicked = () => {
+    listings.sendVerificationEmail();
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => imagePressed()}>
@@ -97,8 +121,17 @@ function UserProfileSettingsScreen({ route }) {
       </TouchableOpacity>
       <View style={styles.title}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.icon}>{check()}</Text>
+        {verified ? (
+          <Text style={styles.icon}>{isVerified()}</Text>
+        ) : (
+          <Text style={styles.icon}>{isNotVerified()}</Text>
+        )}
       </View>
+      {verified ? (
+        <View />
+      ) : (
+        <Text onPress={clicked}>Click to send verification email.</Text>
+      )}
       <Text style={styles.smallText}>{capitalEmail}</Text>
     </View>
   );

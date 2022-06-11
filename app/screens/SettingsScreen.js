@@ -2,8 +2,7 @@ import React from "react";
 import { View, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import ListItem from "../components/ListItem";
 import colors from "../config/colors";
-import ListItemSeperator from "../components/ListItemSeperator";
-import moment from "moment";
+import Seperator from "../components/Seperator";
 
 /** Things to add in setting:
  * Blocked profiles
@@ -16,13 +15,15 @@ const settingItems = [
   //Display current notification settings. Instructions on how to turn off.
   {
     title: "Notifications",
+    subTitle: "Manage how your'e notified.",
     targetScreen: "notifications",
   },
 
   //Display information on blocked profiles, and reported cases.
   {
     title: "Data & Privacy",
-    targetScreen: "Messages",
+    subTitle: "View our terms of service.",
+    targetScreen: "dataAndPrivacy",
   },
   /*
   {
@@ -37,11 +38,13 @@ const settingItems = [
   //Change password and view information.
   {
     title: "Password & Security",
+    subTitle: "Manage your blocked list and password.",
     targetScreen: "security",
   },
   //Display contact info/email. Business hours, and maybe an FAQ website?
   {
     title: "Contact Us",
+    subTitle: "Have an issue or reccomendation?",
     targetScreen: "Settings",
   },
 ];
@@ -53,10 +56,11 @@ function SettingsScreen({ navigation }) {
         <FlatList
           data={settingItems}
           keyExtractor={(item) => item.title}
-          ItemSeparatorComponent={ListItemSeperator}
+          ItemSeparatorComponent={Seperator}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
+              subTitle={item.subTitle}
               onPress={() => navigation.navigate(item.targetScreen)}
             />
           )}
@@ -72,14 +76,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black,
   },
   container: {
-    marginVertical: 20,
-    borderRadius: 30,
-    overflow: "hidden",
+    marginTop: 15,
+    padding: 10,
     backgroundColor: colors.black,
-    borderWidth: 3,
-    width: "97%",
-    alignSelf: "center",
-    borderColor: colors.black,
+    width: "100%",
   },
 });
 

@@ -5,9 +5,8 @@ import colors from "../config/colors";
 import listings from "../api/listings";
 
 function HelpAndSupport(props) {
-  const getNotifications = async () => {
-    const not = await Notifications.checkBadges();
-    console.log(not);
+  const getNotifications = () => {
+    console.log(listings.checkIfVerified());
   };
   return (
     <View style={styles.container}>

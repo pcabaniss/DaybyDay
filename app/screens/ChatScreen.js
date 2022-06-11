@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { View, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import { GiftedChat } from "react-native-gifted-chat";
 import listings from "../api/listings";
@@ -42,10 +42,21 @@ function ChatScreen({ navigation, route }) {
   const [messages, setMessages] = useState([]);
   const [userAvatar, setUserAvatar] = useState(" ");
   const [otherAvatar, setOtherAvatar] = useState(" ");
+  const [userVerified, setUserVerified] = useState();
+
+  const capEmail = otherUser.charAt(0).toUpperCase() + otherUser.slice(1);
 
   const getUserPic = async () => {
     const pic = await listings.getProfilePic(email);
     setUserAvatar(pic);
+  };
+
+  const getVerification = async () => {
+    const node = await listings.checkIfUserVerified(otherUser);
+
+    if (node == false || node == true) {
+      setUserVerified(node);
+    }
   };
 
   const getOtherPic = async () => {
@@ -55,6 +66,7 @@ function ChatScreen({ navigation, route }) {
   useEffect(() => {
     const refreshed = navigation.addListener("focus", () => {
       getMessages();
+      getVerification();
     });
 
     return refreshed;
@@ -85,7 +97,6 @@ function ChatScreen({ navigation, route }) {
 
   const onSend = useCallback((messages = [], sender, recipients) => {
     // This is where the typed message is
-    //console.log(messages);
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
@@ -97,6 +108,13 @@ function ChatScreen({ navigation, route }) {
   }, []);
   return (
     <View style={styles.container}>
+      {userVerified ? (
+        <View />
+      ) : (
+        <Text style={styles.warning}>
+          {capEmail} has not been verified yet.
+        </Text>
+      )}
       <GiftedChat
         user={{ _id: otherUser }}
         onSend={(messages) => onSend(messages, sender, reciever)}
@@ -113,6 +131,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.blue,
+  },
+  warning: {
+    alignSelf: "center",
+    fontSize: 15,
   },
 });
 

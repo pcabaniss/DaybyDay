@@ -10,8 +10,8 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { Rating } from "react-native-ratings";
 import { useIsFocused } from "@react-navigation/core";
 
 import colors from "../config/colors";
@@ -29,9 +29,13 @@ function ProfileSettingsScreen({ route, navigation }) {
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
   const [rating, setRating] = useState(4);
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     getRating();
+    const ver = listings.checkIfVerified();
+
+    setVerified(ver);
   }, [isFocused]);
 
   const getRating = async () => {
@@ -52,6 +56,7 @@ function ProfileSettingsScreen({ route, navigation }) {
 
   const pullAboutInfo = async (email) => {
     const data = await listings.getAboutFor(email);
+
     if (data != undefined || data != null) {
       setAbout(data);
     } else {
@@ -131,6 +136,30 @@ function ProfileSettingsScreen({ route, navigation }) {
     }
   };
 
+  const clicked = () => {
+    listings.sendVerificationEmail();
+  };
+
+  const isVerified = () => {
+    return (
+      <MaterialCommunityIcons
+        name="check-circle"
+        size={15}
+        color={colors.greenCheck}
+      />
+    );
+  };
+
+  const isNotVerified = () => {
+    return (
+      <MaterialCommunityIcons
+        name="close-box"
+        size={15}
+        color={colors.danger}
+      />
+    );
+  };
+
   return (
     <ScrollView scrollEnabled style={{ backgroundColor: colors.white }}>
       <ImageBackground source={require("../assets/gradient-3.png")}>
@@ -154,10 +183,19 @@ function ProfileSettingsScreen({ route, navigation }) {
             <Text style={styles.nameText}>{name}</Text>
 
             <Text
-              style={{ paddingLeft: 5, color: colors.green, paddingBottom: 10 }}
+              style={{
+                paddingLeft: 5,
+                color: colors.green,
+                paddingBottom: 10,
+              }}
             >
-              {capEmail}
+              {capEmail} {verified ? isVerified() : isNotVerified()}
             </Text>
+            {verified ? (
+              <View />
+            ) : (
+              <Text onPress={clicked}>Click to send verification email.</Text>
+            )}
           </View>
         </View>
       </ImageBackground>

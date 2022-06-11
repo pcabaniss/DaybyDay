@@ -136,25 +136,10 @@ function RegisterScreen() {
       userInfo.business
     );
     if (!authToken) {
-      console.log("Error: " + error);
+      console.log("Error creating account: " + error);
       return;
     }
     auth.logIn(authToken);
-    firebase.default
-      .auth()
-      .signInWithEmailAndPassword(userInfo.email, userInfo.password)
-      .catch(function (error) {
-        console.log("Encountered Error!");
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        if (errorCode === "auth/wrong-password") {
-          alert("Wrong password.");
-        } else {
-          alert(errorMessage);
-        }
-        console.log(error);
-      });
   };
 
   // image picker
@@ -243,11 +228,6 @@ function RegisterScreen() {
       {showMain ? (
         <ScrollView style={styles.scroll}>
           <Text style={styles.header}>Customer</Text>
-          <ListItemSeperator />
-          <Text style={styles.description}>
-            If you will be using DxD for discovering businesses and making
-            appointments.
-          </Text>
           <ListItemSeperator />
 
           <Screen style={styles.container}>
@@ -355,6 +335,7 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    marginTop: 10,
     backgroundColor: colors.black,
   },
   description: {

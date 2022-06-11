@@ -269,7 +269,7 @@ const WeekCalendar = ({ navigation }) => {
           agendaDayTextColor: colors.white,
           dayTextColor: colors.black,
           selectedDayTextColor: colors.danger,
-          agendaTodayColor: colors.green,
+          agendaTodayColor: colors.blue,
         }}
         refreshing
         hideExtraDays

@@ -7,6 +7,21 @@ const register = (userInfo) => (
   firebase.default
     .auth()
     .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+    .then((userCredential) => {
+      userCredential.user.sendEmailVerification();
+
+      firebase.default
+        .database()
+        .ref("users/" + userInfo.safeEmail.toLowerCase() + "/UserInfo")
+        .set({
+          name: userInfo.name,
+          email: userInfo.email,
+          isBusiness: userInfo.business,
+          isVerfied: false,
+        });
+
+      listings.saveProfilePic(userInfo.email, userInfo.image);
+    })
     .catch(function (error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -18,18 +33,6 @@ const register = (userInfo) => (
       }
       console.log(error);
     })
-    .then(
-      firebase.default
-        .database()
-        .ref("users/" + userInfo.safeEmail.toLowerCase() + "/UserInfo")
-        .set({
-          name: userInfo.name,
-          email: userInfo.email,
-          isBusiness: userInfo.business,
-        })
-    )
-    .then(listings.saveProfilePic(userInfo.email, userInfo.image))
-    .then(console.log("Registered " + userInfo))
 );
 
 export default { register };

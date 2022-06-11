@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -14,21 +14,16 @@ import colors from "../config/colors";
 import listings from "../api/listings";
 import AddImages from "./AddImages";
 
-import FastImage from "react-native-fast-image";
 import { useIsFocused } from "@react-navigation/core";
-import DaySeperator from "./DaySeprator";
 
 function PhotoGallery({ email, isUser, gallery }) {
   //const [indexSelected, setIndexSelected] = useState(0);
   const [images, setImages] = useState(gallery);
-  const [temp, setTemp] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [imageuri, setImageuri] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [isEmpty, setISEmpty] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
-  const isFocused = useIsFocused();
 
   const showModalFunction = (visible, downloadURL, imageURL) => {
     //handler to handle the click on image of Grid
@@ -128,7 +123,6 @@ function PhotoGallery({ email, isUser, gallery }) {
                 extraData={refresh}
                 contentContainerStyle={{ padding: 5 }}
                 renderItem={({ item }) => {
-                  console.log(item);
                   return (
                     <TouchableOpacity
                       style={styles.imageContainerStyle}

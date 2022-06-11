@@ -19,15 +19,20 @@ const safetyFirst = (notSafeEmail) => {
 };
 
 const calculateHours = (open, interval, ampm) => {
-  if (interval > 45 || interval == undefined) {
-    const another = moment(open).add(interval, "minutes");
+  try {
+    if (interval > 45 || interval == undefined) {
+      const another = moment(open).add(interval, "minutes");
 
-    return another.toString();
-  } else {
-    const another = moment(open).add(30, "minutes");
-    //console.log(another.utcOffset(480).toString());
+      return another.toString();
+    } else {
+      const another = moment(open).add(30, "minutes");
+      //console.log(another.utcOffset(480).toString());
 
-    return another.toString();
+      return another.toString();
+    }
+  } catch (error) {
+    console.log("Error setting appointment: ");
+    console.log(error);
   }
 };
 
@@ -889,9 +894,6 @@ const updateRequest = async (text, response, request) => {
   const busUserName = await pullName(businessName);
   const userUserName = await pullName(request.user);
 
-  console.log(busUserName);
-  console.log(userUserName);
-
   const profilePic = await getProfilePic(businessName);
 
   await getUser()
@@ -1455,6 +1457,82 @@ const unblock = (blockedName) => {
     });
 };
 
+const forgotPassword = (email, onPress) => {
+  firebase.default
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      return Alert.alert(
+        "Sent email!",
+        "Check your email, you should recieve a reset link shortly.",
+        [{ text: "OK", onPress: onPress }]
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+      return Alert.alert(
+        "Email does not exist.",
+        "Please check your email and try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    });
+};
+
+const changeVerified = (email, status) => {
+  const safeEmail = safetyFirst(email);
+
+  firebase.default
+    .database()
+    .ref("users/")
+    .child(safeEmail)
+    .child("UserInfo")
+    .get()
+    .then((item) => {
+      if (item.val().verified != status) {
+        firebase.default
+          .database()
+          .ref("users/")
+          .child(safeEmail)
+          .child("UserInfo/verified")
+          .set(status);
+      }
+    });
+};
+
+const checkIfUserVerified = async (email) => {
+  const safeEmail = safetyFirst(email);
+
+  const node = await firebase.default
+    .database()
+    .ref("users/")
+    .child(safeEmail)
+    .child("UserInfo/verified")
+    .get();
+
+  return node.val();
+};
+
+const checkIfVerified = () => {
+  const status = firebase.default.auth().currentUser.emailVerified;
+  if (status == true) {
+    changeVerified(firebase.default.auth().currentUser.email, status);
+  }
+
+  return status;
+};
+
+const sendVerificationEmail = () => {
+  try {
+    firebase.default
+      .auth()
+      .currentUser.sendEmailVerification()
+      .then(console.log("Sent verification email!"));
+  } catch (error) {
+    console.log("Error sending verification email: ");
+    console.log(error);
+  }
+};
+
 export default {
   getListings,
   addListing,
@@ -1505,4 +1583,8 @@ export default {
   changePassword,
   currentblockedList,
   unblock,
+  forgotPassword,
+  checkIfUserVerified,
+  checkIfVerified,
+  sendVerificationEmail,
 };

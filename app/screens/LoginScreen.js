@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { StyleSheet, Image, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text } from "react-native";
 import { firebase } from "../auth/firebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Yup from "yup";
@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
 });
 
-function LoginScreen(props) {
+function LoginScreen({ navigation }) {
   const { logIn } = useAuth();
 
   const [loginFailed, setLoginFailed] = useState(false);
@@ -54,6 +54,9 @@ function LoginScreen(props) {
     logIn(result.data);
   };
 
+  const forgottenPassword = () => {
+    navigation.navigate("Forgot");
+  };
   return (
     <Screen style={styles.container}>
       <MaterialCommunityIcons
@@ -90,7 +93,15 @@ function LoginScreen(props) {
           secureTextEntry
           textContentType="password"
         />
-        <Text style={styles.text}>Forgotten anything? Click here</Text>
+        <Text style={styles.text}>
+          Forgotten anything?{" "}
+          <Text
+            style={{ textDecorationLine: "underline" }}
+            onPress={() => forgottenPassword()}
+          >
+            Click here.
+          </Text>
+        </Text>
         <SubmitButton title="Login" color={colors.greenCheck} />
       </AppForm>
     </Screen>

@@ -6,10 +6,10 @@ import Screen from "../components/Screen";
 import ListItem from "../components/ListItem";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
-import ListItemSeperator from "../components/ListItemSeperator";
+
 import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
-import Notifications from "../api/Notifications";
+import Seperator from "../components/Seperator";
 
 const menuItems = [
   {
@@ -108,21 +108,14 @@ function AccountScreen({ navigation }) {
           data={menuItems}
           scrollEnabled={false}
           //keyExtractor={(menuItem) => menuItems.title}
-          ItemSeparatorComponent={ListItemSeperator}
-          contentContainerStyle={{
-            borderRadius: 25,
-            width: "99%",
-            backgroundColor: colors.white,
-            overflow: "hidden",
-          }}
+          ItemSeparatorComponent={Seperator}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
               IconComponent={
                 <Icon
                   name={item.icon.name}
-                  backgroundColor={colors.black}
-                  iconColor={colors.green}
+                  iconColor={colors.black}
                   title={item.title}
                   isBusiness={business}
                 />
@@ -138,7 +131,7 @@ function AccountScreen({ navigation }) {
           )}
         />
       </View>
-      <View style={styles.container}>
+      <View style={styles.logOut}>
         <ListItem
           title="Log Out"
           IconComponent={
@@ -158,16 +151,17 @@ function AccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 20,
-    borderRadius: 30,
-    overflow: "hidden",
     backgroundColor: colors.white,
-    borderWidth: 3,
-    width: "97%",
-    alignSelf: "center",
-    borderColor: colors.black,
+    width: "100%",
+  },
+  logOut: {
+    marginVertical: 20,
+    backgroundColor: colors.white,
+    width: "100%",
   },
   screen: {
     backgroundColor: colors.black,
+    padding: 10,
   },
 });
 

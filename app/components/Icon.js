@@ -8,7 +8,7 @@ import listings from "../api/listings";
 
 function Icon({
   name,
-  size = 40,
+  size = 50,
   backgroundColor = colors.black,
   iconColor = colors.white,
   title,
@@ -55,12 +55,12 @@ function Icon({
     <>
       <View
         style={{
-          width: size,
-          height: size,
           borderRadius: size / 2,
-          backgroundColor,
-          alignItems: "center",
-          justifyContent: "center",
+          padding: 3,
+          marginRight: 5,
+          //backgroundColor,
+          // alignItems: "center",
+          //justifyContent: "center",
         }}
       >
         <MaterialCommunityIcons

@@ -5,6 +5,7 @@ import SecuritySettings from "../screens/SecuritySettings";
 import NavigationSettings from "../screens/NavigationSettings";
 import SettingsScreen from "../screens/SettingsScreen";
 import BlockedListScreen from "../screens/BlockedListScreen";
+import DataPrivacyScreen from "../screens/DataPrivacyScreen";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,11 @@ const SettingsNavigator = () => (
       name="blockedList"
       component={BlockedListScreen}
       options={{ title: "Blocked List" }}
+    />
+    <Stack.Screen
+      name="dataAndPrivacy"
+      component={DataPrivacyScreen}
+      options={{ title: "Data & Privacy" }}
     />
   </Stack.Navigator>
 );
