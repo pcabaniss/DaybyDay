@@ -12,16 +12,17 @@ import ListItem from "./ListItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
+import Seperator from "./Seperator";
 
 function BusRequestFlatList(data, status, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
   const colorSelect = () => {
     if (status == "Pending") {
-      return colors.medium;
+      return colors.primaryLight;
     } else if (status == "Accepted") {
-      return colors.green;
+      return colors.greenCheck;
     } else {
-      return colors.red;
+      return colors.danger;
     }
   };
   const pressedListing = (item) => {
@@ -70,7 +71,7 @@ function BusRequestFlatList(data, status, navigation) {
           <FlatList
             data={data}
             scrollEnabled
-            ItemSeparatorComponent={ListItemSeperator}
+            ItemSeparatorComponent={Seperator}
             renderItem={({ item }) => {
               const userName =
                 item.user.charAt(0).toUpperCase() + item.user.slice(1);
@@ -105,10 +106,10 @@ function BusRequestFlatList(data, status, navigation) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   noDice: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     width: "100%",
     height: 50,
   },
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   requestBox: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     padding: 5,
   },
 });

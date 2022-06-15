@@ -336,10 +336,10 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     marginTop: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   description: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     fontSize: 18,
     padding: 5,
     paddingTop: 15,
@@ -367,16 +367,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     fontSize: 80,
     textAlign: "center",
     fontFamily: "Kohinoor Bangla",
     paddingTop: 15,
-    color: colors.green,
+    color: "white",
   },
   scroll: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   tutorialTitle: {
     fontSize: 40,

@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import MessageScreen from "../screens/MessageScreen";
 import ChatScreen from "../screens/ChatScreen";
+import colors from "../config/colors";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,16 @@ function MessagingNavigator({ route }) {
     >
       <Stack.Screen
         initialParams={{ name: name, email: email }}
-        options={{ headerTitle: "Inbox" }}
+        options={{
+          headerTitle: "Inbox",
+          headerStyle: {
+            backgroundColor: colors.primaryDark,
+            borderColor: colors.black,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+        }}
         name="Messages"
         component={MessageScreen}
       />

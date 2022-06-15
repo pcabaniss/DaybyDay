@@ -10,9 +10,9 @@ import BusRequestScreen from "../screens/BusRequestsScreen";
 import AnswerScreen from "../screens/AnswerScreen";
 import colors from "../config/colors";
 import Reviewer from "../components/Reviewer";
-import NavigationSettings from "../screens/NavigationSettings";
+import NavigationSettings from "../screens/NotificationSettings";
 import SecuritySettings from "../screens/SecuritySettings";
-import ChangePassword from "../screens/ChangePassword";
+import ChangePassword from "../screens/ChangePasswordScreen";
 import SettingsNavigator from "./SettingsNavigator";
 
 const Stack = createStackNavigator();
@@ -24,7 +24,7 @@ const AccountNavigator = () => (
       component={AccountScreen}
       options={{
         headerStyle: {
-          backgroundColor: colors.green,
+          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -37,7 +37,7 @@ const AccountNavigator = () => (
       component={ProfileSettingsScreen}
       options={{
         headerStyle: {
-          backgroundColor: colors.green,
+          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -56,7 +56,7 @@ const AccountNavigator = () => (
       options={{
         title: "Requests",
         headerStyle: {
-          backgroundColor: colors.green,
+          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -69,7 +69,7 @@ const AccountNavigator = () => (
       component={HelpAndSupport}
       options={{
         headerStyle: {
-          backgroundColor: colors.green,
+          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,

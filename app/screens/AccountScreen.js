@@ -58,12 +58,17 @@ function AccountScreen({ navigation }) {
   const [pic, setPic] = useState(" ");
   const [business, setBusiness] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [verified, setVerified] = useState();
 
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
       setLoading(true);
       getPic();
       setLoading(false);
+
+      const ver = listings.checkIfVerified();
+
+      setVerified(ver);
     });
     return refresh;
   }, [isFocused]);
@@ -98,6 +103,7 @@ function AccountScreen({ navigation }) {
               name: name,
               email: user.email,
               pic: pic,
+              verified: verified,
             })
           }
           key="one"
@@ -115,7 +121,7 @@ function AccountScreen({ navigation }) {
               IconComponent={
                 <Icon
                   name={item.icon.name}
-                  iconColor={colors.black}
+                  iconColor={colors.primaryDark}
                   title={item.title}
                   isBusiness={business}
                 />
@@ -138,7 +144,7 @@ function AccountScreen({ navigation }) {
             <Icon
               name="logout"
               backgroundColor={colors.black}
-              iconColor={colors.danger}
+              iconColor={colors.red}
             />
           }
           onPress={() => logOut()}
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   screen: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     padding: 10,
   },
 });

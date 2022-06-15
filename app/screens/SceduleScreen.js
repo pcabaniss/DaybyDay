@@ -12,7 +12,6 @@ function SceduleScreen({ navigation }) {
         <Text style={styles.subText}>
           Let your customers know when you're availiable.
         </Text>
-        <ListItemSeperator />
         <Text style={styles.saved}>Current Schedule:</Text>
         <CurrentSchedule navigation={navigation} />
       </View>
@@ -23,7 +22,7 @@ function SceduleScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     //alignItems: "center"
   },
   nada: {
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
   icon: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primary,
     width: "80%",
     height: 50,
     borderRadius: 12,
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 105, //Noteworthy-Bold
-    backgroundColor: colors.green,
+    backgroundColor: colors.primaryDark,
     fontSize: 40,
     textAlign: "center",
     fontFamily: "Kohinoor Bangla",
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontSize: 13,
-    backgroundColor: colors.green,
+    backgroundColor: colors.primaryDark,
     textAlign: "center",
     paddingBottom: 10,
   },

@@ -73,12 +73,12 @@ function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   container: {
     marginTop: 15,
     padding: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     width: "100%",
   },
 });

@@ -24,7 +24,7 @@ function ViewReviewScreen({ route, navigation }) {
         <MaterialCommunityIcons
           name="chevron-down"
           size={30}
-          color={colors.green}
+          color={colors.white}
         />
       </TouchableOpacity>
       <FlatList
@@ -47,10 +47,10 @@ function ViewReviewScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.light,
+    backgroundColor: colors.primary,
   },
   header: {
-    backgroundColor: colors.medium,
+    backgroundColor: colors.primaryDark,
     borderColor: colors.dark,
     borderWidth: 3,
     borderRadius: 5,

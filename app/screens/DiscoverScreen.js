@@ -112,16 +112,16 @@ const styles = StyleSheet.create({
   beforeSearch: {
     textAlign: "center",
     fontSize: 30,
-    color: colors.medium,
+    color: colors.primaryLight,
     fontWeight: "bold",
-    shadowOffset: { width: 1, height: 3 },
+    shadowOffset: { width: 1, height: 0 },
     shadowOpacity: 1.0,
     shadowRadius: 2,
     shadowColor: colors.dark,
     elevation: 5,
   },
   container: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     padding: 10,
   },
   list: {

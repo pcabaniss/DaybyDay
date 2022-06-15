@@ -62,7 +62,7 @@ function RegisterScreen() {
   const slides = [
     {
       key: "k1",
-      title: "Lets get down to business.",
+      title: "Lets get down to business",
       text: "You have chosen to create a business profile. This means you'll be using this app to discover, communicate, and engage with customers.",
       icon: "account-group-outline",
       lottie: require("../assets/animations/business.json"),
@@ -73,7 +73,7 @@ function RegisterScreen() {
     },
     {
       key: "k2",
-      title: "Make your schedule.",
+      title: "Make your schedule",
       text: "With Day by Day you can set your own hours, and how many appointments you want in a day.",
       icon: "calendar-clock",
       lottie: require("../assets/animations/calendar.json"),
@@ -84,7 +84,7 @@ function RegisterScreen() {
     },
     {
       key: "k3",
-      title: "Profile creation.",
+      title: "Profile creation",
       text: "Let your customers know all about your business with your customizable profile.",
       icon: "card-account-details-star",
       lottie: require("../assets/animations/profile.json"),
@@ -95,7 +95,7 @@ function RegisterScreen() {
     },
     {
       key: "k4",
-      title: "Agenda.",
+      title: "Agenda",
       text: "Keep track of all your custom or scheduled appointments with in the agenda tab.",
       icon: "notebook",
       lottie: require("../assets/animations/agenda.json"),
@@ -106,7 +106,7 @@ function RegisterScreen() {
     },
     {
       key: "k5",
-      title: "Settings.",
+      title: "Settings",
       text: "Check on your messages, requests, and notifications in the account settings tab.",
       icon: "cog",
       lottie: require("../assets/animations/bell.json"),
@@ -299,7 +299,7 @@ function RegisterScreen() {
                 placeholder="Email"
                 textContentType="emailAddress"
               />
-              <Text style={{ color: colors.orange, flex: 1 }}>
+              <Text style={{ color: colors.primaryDark, flex: 1 }}>
                 **This email will be displayed to customers for contact.
               </Text>
               <FormField
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     marginTop: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   imageContainer: {
     backgroundColor: colors.white,
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   description: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     color: colors.white,
     fontSize: 18,
     padding: 5,
@@ -389,8 +389,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    backgroundColor: colors.black,
-    color: colors.green,
+    backgroundColor: colors.primary,
+    color: "white",
     fontSize: 80,
     textAlign: "center",
     fontFamily: "Kohinoor Bangla",
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   tutorialTitle: {
     fontSize: 40,

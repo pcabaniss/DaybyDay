@@ -308,7 +308,7 @@ function CurrentSchedule({ navigation }) {
               return (
                 <TouchableOpacity
                   style={{
-                    backgroundColor: colors.green,
+                    backgroundColor: colors.primaryDark,
                     width: 50,
                     height: 20,
                     borderRadius: 5,
@@ -355,7 +355,7 @@ function CurrentSchedule({ navigation }) {
           value={isOpen}
           thumbColor={colors.light}
           ios_backgroundColor={colors.red}
-          trackColor={{ true: colors.green, false: colors.red }}
+          trackColor={{ true: colors.green, false: colors.danger }}
         />
       </View>
       {isOpen ? (
@@ -396,7 +396,7 @@ function CurrentSchedule({ navigation }) {
                     width: "140%",
                     //height: "100%",
                     overflow: "hidden",
-                    backgroundColor: colors.white,
+                    backgroundColor: "white",
                     borderRadius: 10,
                   }}
                 />
@@ -413,7 +413,7 @@ function CurrentSchedule({ navigation }) {
                   style={{
                     width: "140%",
                     overflow: "hidden",
-                    backgroundColor: colors.white,
+                    backgroundColor: "white",
                     borderRadius: 10,
                   }}
                 />
@@ -462,7 +462,7 @@ function CurrentSchedule({ navigation }) {
             numberOfValue.value
           )
         }
-        color={colors.red}
+        color={colors.green}
       />
     </>
   );
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
   selectedLetter: {
     height: 20,
     fontSize: 15,
-    color: colors.dark,
+    color: colors.primaryLight,
     textAlign: "center",
     fontWeight: "bold",
   },

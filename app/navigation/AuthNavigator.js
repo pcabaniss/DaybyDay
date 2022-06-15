@@ -22,7 +22,7 @@ const AuthNavigator = () => (
       options={{
         headerTintColor: colors.black,
         headerStyle: {
-          backgroundColor: colors.yellow,
+          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -34,10 +34,8 @@ const AuthNavigator = () => (
       name="Registration"
       component={RegisterNavigator}
       options={{
-        headerTintColor: colors.white,
         headerStyle: {
-          backgroundColor: colors.black,
-          borderColor: colors.black,
+          backgroundColor: colors.primaryDark,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
@@ -51,7 +49,10 @@ const AuthNavigator = () => (
         headerTitle: "Reset Password",
         headerBackTitle: " ",
         headerStyle: {
-          backgroundColor: colors.yellow,
+          backgroundColor: colors.primaryDark,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
       }}
     />

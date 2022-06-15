@@ -162,43 +162,50 @@ function ProfileSettingsScreen({ route, navigation }) {
 
   return (
     <ScrollView scrollEnabled style={{ backgroundColor: colors.white }}>
-      <ImageBackground source={require("../assets/gradient-3.png")}>
-        <View style={styles.picContainer}>
-          <TouchableOpacity onPress={() => alertButton()}>
-            <Image source={{ uri: image }} style={styles.profilePic} />
-          </TouchableOpacity>
-          <View style={{ paddingLeft: 10, flex: 1 }}>
-            <TextInput
-              editable
-              multiline
-              onChangeText={changeText}
-              value={about}
-              placeholder="This is where the about goes."
-              style={styles.aboutText}
-            ></TextInput>
-          </View>
+      <View style={styles.picContainer}>
+        <TouchableOpacity onPress={() => alertButton()}>
+          <Image source={{ uri: image }} style={styles.profilePic} />
+        </TouchableOpacity>
+        <View style={{ paddingLeft: 10, flex: 1 }}>
+          <TextInput
+            editable
+            multiline
+            onChangeText={changeText}
+            value={about}
+            placeholder="This is where the about goes."
+            style={styles.aboutText}
+          ></TextInput>
         </View>
-        <View style={styles.nameBox}>
-          <View style={{ paddingRight: 10 }}>
-            <Text style={styles.nameText}>{name}</Text>
+      </View>
+      <View style={styles.nameBox}>
+        <View style={{ paddingRight: 10 }}>
+          <Text style={styles.nameText}>{name}</Text>
 
+          <Text
+            style={{
+              paddingLeft: 5,
+              color: colors.primaryDark,
+              paddingBottom: 10,
+            }}
+          >
+            {capEmail} {verified ? isVerified() : isNotVerified()}
+          </Text>
+          {verified ? (
+            <View />
+          ) : (
             <Text
               style={{
-                paddingLeft: 5,
-                color: colors.green,
-                paddingBottom: 10,
+                textDecorationLine: "underline",
+                color: "white",
+                paddingBottom: 3,
               }}
+              onPress={clicked}
             >
-              {capEmail} {verified ? isVerified() : isNotVerified()}
+              Click to send verification email.
             </Text>
-            {verified ? (
-              <View />
-            ) : (
-              <Text onPress={clicked}>Click to send verification email.</Text>
-            )}
-          </View>
+          )}
         </View>
-      </ImageBackground>
+      </View>
       <View style={styles.boxContainer}>
         {<SelectedIcon email={email} navigation={navigation} />}
       </View>
@@ -216,16 +223,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nameBox: {
-    //backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     width: "100%",
     paddingLeft: 10,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   boxContainer: {
     height: 500,
+    backgroundColor: colors.primary,
   },
 
   picContainer: {
@@ -234,7 +242,7 @@ const styles = StyleSheet.create({
 
     //width: "100%",
     padding: 5,
-    //backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   profilePic: {
     height: 120,

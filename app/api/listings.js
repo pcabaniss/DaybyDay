@@ -1533,6 +1533,24 @@ const sendVerificationEmail = () => {
   }
 };
 
+const sendEmail = (email, subject, header, text) => {
+  firebase.default
+    .firestore()
+    .collection("mail")
+    .add({
+      to: email,
+      message: {
+        subject: subject,
+        text: header,
+        html: text,
+      },
+    })
+    .catch((error) => {
+      console.log("Error sending email: " + error);
+    })
+    .then(() => console.log("Queued email for delivery!"));
+};
+
 export default {
   getListings,
   addListing,
@@ -1587,4 +1605,5 @@ export default {
   checkIfUserVerified,
   checkIfVerified,
   sendVerificationEmail,
+  sendEmail,
 };

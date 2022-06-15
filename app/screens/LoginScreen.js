@@ -62,7 +62,7 @@ function LoginScreen({ navigation }) {
       <MaterialCommunityIcons
         name="calendar-clock"
         size={100}
-        color={colors.green}
+        color={colors.primaryDark}
         style={styles.logo}
       />
 
@@ -102,7 +102,7 @@ function LoginScreen({ navigation }) {
             Click here.
           </Text>
         </Text>
-        <SubmitButton title="Login" color={colors.greenCheck} />
+        <SubmitButton title="Login" color={colors.green} />
       </AppForm>
     </Screen>
   );
@@ -111,7 +111,7 @@ function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   logo: {
     width: 100,

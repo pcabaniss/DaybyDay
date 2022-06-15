@@ -32,9 +32,14 @@ function SchedulingCalendar({ navigation }) {
 
 const styles = StyleSheet.create({
   calendar: {
-    borderColor: colors.dark,
+    borderColor: colors.primaryDark,
     borderWidth: 1,
     borderRadius: 10,
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+    shadowColor: "rgba(193, 211, 251, 0.5)",
+    elevation: 5,
   },
   container: {
     padding: 10,

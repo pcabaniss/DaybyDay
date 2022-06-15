@@ -39,7 +39,7 @@ function SelectedIconViewed({
           tabStyle: {
             paddingBottom: 3,
             borderColor: colors.black,
-            backgroundColor: colors.orange,
+            backgroundColor: colors.primaryLight,
             //alignSelf: "center",
             //padding: 10,
             shadowOffset: { width: 0, height: 5 },
@@ -52,7 +52,7 @@ function SelectedIconViewed({
             backgroundColor: colors.white,
             borderTopColor: colors.black,
           },
-          activeTintColor: colors.black,
+          activeTintColor: colors.primaryDark,
           inactiveTintColor: colors.white,
           showLabel: false,
         }}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column-reverse",
     height: "100%",
-    backgroundColor: colors.black,
+    backgroundColor: colors.primaryLight,
   },
 });
 

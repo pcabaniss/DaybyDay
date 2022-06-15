@@ -10,7 +10,6 @@ import useAuth from "../auth/useAuth";
 import listings from "../api/listings";
 import UserAccountNavigator from "./UserAccountNavigator";
 import ProfileViewNavigator from "./ProfileViewNavigator";
-import Notifications from "../api/Notifications";
 
 const Tab = createBottomTabNavigator();
 
@@ -63,9 +62,11 @@ const AppNavigator = () => {
     <Tab.Navigator
       initialRouteName="Agenda"
       tabBarOptions={{
+        activeTintColor: colors.primaryDark,
+
         tabStyle: {
-          borderColor: colors.black,
-          borderTopWidth: 2,
+          borderColor: colors.medium,
+          borderTopWidth: 1,
         },
       }}
     >

@@ -18,7 +18,7 @@ function SecuritySettings({ navigation }) {
           IconComponent={
             <MaterialCommunityIcons
               name="account-key"
-              color={colors.black}
+              color={colors.primaryDark}
               size={30}
               style={{ paddingRight: 10 }}
             />
@@ -33,7 +33,7 @@ function SecuritySettings({ navigation }) {
           IconComponent={
             <MaterialCommunityIcons
               name="account-cancel"
-              color={colors.black}
+              color={colors.primaryDark}
               size={30}
               style={{ paddingRight: 10 }}
             />
@@ -46,7 +46,7 @@ function SecuritySettings({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     flex: 1,
     padding: 10,
   },

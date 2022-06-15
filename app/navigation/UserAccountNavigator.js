@@ -1,34 +1,97 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AccountScreen from "../screens/AccountScreen";
-import SettingsScreen from "../screens/SettingsScreen";
 import MyDatesScreen from "../screens/RequestsScreen";
 import HelpAndSupport from "../screens/HelpAndSupport";
 import MessagingNavigator from "./MessagingNavigator";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";
-import NavigationSettings from "../screens/NavigationSettings";
-import SecuritySettings from "../screens/SecuritySettings";
-import ChangePassword from "../screens/ChangePassword";
 import SettingsNavigator from "./SettingsNavigator";
+import colors from "../config/colors";
 
 const Stack = createStackNavigator();
 
 const UserAccountNavigator = () => (
   <Stack.Navigator mode="modal">
-    <Stack.Screen name="Account" component={AccountScreen} />
-    <Stack.Screen name="Edit Profile" component={UserProfileSettingsScreen} />
     <Stack.Screen
-      options={{ headerShown: false }}
+      name="Account"
+      component={AccountScreen}
+      options={{
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="Edit Profile"
+      component={UserProfileSettingsScreen}
+      options={{
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      options={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
       name="Messages"
       component={MessagingNavigator}
     />
     <Stack.Screen
       name="Settings"
       component={SettingsNavigator}
-      options={{ headerShown: false }}
+      options={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
     />
-    <Stack.Screen name="Dates" component={MyDatesScreen} />
-    <Stack.Screen name="Help" component={HelpAndSupport} />
+    <Stack.Screen
+      name="Dates"
+      component={MyDatesScreen}
+      options={{
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="Help"
+      component={HelpAndSupport}
+      options={{
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+          borderColor: colors.black,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+      }}
+    />
   </Stack.Navigator>
 );
 

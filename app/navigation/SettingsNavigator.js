@@ -1,11 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ChangePassword from "../screens/ChangePassword";
+import ChangePassword from "../screens/ChangePasswordScreen";
 import SecuritySettings from "../screens/SecuritySettings";
-import NavigationSettings from "../screens/NavigationSettings";
+import NavigationSettings from "../screens/NotificationSettings";
 import SettingsScreen from "../screens/SettingsScreen";
 import BlockedListScreen from "../screens/BlockedListScreen";
 import DataPrivacyScreen from "../screens/DataPrivacyScreen";
+import colors from "../config/colors";
 
 const Stack = createStackNavigator();
 
@@ -15,27 +16,52 @@ const SettingsNavigator = () => (
     <Stack.Screen
       name="notifications"
       component={NavigationSettings}
-      options={{ title: "Notification Settings" }}
+      options={{
+        title: "Notification Settings",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
     />
     <Stack.Screen
       name="security"
       component={SecuritySettings}
-      options={{ title: "Security Settings" }}
+      options={{
+        title: "Security Settings",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
     />
     <Stack.Screen
       name="changePassword"
       component={ChangePassword}
-      options={{ title: "Update Password" }}
+      options={{
+        title: "Update Password",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
     />
     <Stack.Screen
       name="blockedList"
       component={BlockedListScreen}
-      options={{ title: "Blocked List" }}
+      options={{
+        title: "Blocked List",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
     />
     <Stack.Screen
       name="dataAndPrivacy"
       component={DataPrivacyScreen}
-      options={{ title: "Data & Privacy" }}
+      options={{
+        title: "Data & Privacy",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
     />
   </Stack.Navigator>
 );

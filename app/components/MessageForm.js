@@ -128,7 +128,7 @@ function MessageForm({
             style={styles.aboutText}
           ></TextInput>
           <AppButton
-            color={colors.black}
+            color={colors.green}
             onPress={submitPressed}
             title={"Send Message"}
           />

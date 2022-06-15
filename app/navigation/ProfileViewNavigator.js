@@ -6,6 +6,7 @@ import AvailabilityScreen from "../screens/AvailabilityScreen";
 import Reviewer from "../components/Reviewer";
 import ViewReviewScreen from "../screens/ViewReviewScreen";
 import ProfilePrivacy from "../components/ProfilePrivacy";
+import colors from "../config/colors";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,17 @@ const ProfileViewNavigator = () => {
     <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Discover" component={DiscoverScreen} />
       <Stack.Screen
-        options={{ headerShown: true, headerTitle: "" }}
+        options={{
+          headerShown: true,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: colors.primaryDark,
+            borderColor: colors.black,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+        }}
         name="ProfileView"
         component={ProfileScreen}
       />

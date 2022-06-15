@@ -69,7 +69,7 @@ function ChangePassword({ navigation }) {
         <TextInput
           editable
           placeholder="Type current password"
-          placeholderTextColor={colors.green}
+          placeholderTextColor={colors.grey}
           onChangeText={changeCurrent}
           secureTextEntry
           style={{
@@ -96,7 +96,7 @@ function ChangePassword({ navigation }) {
         <TextInput
           editable
           placeholder="At least 6 characters"
-          placeholderTextColor={colors.green}
+          placeholderTextColor={colors.grey}
           onChangeText={changeNew}
           secureTextEntry
           style={{
@@ -123,7 +123,7 @@ function ChangePassword({ navigation }) {
         <TextInput
           editable
           placeholder="At least 6 characters"
-          placeholderTextColor={colors.green}
+          placeholderTextColor={colors.grey}
           onChangeText={changeCheck}
           secureTextEntry
           style={{
@@ -136,13 +136,13 @@ function ChangePassword({ navigation }) {
         />
       </View>
       <SimpleSeperator />
-      <Button title="Submit" onPress={checkStuff} />
+      <Button title="Submit" onPress={checkStuff} color={colors.primaryDark} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.black, padding: 10 },
+  container: { flex: 1, backgroundColor: colors.primary, padding: 10 },
   current: {
     flexDirection: "row",
     alignItems: "center",

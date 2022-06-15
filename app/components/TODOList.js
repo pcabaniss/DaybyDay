@@ -10,8 +10,7 @@
  *
  * implement loading animations wherever needed
  *
- * Set up email sending service and connect it to firebase.
- *
+ * Implement contact us screen or merge it with help and support screen.
  *
  * Bugs found:
  *

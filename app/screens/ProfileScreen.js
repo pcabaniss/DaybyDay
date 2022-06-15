@@ -100,7 +100,7 @@ function ProfileScreen({ route, navigation }) {
   pullAboutInfo(email);
 
   return (
-    <ScrollView scrollEnabled style={{ backgroundColor: colors.dark }}>
+    <ScrollView scrollEnabled style={{ backgroundColor: colors.primary }}>
       <View style={styles.picContainer}>
         <Image source={{ uri: image }} style={styles.profilePic} />
         <View style={{ paddingLeft: 10, flex: 1 }}>
@@ -121,7 +121,7 @@ function ProfileScreen({ route, navigation }) {
                 type="custom"
                 ratingCount={5}
                 showRating={false}
-                tintColor={colors.black}
+                tintColor={colors.primary}
                 startingValue={rating}
                 ratingColor={colors.yellow}
                 style={{ padding: 5, alignSelf: "flex-start" }}
@@ -167,13 +167,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nameBox: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     width: "100%",
     paddingLeft: 10,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   boxContainer: {
     height: 500,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
 
     //width: "100%",
     padding: 5,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   profilePic: {
     height: 120,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   stars: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     borderRadius: 40,
     paddingHorizontal: 15,
     paddingVertical: 10,

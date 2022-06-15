@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Button, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Text,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import colors from "../config/colors";
 import ListItemSeperator from "./ListItemSeperator";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -84,6 +91,12 @@ function ProfilePrivacy({ route, navigation }) {
           {reportIcon}
         </View>
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <Text> </Text>
+      </TouchableOpacity>
     </View>
   );
 }

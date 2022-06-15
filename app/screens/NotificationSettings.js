@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingLeft: 15,
   },
-  container: { flex: 1, backgroundColor: colors.black },
+  container: { flex: 1, backgroundColor: colors.primary },
   title: {
     fontSize: 28,
     alignSelf: "center",
     paddingTop: 20,
-    color: colors.green,
+    color: colors.primaryDark,
+    fontWeight: "bold",
   },
 });
 

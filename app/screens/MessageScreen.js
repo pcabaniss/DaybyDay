@@ -8,6 +8,7 @@ import ListItemDeleteItem from "../components/ListItemDeleteItem";
 import ListItemSeperator from "../components/ListItemSeperator";
 
 import colors from "../config/colors";
+import Seperator from "../components/Seperator";
 
 /**
  * This function will contain a listing function that will search and the DB
@@ -78,7 +79,7 @@ function MessageScreen({ navigation, route }) {
 
   // return cute image/animation here
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.primary }}>
       {isEmpty ? (
         <View style={{ justifyContent: "center", flex: 1 }}>
           <MaterialCommunityIcons
@@ -87,16 +88,16 @@ function MessageScreen({ navigation, route }) {
             }}
             name="email-open-outline"
             size={130}
-            color={colors.black}
+            color={colors.primary}
           />
           <Text
-            style={{ alignSelf: "center", fontSize: 20, color: colors.black }}
+            style={{ alignSelf: "center", fontSize: 20, color: colors.primary }}
           >
             Inbox empty
           </Text>
         </View>
       ) : (
-        <View>
+        <View style={{ backgroundColor: colors.primary, padding: 5 }}>
           <FlatList
             data={inbox}
             //keyExtractor={(message) => message.id.toString()}
@@ -118,7 +119,7 @@ function MessageScreen({ navigation, route }) {
                 />
               );
             }}
-            ItemSeparatorComponent={ListItemSeperator}
+            ItemSeparatorComponent={Seperator}
           />
         </View>
       )}

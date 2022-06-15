@@ -12,6 +12,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
 import listings from "../api/listings";
+import Seperator from "./Seperator";
 
 function RequestFlatList(data, status) {
   const [statusPressed, setStatusPressed] = useState(true);
@@ -24,13 +25,31 @@ function RequestFlatList(data, status) {
     }
   };
 
+  const colorSelect = () => {
+    if (status == "Pending") {
+      return colors.primaryLight;
+    } else if (status == "Accepted") {
+      return colors.greenCheck;
+    } else {
+      return colors.danger;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
           setStatusPressed(!statusPressed);
         }}
-        style={styles.titleContainer}
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          borderColor: colors.dark,
+          borderWidth: 1,
+          borderRadius: 5,
+          backgroundColor: colorSelect(),
+          overflow: "hidden",
+        }}
       >
         <Text style={styles.titleText}>{status}</Text>
         <MaterialCommunityIcons
@@ -44,7 +63,7 @@ function RequestFlatList(data, status) {
           <FlatList
             data={data}
             scrollEnabled
-            ItemSeparatorComponent={ListItemSeperator}
+            ItemSeparatorComponent={Seperator}
             renderItem={({ item }) => {
               const businessName =
                 item.business.charAt(0).toUpperCase() + item.business.slice(1);
@@ -78,27 +97,20 @@ function RequestFlatList(data, status) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primary,
   },
   noDice: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     width: "100%",
     height: 50,
   },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: colors.background,
-    borderColor: colors.medium,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
+
   titleText: {
     fontSize: 30,
     textAlign: "center",
   },
   requestBox: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     padding: 5,
   },
 });

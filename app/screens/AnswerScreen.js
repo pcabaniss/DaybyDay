@@ -15,18 +15,18 @@ import listings from "../api/listings";
 function AnswerScreen({ route, navigation }) {
   const { item } = route.params;
 
-  const [background, setbackground] = useState(colors.black);
+  const [background, setbackground] = useState(colors.primary);
   const [about, setAbout] = useState(" ");
   const [response, setResponse] = useState(" ");
 
   const onPressAccept = () => {
-    setbackground(colors.green);
+    setbackground(colors.greenCheck);
     setResponse("accepted");
     return console.log("Pressed Accept!");
   };
 
   const onPressDeny = () => {
-    setbackground(colors.red);
+    setbackground(colors.danger);
     setResponse("denied");
     return console.log("Pressed Deny!");
   };
@@ -51,24 +51,24 @@ function AnswerScreen({ route, navigation }) {
           <MaterialCommunityIcons
             name="chevron-down"
             size={60}
-            color={colors.black}
+            color={colors.primary}
           />
         </TouchableOpacity>
         <View style={styles.buttons}>
           <LittleButton
             onPress={() => onPressAccept()}
             title="Accept"
-            backgroundColor={colors.green}
+            backgroundColor={colors.greenCheck}
           />
           <LittleButton
             onPress={() => onPressDeny()}
             title="Deny"
-            backgroundColor={colors.red}
+            backgroundColor={colors.danger}
           />
         </View>
         <View style={styles.reason}>
           <TextInput
-            placeholder="Give a reason(optional)."
+            placeholder="  Give a reason(optional)."
             editable
             multiline
             onChangeText={setAbout}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.white,
     borderColor: colors.dark,
-    borderWidth: 3,
+    borderWidth: 2,
     borderRadius: 5,
     height: 50,
     width: "100%",
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignSelf: "center",
     borderColor: colors.black,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 5,
   },
 });

@@ -203,7 +203,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
 
 const styles = StyleSheet.create({
   calendar: {
-    borderColor: colors.black,
+    borderColor: colors.primaryDark,
     borderWidth: 1,
     borderRadius: 10,
     shadowOffset: { width: 5, height: 5 },

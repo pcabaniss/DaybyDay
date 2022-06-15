@@ -130,11 +130,13 @@ function ChatScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primary,
   },
   warning: {
     alignSelf: "center",
     fontSize: 15,
+    color: colors.primaryDark,
+    fontWeight: "bold",
   },
 });
 

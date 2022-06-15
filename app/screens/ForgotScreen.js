@@ -31,7 +31,8 @@ function ForgotScreen({ navigation }) {
         autoCorrect={false}
         autoCapitalize="none"
       />
-      <Button title="Send" onPress={clickedSend} />
+
+      <Button title="Send" onPress={clickedSend} color={colors.primaryDark} />
     </View>
   );
 }
@@ -39,7 +40,7 @@ function ForgotScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     alignItems: "center",
   },
   text: {

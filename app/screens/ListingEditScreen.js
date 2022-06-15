@@ -150,7 +150,7 @@ function ListingEditScreen({ navigation, route }) {
           placeholder="Description"
         />
 
-        <SubmitButton title="Add" color={colors.greenCheck} />
+        <SubmitButton title="Add" color={colors.green} />
       </Form>
     </Screen>
   );
@@ -159,7 +159,7 @@ function ListingEditScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   date: {
     flexDirection: "row",

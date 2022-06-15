@@ -4,6 +4,7 @@ import { FlatList } from "react-native-gesture-handler";
 import listings from "../api/listings";
 import ListItem from "../components/ListItem";
 import ListItemSeperator from "../components/ListItemSeperator";
+import Seperator from "../components/Seperator";
 import colors from "../config/colors";
 
 function BlockedListScreen({ navigation }) {
@@ -37,7 +38,7 @@ function BlockedListScreen({ navigation }) {
           <FlatList
             data={blocked}
             scrollEnabled
-            ItemSeparatorComponent={ListItemSeperator}
+            ItemSeparatorComponent={Seperator}
             contentContainerStyle={{
               borderRadius: 25,
               width: "99%",
@@ -77,7 +78,7 @@ function BlockedListScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.black },
+  container: { flex: 1, backgroundColor: colors.primary },
   item: {
     marginVertical: 20,
     borderRadius: 30,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    color: colors.green,
+    color: colors.primaryDark,
     alignSelf: "center",
   },
 });

@@ -15,9 +15,8 @@ import listings from "../api/listings";
 import colors from "../config/colors";
 
 function UserProfileSettingsScreen({ route, navigation }) {
-  const { name, pic, email } = route.params;
+  const { name, pic, email, verified } = route.params;
   const [image, setImage] = useState(pic);
-  const [verified, setVerified] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -25,8 +24,6 @@ function UserProfileSettingsScreen({ route, navigation }) {
 
   useEffect(() => {
     const ver = listings.checkIfVerified();
-
-    setVerified(ver);
   }, [isFocused]);
 
   const takePhoto = async () => {
@@ -116,7 +113,16 @@ function UserProfileSettingsScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => imagePressed()}>
+      <TouchableOpacity
+        onPress={() => imagePressed()}
+        style={{
+          shadowOffset: { width: 2, height: 3 },
+          shadowOpacity: 1.0,
+          shadowRadius: 2,
+          shadowColor: colors.dark,
+          elevation: 5,
+        }}
+      >
         <Image source={{ uri: image }} style={styles.profilePic} />
       </TouchableOpacity>
       <View style={styles.title}>
@@ -130,7 +136,9 @@ function UserProfileSettingsScreen({ route, navigation }) {
       {verified ? (
         <View />
       ) : (
-        <Text onPress={clicked}>Click to send verification email.</Text>
+        <Text style={{ color: colors.white }} onPress={clicked}>
+          Click to send verification email.
+        </Text>
       )}
       <Text style={styles.smallText}>{capitalEmail}</Text>
     </View>
@@ -139,7 +147,7 @@ function UserProfileSettingsScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -148,6 +156,11 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingLeft: 10,
     alignSelf: "center",
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+    shadowColor: colors.dark,
+    elevation: 5,
   },
   name: {
     paddingTop: 15,
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
     width: 180,
     borderColor: colors.dark,
     borderRadius: 90,
-    borderWidth: 5,
+    borderWidth: 1,
     overflow: "hidden",
   },
   smallText: {
