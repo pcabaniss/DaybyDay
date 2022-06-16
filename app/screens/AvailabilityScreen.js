@@ -176,6 +176,7 @@ function AvailabilityScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
+    backgroundColor: colors.primary,
   },
   date: {
     textAlign: "center",
@@ -183,12 +184,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
     paddingTop: 10,
+    backgroundColor: colors.primary,
   },
   header: {
     textAlign: "center",
+    fontWeight: "bold",
   },
   footer: {
-    fontSize: 10,
+    fontSize: 12,
     paddingLeft: 10,
   },
 });

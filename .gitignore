@@ -1,3 +1,4 @@
+
 node_modules/
 .expo/
 npm-debug.*
@@ -39,6 +40,8 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+#API Keys 
+app/api
 # Android/IntelliJ
 #
 build/

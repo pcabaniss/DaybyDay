@@ -1,7 +1,8 @@
 import * as firebase from "firebase";
+import apis from "../api/privateAPIs";
 
 const config = {
-  apiKey: "AIzaSyDc-1slfARS2h3Xr6ExyyisYZqirL3wmiI",
+  apiKey: apis.REACT_APP_FIREBASE_API_KEY,
   authDomain: "slate-e5529.firebaseapp.com",
   projectId: "slate-e5529",
   databaseUrl: "https://slate-e5529-default-rtdb.firebaseio.com/",

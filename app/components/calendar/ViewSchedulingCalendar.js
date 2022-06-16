@@ -186,6 +186,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
         style={styles.calendar}
         markingType={"period"}
         onDayPress={dayPressed}
+        theme={{ dayTextColor: colors.primaryDark }}
         current={daySelected}
         minDate={today}
         markedDates={markedDates}
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
     height: "100%",
+    backgroundColor: "white",
   },
 });
 

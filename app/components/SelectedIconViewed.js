@@ -49,7 +49,7 @@ function SelectedIconViewed({
             elevation: 5,
           },
           style: {
-            backgroundColor: colors.white,
+            backgroundColor: "white",
             borderTopColor: colors.black,
           },
           activeTintColor: colors.primaryDark,

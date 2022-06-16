@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
+    backgroundColor: "white",
   },
   header: {
     textAlign: "center",

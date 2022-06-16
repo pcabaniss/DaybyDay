@@ -22,6 +22,7 @@ function SchedulingCalendar({ navigation }) {
         markingType={"period"}
         onDayPress={dayPressed}
         current={currentDate}
+        theme={{ dayTextColor: colors.primaryDark }}
         //make a quick function that runs through the weekly schedule and
         //returns null on closed days.
         //markedDates={markedDates}
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
     height: "100%",
+    backgroundColor: "white",
   },
 });
 

@@ -3,6 +3,8 @@ import { firebase } from "../auth/firebaseConfig";
 import moment from "moment";
 import Notifications from "./Notifications";
 import { Linking } from "react-native";
+import { WebView } from "react-native-webview";
+import apis from "../api/privateAPIs";
 import qs from "qs";
 
 import { Alert } from "react-native";
@@ -174,6 +176,23 @@ const addListing = (listing, business, onUploadProgress) => {
   const startingTime = moment(listing.timeStart).format("hh:mm A");
   const data = new FormData();
   data.append("title", listing.title);
+  const currentUser = firebase.default.auth().currentUser.email;
+
+  if (listing.business == "Custom") {
+    sendEmail(
+      currentUser,
+      "New calendar event.",
+      "You have successfully scheduled your custom event with us!" +
+        "We set your notification and added it to your in-app agenda."
+    );
+  } else {
+    sendEmail(
+      currentUser,
+      "New calendar event.",
+      "You have successfully scheduled your appointment with " + business,
+      "We set your notification and added it to your in-app agenda."
+    );
+  }
 
   getUser()
     .doc(listing.dateClicked)
@@ -456,6 +475,13 @@ const saveMessages = (message, otherUsers, createdAt, sender) => {
   if (message[0].text == "") {
     latest = "Send a message to get started!";
   }
+  //Maybe change this to have a template when sent.
+  sendEmail(
+    otherUsers.id,
+    "New message!",
+    "You have a new message from " + sender.name + ".",
+    "Log into Day by Day to respond."
+  );
   //main sender of the message
   getUser()
     .doc("messages")
@@ -752,6 +778,18 @@ const sendRequest = async (
   const user = firebase.default.auth().currentUser.email;
   const userEmail = safetyFirst(user);
   const userPic = await getProfilePic(user);
+  const userName = await getMyName();
+
+  sendEmail(
+    business,
+    "You have a new request!",
+    userName + " has requested your services.",
+    "Please respond ASAP in the app, your services have been requested on " +
+      moment(date).format("MMMM Do YYYY") +
+      " at " +
+      time +
+      "."
+  );
 
   await firebase.default
     .firestore()
@@ -987,6 +1025,7 @@ const updateRequest = async (text, response, request) => {
     if (text != " ") {
       saveMessages([message], reciever, new Date().valueOf(), sender);
     }
+
     const [time, ampm] = request.timeRequested.split(" ");
 
     const listing = {
@@ -1022,6 +1061,13 @@ const updateRequest = async (text, response, request) => {
         dateClicked: request.dateRequested,
       });
 
+    sendEmail(
+      request.user,
+      "Request accepted!",
+      "Congratulations!",
+      "Your appointment was accepted and scheduled. A reminder has been set so all thats left to do is relax."
+    );
+
     Notifications.sendNotification(
       request.user,
       "Request accepted!",
@@ -1031,6 +1077,13 @@ const updateRequest = async (text, response, request) => {
     );
   }
   if (response == "denied") {
+    sendEmail(
+      request.user,
+      "Request denied.",
+      "Unfortunately, your request was denied.",
+      "Request a different time or contact the business to try and reschedule."
+    );
+
     Notifications.sendNotification(
       request.user,
       "Request denied.",
@@ -1243,6 +1296,33 @@ const cancelAppointment = (day, startTime, description) => {
   const [text, cancelee] = description.split("with ");
 
   const safeEmail = safetyFirst(cancelee);
+
+  sendEmail(
+    cancelee,
+    "Canceled appointement.",
+    "Unfortunately, these things can happen sometimes.",
+    "Your appointment with " +
+      canceler +
+      " at " +
+      startTime +
+      " on " +
+      day +
+      " has been canceled."
+  );
+
+  sendEmail(
+    canceler,
+    "Canceled appointement.",
+    "You successfully canceled your appointment.",
+    "Your appointment with " +
+      cancelee +
+      " at " +
+      startTime +
+      " on " +
+      day +
+      " has been canceled."
+  );
+
   var canceler = firebase.default.auth().currentUser.email;
 
   getUser()
@@ -1319,8 +1399,6 @@ const getRequestBadges = async () => {
   return count;
 };
 
-const updateBadgeCount = () => {};
-
 const updateUnread = (item) => {
   getUser()
     .doc("inbox")
@@ -1350,7 +1428,13 @@ const changePassword = async (oldPW, newPW, onPress) => {
     .currentUser.reauthenticateWithCredential(emailCred)
     .then(() => {
       console.log("Updated Password");
-      //Send email to them letting them know
+
+      sendEmail(
+        myEmail,
+        "Changed password",
+        "You've changed your password.",
+        "Congrats! Your password was successfully changed. If you didnt authorize this, please contact us at support@dxdapp.net immediately."
+      );
 
       firebase.default.auth().currentUser.updatePassword(newPW);
 
@@ -1542,13 +1626,17 @@ const sendEmail = (email, subject, header, text) => {
       message: {
         subject: subject,
         text: header,
-        html: text,
+        html: "This is the" + {} + "section of the email body.",
       },
     })
     .catch((error) => {
       console.log("Error sending email: " + error);
     })
     .then(() => console.log("Queued email for delivery!"));
+};
+
+const HTMLTemplate = (header, text) => {
+  return <WebView originWhitelist={["*"]} source={{ html: "" }} />;
 };
 
 export default {

@@ -263,7 +263,7 @@ const WeekCalendar = ({ navigation }) => {
         monthFormat={"MMMM" + "  yyyy"}
         theme={{
           backgroundColor: colors.primary,
-          calendarBackground: colors.light,
+          calendarBackground: colors.white,
           agendaKnobColor: colors.medium,
           agendaDayNumColor: colors.white,
           agendaDayTextColor: colors.white,
