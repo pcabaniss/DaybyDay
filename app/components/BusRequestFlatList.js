@@ -20,7 +20,7 @@ function BusRequestFlatList(data, status, navigation) {
     if (status == "Pending") {
       return colors.primaryLight;
     } else if (status == "Accepted") {
-      return colors.greenCheck;
+      return colors.green;
     } else {
       return colors.danger;
     }

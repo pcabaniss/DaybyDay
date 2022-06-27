@@ -56,8 +56,6 @@ function RegisterScreen() {
   const [image, setImage] = useState();
 
   useEffect(() => {
-    requestLibraryPermission();
-    requestCameraPermission();
     setShowMain(false);
   }, []);
 
@@ -165,32 +163,36 @@ function RegisterScreen() {
   };
 
   const takePhoto = async () => {
-    try {
-      const result = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        mediaTypes: "Images",
-      });
-      setImage(result.uri);
-      console.log(result.uri);
-    } catch (error) {
-      console.log("Error taking picture.");
-    }
+    requestCameraPermission().then(async () => {
+      try {
+        const result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          mediaTypes: "Images",
+        });
+        setImage(result.uri);
+        console.log(result.uri);
+      } catch (error) {
+        console.log("Error taking picture.");
+      }
+    });
   };
 
   const selectImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "Images",
-        allowsEditing: true,
-        //aspect: [4,3],
-        quality: 1,
-      });
-      //Send a promise to save the picture to storage once register button is clicked
-      if (!result.cancelled) setImage(result.uri);
-      console.log(result.uri);
-    } catch (error) {
-      console.log("Error reading image" + error);
-    }
+    requestLibraryPermission().then(async () => {
+      try {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: "Images",
+          allowsEditing: true,
+          //aspect: [4,3],
+          quality: 1,
+        });
+        //Send a promise to save the picture to storage once register button is clicked
+        if (!result.cancelled) setImage(result.uri);
+        console.log(result.uri);
+      } catch (error) {
+        console.log("Error reading image" + error);
+      }
+    });
   };
 
   const alertButton = () => {

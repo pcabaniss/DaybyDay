@@ -1,25 +1,27 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
+import LottieView from "lottie-react-native";
 
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 
 function WelcomeScreen({ navigation }) {
   return (
-    <ImageBackground
-      style={styles.background}
-      blurRadius={7}
-      source={require("../assets/mainPic.jpg")}
-    >
+    <View style={styles.background}>
+      <Text style={styles.tagline}>Schedule some peace of mind</Text>
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} />
-        <Text style={styles.tagline}>Day X Day</Text>
+        <LottieView
+          source={require("../assets/animations/loginAnim.json")}
+          loop
+          autoPlay
+          style={{ width: 400, height: 400, justifyContent: "center" }}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <AppButton
           title="Login"
           onPress={() => navigation.navigate("Login")}
-          color={colors.primary}
+          color={colors.primaryDark}
         />
         <AppButton
           title="Register"
@@ -27,7 +29,7 @@ function WelcomeScreen({ navigation }) {
           color={colors.green}
         />
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -36,26 +38,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primary,
   },
   buttonContainer: {
     padding: 20,
     width: "100%",
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 300,
+    justifyContent: "center",
   },
   logoContainer: {
-    position: "absolute",
-    top: 100,
-    alignItems: "center",
+    //position: "absolute",
+    //top: 200,
+    alignSelf: "center",
   },
   tagline: {
     color: "#00171f",
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "700",
-    paddingVertical: 20,
+    paddingBottom: 50,
+    //paddingVertical: 20,
   },
 });
 

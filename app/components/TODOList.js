@@ -10,10 +10,12 @@
  *
  * implement loading animations wherever needed
  *
+ * Create website and link it to app for Help and Support
+ *
  * Implement contact us screen or merge it with help and support screen.
  *
  * Bugs found:
- *
+ *       Indention on the answer screen is off.
  *
  *
  */

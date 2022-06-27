@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { Image, StyleSheet, Text } from "react-native";
 import { firebase } from "../auth/firebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Yup from "yup";
@@ -59,12 +59,7 @@ function LoginScreen({ navigation }) {
   };
   return (
     <Screen style={styles.container}>
-      <MaterialCommunityIcons
-        name="calendar-clock"
-        size={100}
-        color={colors.primaryDark}
-        style={styles.logo}
-      />
+      <Image source={require("../assets/logo.png")} style={styles.logo} />
 
       <AppForm
         initialValues={{ email: "", password: "" }}
@@ -114,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   logo: {
-    width: 100,
+    width: 350,
     height: 100,
     alignSelf: "center",
     marginTop: 50,

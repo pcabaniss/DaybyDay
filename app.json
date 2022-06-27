@@ -1,12 +1,11 @@
 {
   "expo": {
-    "name": "PracticingCode",
-    "plugins": 
-    [
+    "name": "Day by Day",
+    "plugins": [
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/notification-icon.png",
+          "icon": "./app/assets/appIcon.png",
           "color": "#ffffff",
           "sounds": [
             "./local/assets/notification-sound.wav",
@@ -18,11 +17,10 @@
     "slug": "PracticingCode",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/logo1.png",
+    "icon": "./app/assets/iconSmall.png",
     "splash": {
-      "image": "./app/assets/Hotpot.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#e63c4b"
+      "image": "./app/assets/iconSmall.png",
+      "backgroundColor": "#0277bd"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -36,14 +34,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/logo-red.png",
+        "foregroundImage": "./app/assets/appIcon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.pcabaniss93.PracticingCode"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/iconSmall.png"
     },
-    "description": "An app for all your scheduling needs!"
+    "description": "Schedule some peace of mind"
   }
 }

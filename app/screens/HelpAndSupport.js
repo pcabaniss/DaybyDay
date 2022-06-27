@@ -6,12 +6,12 @@ import listings from "../api/listings";
 
 function HelpAndSupport(props) {
   const getNotifications = () => {
-    /*listings.sendEmail(
+    listings.sendEmail(
       "pcabaniss93@gmail.com",
       "This is a test.",
       "Hello! and welcome.",
       "Welcome to my app, Day by Day. I hope it can be of some use to you! "
-    );*/
+    );
   };
   return (
     <View style={styles.container}>

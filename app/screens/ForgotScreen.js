@@ -17,7 +17,7 @@ function ForgotScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Type your email and ,if an account exist, you will recieve an email to
+        Type your email and , if an account exist, you will recieve an email to
         reset your password shortly.
       </Text>
       <TextInput

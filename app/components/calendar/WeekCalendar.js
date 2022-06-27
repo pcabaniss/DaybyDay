@@ -234,7 +234,7 @@ const WeekCalendar = ({ navigation }) => {
               transform: [{ rotateX: "180deg" }],
             }}
             size={35}
-            color={colors.primaryDark}
+            color="white"
             onPress={() => navigation.navigate("Add", { day: dayString })}
           />
         </View>
