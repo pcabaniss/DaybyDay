@@ -29,6 +29,7 @@
       "**/*"
     ],
     "ios": {
+      
       "supportsTablet": true,
       "bundleIdentifier": "com.pcabaniss93.PracticingCode"
     },

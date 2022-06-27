@@ -60,7 +60,7 @@
     "notifications": "^0.2.0",
     "path-browserify": "0.0.0",
     "punycode": "^1.4.1",
-    "qs": "^6.10.3",
+    "qs": "^6.11.0",
     "querystring-es3": "^0.2.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
