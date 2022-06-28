@@ -144,6 +144,9 @@
     "vm": "vm-browserify",
     "tls": false
   },
+  "resolutions": {
+    "expo-device": "~2.4.0"
+  },
   "browser": {
     "zlib": "browserify-zlib",
     "console": "console-browserify",
