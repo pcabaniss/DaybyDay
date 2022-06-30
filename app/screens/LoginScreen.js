@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { firebase } from "../auth/firebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import UploadScreen from "./UploadScreen";
 import * as Yup from "yup";
 
 import authApi from "../api/auth";
@@ -27,12 +28,17 @@ function LoginScreen({ navigation }) {
   const { logIn } = useAuth();
 
   const [loginFailed, setLoginFailed] = useState(false);
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password);
+    setProgress(0);
+    setUploadVisible(true);
+
     await firebase.default
       .auth()
       .signInWithEmailAndPassword(email, password)
+      .then(() => console.log("Logging in...."))
       .catch(function (error) {
         console.log("Encountered Error!");
         // Handle Errors here.
@@ -44,10 +50,12 @@ function LoginScreen({ navigation }) {
           alert(errorMessage);
         }
         console.log(error);
-      })
-      .then(Notifications.loadAllNotifications(email));
+      });
+    //.then(Notifications.loadAllNotifications(email));
 
     if (!result.ok) {
+      setUploadVisible(false);
+
       return setLoginFailed(true);
     }
     setLoginFailed(false);
@@ -59,6 +67,11 @@ function LoginScreen({ navigation }) {
   };
   return (
     <Screen style={styles.container}>
+      <UploadScreen
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <Image source={require("../assets/logo.png")} style={styles.logo} />
 
       <AppForm

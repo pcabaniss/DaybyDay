@@ -10,17 +10,19 @@ function UploadScreen({ onDone, progress = 0, visible = false }) {
     <Modal visible={visible}>
       <View style={styles.container}>
         {progress < 1 ? (
-          <Progress.Bar
-            progress={progress}
-            color={colors.primary}
-            width={200}
+          <LottieView
+            autoPlay
+            loop
+            onAnimationFinish={onDone}
+            source={require("../assets/animations/dayAndNight.json")}
+            style={styles.amimation}
           />
         ) : (
           <LottieView
             autoPlay
-            loop={false}
+            loop
             onAnimationFinish={onDone}
-            source={require("../assets/animations/done.json")}
+            source={require("../assets/animations/dayAndNight.json")}
             style={styles.amimation}
           />
         )}

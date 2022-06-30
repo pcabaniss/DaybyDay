@@ -5,7 +5,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./app/assets/appIcon.png",
+          "icon": "./app/assets/appIcon.png", 
           "color": "#ffffff",
           "sounds": [
             "./local/assets/notification-sound.wav",
@@ -17,7 +17,7 @@
     "slug": "PracticingCode",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/iconSmall.png",
+    "icon": "./app/assets/appIcon.png",
     "splash": {
       "image": "./app/assets/iconSmall.png",
       "backgroundColor": "#0277bd"
@@ -29,7 +29,6 @@
       "**/*"
     ],
     "ios": {
-      
       "supportsTablet": true,
       "bundleIdentifier": "com.pcabaniss93.PracticingCode"
     },

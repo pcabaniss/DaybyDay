@@ -40,19 +40,19 @@ function Reviewer({ navigation, route }) {
           <MaterialCommunityIcons
             name="chevron-down"
             size={30}
-            color={colors.green}
+            color={colors.primaryDark}
           />
         </TouchableOpacity>
         <AirbnbRating
           count={5}
           reviews={[
-            "Terrible",
-            "Pretty bad",
-            "So-So",
-            "Pretty good",
+            "Not a good time",
+            "Needs improvement",
+            "Okay",
+            "Had a good time",
             "Amazing!",
           ]}
-          reviewColor={colors.green}
+          reviewColor={colors.primaryDark}
           starContainerStyle={{ paddingBottom: 15 }}
           onFinishRating={starPressed}
         />
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   header: {
-    backgroundColor: colors.medium,
+    backgroundColor: colors.primary,
     borderColor: colors.dark,
     borderWidth: 3,
     borderRadius: 5,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   main: {
     height: "42%",
     width: "96%",
-    backgroundColor: colors.black,
+    backgroundColor: "white",
     padding: 10,
     borderColor: colors.dark,
     borderWidth: 5,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   text: {
     borderColor: colors.dark,
-    backgroundColor: colors.white,
+    backgroundColor: "white",
     borderWidth: 2,
     paddingLeft: 5,
     borderRadius: 5,

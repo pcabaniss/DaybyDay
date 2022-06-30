@@ -10,9 +10,21 @@
  *
  * implement loading animations wherever needed
  *
+ * Fix emailing
+ *
  * Create website and link it to app for Help and Support
  *
  * Implement contact us screen or merge it with help and support screen.
+ *
+ * Get notification permission at the opening of app.
+ *
+ * Hide Keyboard on message form in bus profile
+ *
+ * Fix custom agenda item loading
+ *
+ * Change animation in UploadScreen
+ *
+ * connect app to website
  *
  * Bugs found:
  *       Indention on the answer screen is off.
