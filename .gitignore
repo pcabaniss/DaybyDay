@@ -10,7 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 
-#API's
+
 app/
 api/
 privateAPIs.js
