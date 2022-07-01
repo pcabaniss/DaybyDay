@@ -78,4 +78,4 @@ buck-out/
 web-build/
 dist/
 
-# @end expo-cli
+# @end expo-cliapp/api/privateAPIs.js
