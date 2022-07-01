@@ -11,7 +11,11 @@ npm-debug.*
 web-build/
 
 #API's
-app/api/privateAPIs.js
+app/
+api/
+privateAPIs.js
+
+
 # macOS
 .DS_Store
 
