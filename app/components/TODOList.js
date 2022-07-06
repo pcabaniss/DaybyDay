@@ -29,5 +29,6 @@
  * Bugs found:
  *       Indention on the answer screen is off.
  *
- *
+ *       Bug when setting up account and miss credentials (so far just profile picture
+ * but may be for every variable)
  */
