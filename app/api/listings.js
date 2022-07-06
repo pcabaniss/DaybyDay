@@ -1128,36 +1128,8 @@ const getRatings = async (business) => {
 //Make it to where on startup and log out all notifications are deleted on device and then
 //when logging back in you will re-set all the notifications in your DB.
 
-const addReminder = (identifier, title, body, date, isImmediate) => {
-  getUser().doc("Reminders").collection("Scheduled").add({
-    identifier: identifier,
-    title: title,
-    body: body,
-    date: date,
-    isImmediate: isImmediate,
-  });
-};
-
-const sendReminder = (business, identifier, title, body, date, isImmediate) => {
-  const safeEmail = safetyFirst(business);
-
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
-    .doc("Reminders")
-    .collection("Scheduled")
-    .add({
-      identifier: identifier,
-      title: title,
-      body: body,
-      date: date,
-      isImmediate: isImmediate,
-    });
-};
-
 const getReminders = async (email) => {
   const safeEmail = safetyFirst(email);
-  var temp = [];
   await firebase.default
     .firestore()
     .collection(safeEmail)
@@ -1772,9 +1744,7 @@ export default {
   updateRequest,
   saveRating,
   getRatings,
-  addReminder,
   getReminders,
-  sendReminder,
   reportBusiness,
   blockBusiness,
   getBlockedList,

@@ -1,7 +1,12 @@
 import * as Notifications from "expo-notifications";
-import listings from "./listings";
+import { firebase } from "../auth/firebaseConfig";
 
 const scheduleNotification = async (title, body, date, isImmediate) => {
+  const user = firebase.default.auth().currentUser.email;
+
+  const semail = user.replace(".", "-");
+  const safeEmail = semail.replace("@", "-");
+
   if (isImmediate == false) {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
@@ -12,9 +17,32 @@ const scheduleNotification = async (title, body, date, isImmediate) => {
         date: date,
       },
     });
-    listings.addReminder(identifier, title, body, date, isImmediate);
+
+    firebase.default
+      .firestore()
+      .collection(safeEmail)
+      .doc("Reminders")
+      .collection("Scheduled")
+      .add({
+        identifier: identifier,
+        title: title,
+        body: body,
+        date: date,
+        isImmediate: isImmediate,
+      });
   } else {
-    listings.addReminder("identifier", title, body, date, isImmediate);
+    firebase.default
+      .firestore()
+      .collection(safeEmail)
+      .doc("Reminders")
+      .collection("Scheduled")
+      .add({
+        identifier: "identifier",
+        title: title,
+        body: body,
+        date: date,
+        isImmediate: isImmediate,
+      });
   }
 };
 
@@ -31,12 +59,10 @@ const deleteAllNotifications = () => {
   Notifications.cancelAllScheduledNotificationsAsync();
 };
 
-const loadAllNotifications = async (email) => {
-  // Go through all notifications in DB and re-schedule them
-  listings.getReminders(email);
-};
-
 const sendNotification = async (email, title, body, date, isImmediate) => {
+  const semail = email.replace(".", "-");
+  const safeEmail = semail.replace("@", "-");
+
   if (isImmediate == false) {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
@@ -47,9 +73,32 @@ const sendNotification = async (email, title, body, date, isImmediate) => {
         date: date,
       },
     });
-    listings.sendReminder(email, identifier, title, body, date, isImmediate);
+
+    firebase.default
+      .firestore()
+      .collection(safeEmail)
+      .doc("Reminders")
+      .collection("Scheduled")
+      .add({
+        identifier: identifier,
+        title: title,
+        body: body,
+        date: date,
+        isImmediate: isImmediate,
+      });
   } else {
-    listings.sendReminder(email, "identifier", title, body, date, isImmediate);
+    firebase.default
+      .firestore()
+      .collection(safeEmail)
+      .doc("Reminders")
+      .collection("Scheduled")
+      .add({
+        identifier: "identifier",
+        title: title,
+        body: body,
+        date: date,
+        isImmediate: isImmediate,
+      });
   }
 };
 
@@ -68,13 +117,64 @@ const sendImmediateNotification = async (title, body) => {
   });
 };
 
+const loadAllNotifications = async (email) => {
+  // Go through all notifications in DB and re-schedule them
+  const semail = email.replace(".", "-");
+  const safeEmail = semail.replace("@", "-");
+
+  await firebase.default
+    .firestore()
+    .collection(safeEmail)
+    .doc("Reminders")
+    .collection("Scheduled")
+    .get()
+    .then((reminder) => {
+      reminder.forEach((item) => {
+        const data = item.data();
+        if (item.exists) {
+          if (data.isImmediate == true) {
+            sendImmediateNotification(data.title, data.body);
+          } else {
+            scheduleNotification(data.title, data.body, -data.date, false);
+          }
+        }
+      });
+    })
+    .then(
+      firebase.default
+        .firestore()
+        .collection(safeEmail)
+        .doc("Reminders")
+        .collection("Scheduled")
+        .get()
+        .then((reminder) => {
+          reminder.forEach((item) => {
+            const data = item.data();
+            if (item.exists) {
+              if (data.isImmediate == true)
+                firebase.default
+                  .firestore()
+                  .collection(safeEmail)
+                  .doc("Reminders")
+                  .collection("Scheduled")
+                  .doc(item.id)
+                  .delete();
+            }
+          });
+        })
+    );
+  const messageBadge = await getMessageBadges();
+  const requestBadge = await getRequestBadges();
+
+  addBadge(messageBadge + requestBadge);
+};
 /*async function sendPushNotification(expoPushToken) {
-    const message = {
-      to: expoPushToken,
-      sound: "default",
-      title: title,
-      body: body,
-      data: { someData: "goes here" },
+  const message = {
+    to: expoPushToken,
+    sound: "default",
+    title: title,
+    body: body,
+    data: { someData: "goes here" },
     };
 
     await fetch("https://exp.host/--/api/v2/push/send", {

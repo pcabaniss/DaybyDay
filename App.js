@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import { LogBox, StyleSheet } from "react-native";
 import * as Notifications from "expo-notifications";
-import Device from "expo-device";
+import * as Device from "expo-device";
 
 import navigationTheme from "./app/navigation/NavigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
@@ -29,6 +29,10 @@ export default function App() {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
+
+      console.log("Here: This is the status. ");
+      console.log(existingStatus);
+
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
@@ -38,7 +42,6 @@ export default function App() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       console.log("Must use physical device for Push Notifications");
     }
