@@ -80,25 +80,41 @@ function AgendaDetailsScreen({ navigation, route }) {
   const [progress, setProgress] = useState(0);
 
   const cancel = () => {
-    listings.cancelAppointment(day, timeStart, description);
+    listings.cancelAppointment(day, timeStart, description, isCustom);
 
     navigation.goBack();
   };
 
   const cancelPressed = () => {
-    Alert.alert(
-      "Are you sure you want to cancel?",
-      "Once you cancel, we cannot guarantee you can get the spot back.",
-      [
-        { text: "No", style: "cancel" },
-        {
-          text: "Yes",
-          onPress: () => {
-            cancel();
+    if (isCustom) {
+      Alert.alert(
+        "Are you sure you want to cancel?",
+        "You cannot undo this action.",
+        [
+          { text: "No", style: "cancel" },
+          {
+            text: "Yes",
+            onPress: () => {
+              cancel();
+            },
           },
-        },
-      ]
-    );
+        ]
+      );
+    } else {
+      Alert.alert(
+        "Are you sure you want to cancel?",
+        "Once you cancel, we cannot guarantee you get this spot back.",
+        [
+          { text: "No", style: "cancel" },
+          {
+            text: "Yes",
+            onPress: () => {
+              cancel();
+            },
+          },
+        ]
+      );
+    }
   };
 
   const handleUpdate = async (listing) => {

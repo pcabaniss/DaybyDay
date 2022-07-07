@@ -4,7 +4,6 @@ import listings from "../api/listings";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 import AppPicker from "./AppPicker";
-import ListItemSeperator from "./ListItemSeperator";
 
 function MessageForm({
   type,
@@ -65,6 +64,20 @@ function MessageForm({
   };
   // This will be in charge of sending the message to the business.
   const submitPressed = () => {
+    if (value == "Reason") {
+      return Alert.alert(
+        "Hold on",
+        "You must select a reason from the drop down menu.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
+    if (about.length < 5) {
+      return Alert.alert(
+        "Hold on",
+        "You must write something to send something.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
     const capitalName = userName.charAt(0).toUpperCase() + userName.slice(1);
     var subject = value.toLowerCase();
 
@@ -106,10 +119,15 @@ function MessageForm({
         </>
       ) : (
         <>
-          <Text style={styles.header}>
-            Have any questions, concerns, or inquiries?
-          </Text>
-          <ListItemSeperator />
+          <Text style={styles.header}>Have any questions?</Text>
+          <TextInput
+            editable
+            multiline
+            onChangeText={changeText}
+            value={about}
+            placeholder="Type message here."
+            style={styles.aboutText}
+          />
           <AppPicker
             items={menuItems}
             numberOfColumns={1}
@@ -119,14 +137,6 @@ function MessageForm({
             }}
             width="94%"
           />
-          <TextInput
-            editable
-            multiline
-            onChangeText={changeText}
-            value={about}
-            placeholder="Type message here."
-            style={styles.aboutText}
-          ></TextInput>
           <AppButton
             color={colors.green}
             onPress={submitPressed}
@@ -152,14 +162,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   container: {
+    flex: 1,
     alignItems: "center",
     backgroundColor: "white",
   },
   header: {
     textAlign: "center",
     fontSize: 30,
-    padding: 5,
-    paddingBottom: 10,
+    paddingBottom: 15,
   },
 });
 

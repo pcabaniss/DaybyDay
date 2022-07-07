@@ -20,15 +20,9 @@
  *
  * Hide Keyboard on message form in bus profile
  *
- * Fix custom agenda item loading
- *
- * Change animation in UploadScreen
- *
  * connect app to website
  *
  * Bugs found:
- *       Indention on the answer screen is off.
- *
  *       Bug when setting up account and miss credentials (so far just profile picture
  * but may be for every variable)
  */

@@ -7,14 +7,18 @@ const scheduleNotification = async (title, body, date, isImmediate) => {
   const semail = user.replace(".", "-");
   const safeEmail = semail.replace("@", "-");
 
-  if (isImmediate == false) {
+  const newt = new Date(date);
+
+  if (!isImmediate) {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
         title: title,
         body: body,
       },
       trigger: {
+        //Will throw error on emulator.
         date: date,
+        repeats: false,
       },
     });
 

@@ -68,8 +68,11 @@ function AnswerScreen({ route, navigation }) {
         </View>
         <View style={styles.reason}>
           <TextInput
-            placeholder="  Give a reason(optional)."
+            placeholder=" Give a reason(optional)."
+            autoCapitalize="sentences"
+            autoCorrect
             editable
+            style={{ paddingLeft: 5 }}
             multiline
             onChangeText={setAbout}
             blurOnSubmit={true}

@@ -11,7 +11,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
-import listingsApi from "../api/listings";
+import listings from "../api/listings";
 import UploadScreen from "./UploadScreen";
 import moment from "moment";
 import Notifications from "../api/Notifications";
@@ -34,11 +34,13 @@ function ListingEditScreen({ navigation, route }) {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const onChangeStart = async (event, selectedDate) => {
     const startDate = selectedDate;
     setShow(Platform.OS === "ios");
     setStartDate(startDate);
-    console.log("Changed date to: " + startDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
@@ -53,22 +55,12 @@ function ListingEditScreen({ navigation, route }) {
     setMode(currentMode);
   };
 
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showTimepicker = () => {
-    showMode("time");
-  };
-
   const timeFormatter = (date) => {
     let d = moment(date);
 
     console.log(d.format("hh:mm A"));
     return d.format("hh:mm A");
   };
-  const [uploadVisible, setUploadVisible] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (listing, { resetForm }) => {
     Notifications.scheduleNotification(
@@ -77,24 +69,24 @@ function ListingEditScreen({ navigation, route }) {
       dateStart,
       false
     );
+
     setProgress(0);
     setUploadVisible(true);
 
     listing.timeStart = dateStart.toString();
     listing.timeFinish = dateEnd.toString();
     listing.dateClicked = day;
-    const result = await listingsApi.addListing(
-      { ...listing },
-      "Custom",
-      (progress) => setProgress(progress)
-    );
+    const result = listings.addListing({ ...listing }, "Custom");
 
-    if (result.ok) {
+    if (!result) {
       setUploadVisible(false);
-      console.log("Could not save listing. Error: " + result.originalError);
+      //console.log("Could not save listing. Error: " + result.originalError);
       return alert("Could not save listing.");
+    } else {
+      setUploadVisible(false);
     }
-    listingsApi.getDate(day);
+
+    listings.getDate(day);
 
     navigation.navigate("Calendar");
     //resetForm();

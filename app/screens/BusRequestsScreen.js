@@ -34,7 +34,6 @@ function BusRequestScreen({ navigation, route }) {
 
   const getRequests = async () => {
     const requests = await listings.getBusRequests();
-    console.log(requests);
     requests.forEach((item) => {
       if (item.request == "pending") {
         pending.push(item);

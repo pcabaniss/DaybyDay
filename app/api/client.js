@@ -11,7 +11,6 @@ apiClient.addAsyncRequestTransform(async (request) => {
   request.headers["x-auth-token"] = authToken;
 });
 
-const get = apiClient.get;
 apiClient.get = async (url, params, axiosConfig) => {
   console.log("Trying to get");
   const response = await get(url, params, axiosConfig);
@@ -24,5 +23,6 @@ apiClient.get = async (url, params, axiosConfig) => {
   const data = await cache.get(url);
   return data ? { ok: true, data } : response;
 };
+const get = apiClient.get;
 
 export default apiClient;

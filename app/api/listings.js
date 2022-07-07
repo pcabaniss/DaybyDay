@@ -168,14 +168,13 @@ const deleteListing = (listing) => {
     });
 };
 
-const addListing = (listing, business, onUploadProgress) => {
+const addListing = (listing, business) => {
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
 
   const startingTime = moment(listing.timeStart).format("hh:mm A");
-  const data = new FormData();
-  data.append("title", listing.title);
+
   const currentUser = firebase.default.auth().currentUser.email;
 
   if (listing.business == "Custom") {
@@ -193,56 +192,61 @@ const addListing = (listing, business, onUploadProgress) => {
       "We set your notification and added it to your in-app agenda."
     );
   }
+  try {
+    getUser()
+      .doc(listing.dateClicked)
+      .collection("listing")
+      .doc(business + "_" + startingTime)
+      .set({
+        title: listing.title,
+        timeStart: listing.timeStart,
+        timeFinish: listing.timeFinish,
+        description: listing.description,
+        id: listing.dateClicked + listing.title,
+        business: business,
+      });
 
-  getUser()
-    .doc(listing.dateClicked)
-    .collection("listing")
-    .doc(business + "_" + startingTime)
-    .set({
-      title: listing.title,
-      timeStart: listing.timeStart,
-      timeFinish: listing.timeFinish,
-      description: listing.description,
-      id: listing.dateClicked + listing.title,
-      business: business,
-    });
-
-  return client.post(endPoint, data, {
-    onUploadProgress: (progress) =>
-      onUploadProgress(progress.loaded / progress.total),
-  });
+    return true;
+  } catch (error) {
+    console.log("Error in addLisintings: " + error);
+    return false;
+  }
 };
 
-const updateListing = (listing, onUploadProgress) => {
+const updateListing = (listing) => {
   const data = new FormData();
   data.append("title", listing.title);
 
-  getUser()
-    .doc(listing.dateClicked)
-    .collection("listing")
-    .get()
-    .then((doc) => {
-      doc.forEach((snapshot) => {
-        if (snapshot.data().id == listing.id) {
-          getUser()
-            .doc(listing.dateClicked)
-            .collection("listing")
-            .doc(snapshot.id)
-            .update({
-              title: listing.title,
-              timeStart: listing.timeStart,
-              timeFinish: listing.timeFinish,
-              description: listing.description,
-            });
-        } else {
-          return;
-        }
+  try {
+    getUser()
+      .doc(listing.dateClicked)
+      .collection("listing")
+      .get()
+      .then((doc) => {
+        doc.forEach((snapshot) => {
+          if (snapshot.data().id == listing.id) {
+            getUser()
+              .doc(listing.dateClicked)
+              .collection("listing")
+              .doc(snapshot.id)
+              .update({
+                title: listing.title,
+                timeStart: listing.timeStart,
+                timeFinish: listing.timeFinish,
+                description: listing.description,
+              });
+          } else {
+            return;
+          }
+        });
       });
-    });
-  return client.post(endPoint, data, {
-    onUploadProgress: (progress) =>
-      onUploadProgress(progress.loaded / progress.total),
-  });
+
+    return true;
+  } catch (error) {
+    console.log("Error in updateListing: " + error);
+
+    return false;
+  }
 };
 
 const getMyName = async () => {
@@ -1257,74 +1261,84 @@ const getBlockedList = async () => {
   return temp;
 };
 
-const cancelAppointment = (day, startTime, description) => {
+const cancelAppointment = (day, startTime, description, isCustom) => {
   /**
    * remove from both databases, will have to pull business name from user DB.
    * cancel any notifications with this date
    * send notification to business or user, whichever canceled.
    *
    */
+  const time = moment(startTime).format("hh:mm A");
 
-  const [text, cancelee] = description.split("with ");
+  if (isCustom) {
+    getUser()
+      .doc(day)
+      .collection("listing")
+      .doc("Custom" + "_" + time)
+      .delete()
+      .then(console.log("Deleted custom event."));
+  } else {
+    const [text, cancelee] = description.split("with ");
 
-  const safeEmail = safetyFirst(cancelee);
+    const safeEmail = safetyFirst(cancelee);
 
-  sendEmail(
-    cancelee,
-    "Canceled appointement.",
-    "Unfortunately, these things can happen sometimes.",
-    "Your appointment with " +
-      canceler +
-      " at " +
-      startTime +
-      " on " +
-      day +
-      " has been canceled."
-  );
+    sendEmail(
+      cancelee,
+      "Canceled appointement.",
+      "Unfortunately, these things can happen sometimes.",
+      "Your appointment with " +
+        canceler +
+        " at " +
+        startTime +
+        " on " +
+        day +
+        " has been canceled."
+    );
 
-  sendEmail(
-    canceler,
-    "Canceled appointement.",
-    "You successfully canceled your appointment.",
-    "Your appointment with " +
-      cancelee +
-      " at " +
-      startTime +
-      " on " +
-      day +
-      " has been canceled."
-  );
+    sendEmail(
+      canceler,
+      "Canceled appointement.",
+      "You successfully canceled your appointment.",
+      "Your appointment with " +
+        cancelee +
+        " at " +
+        startTime +
+        " on " +
+        day +
+        " has been canceled."
+    );
 
-  var canceler = firebase.default.auth().currentUser.email;
+    var canceler = firebase.default.auth().currentUser.email;
 
-  getUser()
-    .doc(day)
-    .collection("listing")
-    .doc(cancelee + "_" + startTime)
-    .delete()
-    .then(console.log("Deleted from canceler..."));
+    getUser()
+      .doc(day)
+      .collection("listing")
+      .doc(cancelee + "_" + startTime)
+      .delete()
+      .then(console.log("Deleted from canceler..."));
 
-  firebase.default
-    .firestore()
-    .collection(safeEmail)
-    .doc(day)
-    .collection("listing")
-    .doc(canceler + "_" + startTime)
-    .delete()
-    .then(console.log("Deleted from cancelee!"));
+    firebase.default
+      .firestore()
+      .collection(safeEmail)
+      .doc(day)
+      .collection("listing")
+      .doc(canceler + "_" + startTime)
+      .delete()
+      .then(console.log("Deleted from cancelee!"));
 
-  Notifications.sendNotification(
-    cancelee,
-    "Appointment Canceled",
-    "Unfortunatly, " +
-      canceler +
-      " has canceled your appointment with them at " +
-      startTime +
-      "on " +
-      day,
-    new Date(),
-    true
-  );
+    Notifications.sendNotification(
+      cancelee,
+      "Appointment Canceled",
+      "Unfortunatly, " +
+        canceler +
+        " has canceled your appointment with them at " +
+        startTime +
+        "on " +
+        day,
+      new Date(),
+      true
+    );
+  }
 };
 
 const getMessageBadges = async () => {

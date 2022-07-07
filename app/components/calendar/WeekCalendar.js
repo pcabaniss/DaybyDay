@@ -52,7 +52,7 @@ const WeekCalendar = ({ navigation }) => {
     const newDate = new Date(day);
     const currentDate = new Date();
     if (newDate <= currentDate) {
-      Alert.alert("Cannot edit current or past events.");
+      Alert.alert("Cannot edit past events.");
     } else {
       navigation.navigate("View", {
         day: day,
