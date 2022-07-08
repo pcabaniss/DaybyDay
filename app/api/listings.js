@@ -14,7 +14,7 @@ const endPoint = "/listings";
 const getListings = () => client.get(endPoint);
 
 const safetyFirst = (notSafeEmail) => {
-  const email = notSafeEmail.replace(".", "-");
+  const email = notSafeEmail.split(".").join("-");
   const safeEmail = email.replace("@", "-");
 
   return safeEmail;
@@ -1592,29 +1592,14 @@ const checkIfVerified = () => {
 };
 
 const sendVerificationEmail = () => {
-  try {
-    firebase.default
-      .auth()
-      .currentUser.sendEmailVerification()
-      .then(console.log("Sent verification email!"));
-  } catch (error) {
-    console.log("Error sending verification email: ");
-    console.log(error);
-  }
+  firebase.default
+    .auth()
+    .currentUser.sendEmailVerification()
+    .catch((error) => console.log("Error sending email: " + error))
+    .then(console.log("Sent verification email!"));
 };
 
 const sendEmail = async (email, subject, header, text) => {
-  //console.log(template);
-
-  const template = await firebase.default
-    .firestore()
-    .collection("email_templates")
-    .doc("welcome")
-    .get()
-    .then((item) => {
-      return item.data();
-    });
-
   //console.log(template);
   firebase.default
     .firestore()

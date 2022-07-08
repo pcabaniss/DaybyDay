@@ -41,12 +41,6 @@ const settingItems = [
     subTitle: "Manage your blocked list and password.",
     targetScreen: "security",
   },
-  //Display contact info/email. Business hours, and maybe an FAQ website?
-  {
-    title: "Contact Us",
-    subTitle: "Have an issue or reccomendation?",
-    targetScreen: "Settings",
-  },
 ];
 
 function SettingsScreen({ navigation }) {

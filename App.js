@@ -30,9 +30,6 @@ export default function App() {
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
 
-      console.log("Here: This is the status. ");
-      console.log(existingStatus);
-
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;

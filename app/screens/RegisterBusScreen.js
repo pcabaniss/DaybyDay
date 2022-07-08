@@ -116,7 +116,7 @@ function RegisterScreen() {
   ];
 
   const handleSubmit = async (userInfo) => {
-    const email = userInfo.email.replace(".", "-");
+    const email = userInfo.email.split(".").join("-");
     const safeEmail = email.replace("@", "-");
     userInfo.safeEmail = safeEmail;
     userInfo.image = image;

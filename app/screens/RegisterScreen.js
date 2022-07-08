@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from "react-native";
 import * as Yup from "yup";
-import { firebase } from "../auth/firebaseConfig";
 import AppIntroSlider from "react-native-app-intro-slider";
 import LottieView from "lottie-react-native";
 
@@ -118,7 +117,7 @@ function RegisterScreen() {
   ];
 
   const handleSubmit = async (userInfo) => {
-    const email = userInfo.email.replace(".", "-");
+    const email = userInfo.email.split(".").join("-");
     const safeEmail = email.replace("@", "-");
     userInfo.safeEmail = safeEmail;
     userInfo.image = image;

@@ -1,28 +1,58 @@
 import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
-import Notifications from "../api/Notifications";
+import { Text, View, StyleSheet, Linking, Alert } from "react-native";
+import LottieView from "lottie-react-native";
+
 import colors from "../config/colors";
-import listings from "../api/listings";
+import AppButton from "../components/AppButton";
 
 function HelpAndSupport(props) {
-  const getNotifications = () => {
-    listings.sendEmail(
-      "pcabaniss93@gmail.com",
-      "This is a test.",
-      "Hello! and welcome.",
-      "Welcome to my app, Day by Day. I hope it can be of some use to you! "
-    );
+  const website = "https://dxdapp.net";
+
+  const openWebsite = async () => {
+    const supported = await Linking.canOpenURL(website);
+
+    if (supported) {
+      await Linking.openURL(website);
+    } else {
+      Alert.alert(
+        "There was a problem loading the site.",
+        "Sorry for the inconvenience, please try again later.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
+  };
+
+  const testing = () => {
+    const test = "phillip.cabaniss@gmail.com";
+
+    const temp = test.split(".").join("-");
+    console.log(temp);
   };
   return (
     <View style={styles.container}>
-      <Text>
-        This screen will hold all the links; FAQ, website, customer service, and
-        social media.
+      <Text style={styles.header}>
+        {" "}
+        Check out our website for any problems you're experiencing.
       </Text>
-      <Button
-        title="Test me."
-        color={colors.blue}
-        onPress={() => getNotifications()}
+      <Text style={styles.regText}>
+        We have troubleshooting docs to walk you through common issues. If
+        you're still having issues, please fill out a contact form and we will
+        get back to you ASAP.
+      </Text>
+      <AppButton
+        title={"Visit the site"}
+        color={colors.green}
+        onPress={() => testing()}
+      />
+      <LottieView
+        source={require("../assets/animations/questions.json")}
+        loop
+        autoPlay
+        style={{
+          width: 400,
+          height: 400,
+          justifyContent: "center",
+        }}
       />
     </View>
   );
@@ -31,7 +61,19 @@ function HelpAndSupport(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
+  },
+  header: {
+    fontSize: 25,
+    fontWeight: "bold",
+    padding: 5,
+    textAlign: "center",
+  },
+  regText: {
+    fontSize: 15,
+    padding: 5,
+    textAlign: "center",
+    paddingBottom: 20,
   },
 });
 
