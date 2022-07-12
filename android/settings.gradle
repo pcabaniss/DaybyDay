@@ -1,4 +1,4 @@
-rootProject.name = 'PracticingCode'
+rootProject.name = 'Day by Day'
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()

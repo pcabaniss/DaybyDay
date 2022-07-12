@@ -8,6 +8,8 @@
  * implement necessary changes for settings, still need data and privacy and
  * contact screen.
  *
+ * Fix gallery in profile and stop auto refreshing.
+ *
  * Connect Calendar to phones internal calendar.
  *
  * Bugs found:
