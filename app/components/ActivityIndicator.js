@@ -10,7 +10,7 @@ function ActivityIndicator({ visible = false }) {
       <LottieView
         autoPlay
         loop
-        source={require("../assets/animations/loader.json")}
+        source={require("../assets/animations/dayAndNight.json")}
       />
     </View>
   );

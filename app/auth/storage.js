@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
 
 const key = "authToken";
+
 const setToken = async (authToken) => {
   try {
     await SecureStore.setItemAsync(key, authToken);

@@ -27,8 +27,8 @@ import {
   ErrorMessage,
   SubmitButton,
 } from "../components/forms";
+
 import colors from "../config/colors";
-import listings from "../api/listings";
 import ListItemSeperator from "../components/ListItemSeperator";
 
 /**
@@ -117,6 +117,21 @@ function RegisterScreen() {
   ];
 
   const handleSubmit = async (userInfo) => {
+    if (userInfo.email.length < 5) {
+      return Alert.alert(
+        "Hmmm, somethings not right.",
+        "Looks like there's a problem with your email, please double check it and try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
+
+    if (!image) {
+      return Alert.alert(
+        "Hold on a sec.",
+        "Looks like like you forget a profile picture, please upload one and try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    }
     const email = userInfo.email.split(".").join("-");
     const safeEmail = email.replace("@", "-");
     userInfo.safeEmail = safeEmail;

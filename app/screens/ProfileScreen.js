@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
+import { useHeaderHeight } from "@react-navigation/stack";
 import { Rating } from "react-native-ratings";
 import { useIsFocused } from "@react-navigation/core";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,6 +20,7 @@ function ProfileScreen({ route, navigation }) {
   const { name, pic, email } = route.params;
 
   const isFocused = useIsFocused();
+  const headerHeight = useHeaderHeight();
 
   const [image, setImage] = useState(pic);
   const [about, setAbout] = useState(" ");
@@ -100,7 +109,10 @@ function ProfileScreen({ route, navigation }) {
   pullAboutInfo(email);
 
   return (
-    <ScrollView scrollEnabled style={{ backgroundColor: colors.primary }}>
+    <ScrollView
+      scrollEnabled
+      style={{ backgroundColor: colors.primary, flex: 1 }}
+    >
       <View style={styles.picContainer}>
         <Image source={{ uri: image }} style={styles.profilePic} />
         <View style={{ paddingLeft: 10, flex: 1 }}>
@@ -177,6 +189,7 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     height: 500,
+    flex: 1,
   },
   dotDotDot: {
     //backgroundColor: colors.green,

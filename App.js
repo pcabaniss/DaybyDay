@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
-import { LogBox, StyleSheet } from "react-native";
+import { Platform } from "react-native";
+import { KeyboardAvoidingView, LogBox, StyleSheet } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
@@ -105,12 +106,17 @@ export default function App() {
     );
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <OfflineNotice />
-      <NavigationContainer theme={navigationTheme}>
-        {user ? <AppNavigator /> : <AuthNavigator />}
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+    >
+      <AuthContext.Provider value={{ user, setUser }}>
+        <OfflineNotice />
+        <NavigationContainer theme={navigationTheme}>
+          {user ? <AppNavigator /> : <AuthNavigator />}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </KeyboardAvoidingView>
   );
 }
 
