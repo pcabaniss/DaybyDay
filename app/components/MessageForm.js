@@ -120,14 +120,6 @@ function MessageForm({
       ) : (
         <>
           <Text style={styles.header}>Have any questions?</Text>
-          <TextInput
-            editable
-            multiline
-            onChangeText={changeText}
-            value={about}
-            placeholder="Type message here."
-            style={styles.aboutText}
-          />
           <AppPicker
             items={menuItems}
             numberOfColumns={1}
@@ -136,6 +128,14 @@ function MessageForm({
               setValue(value.label);
             }}
             width="94%"
+          />
+          <TextInput
+            editable
+            multiline
+            onChangeText={changeText}
+            value={about}
+            placeholder="Type message here."
+            style={styles.aboutText}
           />
           <AppButton
             color={colors.green}
