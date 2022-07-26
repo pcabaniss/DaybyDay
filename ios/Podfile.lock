@@ -442,27 +442,13 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - TcpSockets (3.3.2):
     - React
-  - UMAppLoader (2.1.0)
-  - UMBarCodeScannerInterface (6.1.0):
-    - UMCore
-  - UMCameraInterface (6.1.0):
-    - UMCore
-  - UMConstantsInterface (6.1.0):
-    - UMCore
+  - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
-  - UMFaceDetectorInterface (6.1.0)
-  - UMFileSystemInterface (6.1.0)
-  - UMFontInterface (6.1.0)
-  - UMImageLoaderInterface (6.1.0)
-  - UMPermissionsInterface (6.1.0):
-    - UMCore
-  - UMReactNativeAdapter (6.2.2):
+  - UMReactNativeAdapter (6.3.9):
+    - ExpoModulesCore
     - React-Core
     - UMCore
-    - UMFontInterface
-  - UMSensorsInterface (6.1.0):
-    - UMCore
-  - UMTaskManagerInterface (6.1.0):
+  - UMTaskManagerInterface (6.2.0):
     - UMCore
   - Yoga (1.14.0)
 
@@ -543,17 +529,8 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - TcpSockets (from `../node_modules/react-native-tcp`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
-  - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
-  - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
-  - UMConstantsInterface (from `../node_modules/unimodules-constants-interface/ios`)
   - "UMCore (from `../node_modules/@unimodules/core/ios`)"
-  - UMFaceDetectorInterface (from `../node_modules/unimodules-face-detector-interface/ios`)
-  - UMFileSystemInterface (from `../node_modules/unimodules-file-system-interface/ios`)
-  - UMFontInterface (from `../node_modules/unimodules-font-interface/ios`)
-  - UMImageLoaderInterface (from `../node_modules/unimodules-image-loader-interface/ios`)
-  - UMPermissionsInterface (from `../node_modules/unimodules-permissions-interface/ios`)
   - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
-  - UMSensorsInterface (from `../node_modules/unimodules-sensors-interface/ios`)
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -720,28 +697,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-tcp"
   UMAppLoader:
     :path: "../node_modules/unimodules-app-loader/ios"
-  UMBarCodeScannerInterface:
-    :path: "../node_modules/unimodules-barcode-scanner-interface/ios"
-  UMCameraInterface:
-    :path: "../node_modules/unimodules-camera-interface/ios"
-  UMConstantsInterface:
-    :path: "../node_modules/unimodules-constants-interface/ios"
   UMCore:
     :path: "../node_modules/@unimodules/core/ios"
-  UMFaceDetectorInterface:
-    :path: "../node_modules/unimodules-face-detector-interface/ios"
-  UMFileSystemInterface:
-    :path: "../node_modules/unimodules-file-system-interface/ios"
-  UMFontInterface:
-    :path: "../node_modules/unimodules-font-interface/ios"
-  UMImageLoaderInterface:
-    :path: "../node_modules/unimodules-image-loader-interface/ios"
-  UMPermissionsInterface:
-    :path: "../node_modules/unimodules-permissions-interface/ios"
   UMReactNativeAdapter:
     :path: "../node_modules/@unimodules/react-native-adapter/ios"
-  UMSensorsInterface:
-    :path: "../node_modules/unimodules-sensors-interface/ios"
   UMTaskManagerInterface:
     :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
@@ -832,19 +791,10 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
-  UMAppLoader: fe2708bb0ac5cd70052bc207d06aa3b7e72b9e97
-  UMBarCodeScannerInterface: 79f92bea5f7af39b381a4c82298105ceb537408a
-  UMCameraInterface: 81ff46700da88435f17afedfc88915eaede7e6a6
-  UMConstantsInterface: bb94dd46039dcde276ed50225b29e22785e604bf
+  UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
-  UMFaceDetectorInterface: 791eec55ffca1171992976b7eceb73e69e391c58
-  UMFileSystemInterface: f72245e90ce78fa6427180ff0b0904ead13d8161
-  UMFontInterface: 5843cff7db85a42ba629aaac53d33091c35524d3
-  UMImageLoaderInterface: 9ddffeb644b3f45d4eb0c2f51a2fd95fd5c8d1a4
-  UMPermissionsInterface: 40b72935a7d12a3f60dc6b7bb99ce47908380cb1
-  UMReactNativeAdapter: 65ada852a648fcb6674acfbfe72ccb095f2f5b75
-  UMSensorsInterface: a5e9db661e5d9ae214762033d725989880ae6993
-  UMTaskManagerInterface: 203c11259d2699b5b3a4eda4adbc466f5cb5c561
+  UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
+  UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952
 
 PODFILE CHECKSUM: a4b9b2bf64b7adfcfca77974b05a2fe6f19f625f
