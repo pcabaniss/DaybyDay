@@ -15,6 +15,7 @@ import listings from "../api/listings";
 import UploadScreen from "./UploadScreen";
 import moment from "moment";
 import Notifications from "../api/Notifications";
+import TestPicker from "../components/TestPicker";
 
 //This screen needs to be a searchable database of businesses that are
 // currently signed up in the app and go from there. Including the scheduling
@@ -31,35 +32,32 @@ function ListingEditScreen({ navigation, route }) {
   const { day } = route.params;
   const [dateStart, setStartDate] = useState(new Date());
   const [dateEnd, setEndDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const [isShowingStart, setIsShowingStart] = useState(false);
+  const [isShowingEnd, setIsShowingEnd] = useState(false);
+
+  const showPickerStart = () => {
+    setIsShowingStart(true);
+  };
+
+  const showPickerEnd = () => {
+    setIsShowingEnd(true);
+  };
+
   const onChangeStart = async (event, selectedDate) => {
-    const startDate = selectedDate;
     setShow(Platform.OS === "ios");
-    setStartDate(startDate);
+    setIsShowingStart(false);
+    setStartDate(selectedDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
-    const endDate = selectedDate;
     setShow(Platform.OS === "ios");
-    setShow(Platform.OS === "android");
-    setEndDate(endDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const timeFormatter = (date) => {
-    let d = moment(date);
-
-    console.log(d.format("hh:mm A"));
-    return d.format("hh:mm A");
+    setIsShowingEnd(false);
+    setEndDate(selectedDate);
   };
 
   const handleSubmit = async (listing, { resetForm }) => {
@@ -112,27 +110,48 @@ function ListingEditScreen({ navigation, route }) {
       >
         <FormField maxLength={255} name="title" placeholder="Title" />
         <View style={styles.date}>
-          <Text style={styles.text}>Start: </Text>
-          <DateTimePicker
-            name="timeStart"
-            value={dateStart}
-            mode={"time"}
-            is24Hour={true}
-            display="default"
-            onChange={onChangeStart}
-            style={styles.picker}
-          />
-          <Text style={styles.text}>Finish: </Text>
-          <DateTimePicker
-            name="timeFinish"
-            value={dateEnd}
-            mode={"time"}
-            is24Hour={true}
-            display="default"
-            onChange={onChangeEnd}
-            textColor={colors.black}
-            style={styles.picker}
-          />
+          {Platform.OS == "android" ? (
+            <>
+              <Text style={styles.text}>Start: </Text>
+              <TestPicker
+                dateProp={dateStart}
+                isShowing={isShowingStart}
+                onChange={onChangeStart}
+                showPicker={showPickerStart}
+              />
+              <Text style={styles.text}>Finish: </Text>
+              <TestPicker
+                dateProp={dateEnd}
+                isShowing={isShowingEnd}
+                onChange={onChangeEnd}
+                showPicker={showPickerEnd}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={styles.text}>Start: </Text>
+              <DateTimePicker
+                name="timeStart"
+                value={dateStart}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeStart}
+                style={styles.picker}
+              />
+              <Text style={styles.text}>Finish: </Text>
+              <DateTimePicker
+                name="timeFinish"
+                value={dateEnd}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeEnd}
+                textColor={colors.black}
+                style={styles.picker}
+              />
+            </>
+          )}
         </View>
         <FormField
           maxLength={255}

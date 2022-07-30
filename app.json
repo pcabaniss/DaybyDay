@@ -33,6 +33,7 @@
         "foregroundImage": "./app/assets/appIcon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.pcabaniss93.PracticingCode"
       
     },

@@ -30,13 +30,6 @@
             {
               "client_id": "431024329793-l84l5eg20h8p18kf7vns08ioso0tjjjd.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "431024329793-tq217835dvvi68qrv98to00ea3f7kglv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.pcabaniss93.PracticingCode"
-              }
             }
           ]
         }

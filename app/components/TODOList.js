@@ -8,6 +8,12 @@
  * implement necessary changes for settings, still need data and privacy and
  * contact screen.
  *
+ * Add deleting profile functionality
+ *
+ * Fix website, it says "Melanie Baldi" on tab name
+ *
+ * Add edit username functionality
+ *
  * Fix gallery in profile and stop auto refreshing.
  *
  * Connect Calendar to phones internal calendar.

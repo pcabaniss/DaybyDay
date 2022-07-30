@@ -7,8 +7,6 @@ const scheduleNotification = async (title, body, date, isImmediate) => {
   const semail = user.replace(".", "-");
   const safeEmail = semail.replace("@", "-");
 
-  const newt = new Date(date);
-
   if (!isImmediate) {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {

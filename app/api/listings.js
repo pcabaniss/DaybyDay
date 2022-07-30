@@ -1592,6 +1592,8 @@ const checkIfVerified = () => {
 };
 
 const sendVerificationEmail = () => {
+  console.log("this is the way: ");
+  console.log(firebase.default.auth().currentUser.email);
   firebase.default
     .auth()
     .currentUser.sendEmailVerification()

@@ -123,7 +123,7 @@ function RegisterScreen() {
         [{ text: "OK", style: "cancel" }]
       );
     }
-    if (userInfo.image.length < 5) {
+    if (!image) {
       return Alert.alert(
         "Hold on a sec.",
         "Looks like like you forget a profile picture, please upload one and try again.",
