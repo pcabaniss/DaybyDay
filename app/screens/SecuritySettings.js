@@ -39,6 +39,20 @@ function SecuritySettings({ navigation }) {
             />
           }
         />
+        <Seperator />
+        <ListItem
+          title={"Delete account"}
+          subTitle={"Remove account and all data."}
+          onPress={() => navigation.navigate("deleteAccount")}
+          IconComponent={
+            <MaterialCommunityIcons
+              name="delete-alert"
+              color={colors.red}
+              size={30}
+              style={{ paddingRight: 10 }}
+            />
+          }
+        />
       </View>
     </View>
   );

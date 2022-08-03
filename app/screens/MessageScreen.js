@@ -5,7 +5,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ListItem from "../components/ListItem";
 import ListItemDeleteItem from "../components/ListItemDeleteItem";
-import ListItemSeperator from "../components/ListItemSeperator";
 
 import colors from "../config/colors";
 import Seperator from "../components/Seperator";

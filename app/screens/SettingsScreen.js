@@ -38,7 +38,7 @@ const settingItems = [
   //Change password and view information.
   {
     title: "Password & Security",
-    subTitle: "Manage your blocked list and password.",
+    subTitle: "Manage your blocked list, password, and delete account.",
     targetScreen: "security",
   },
 ];

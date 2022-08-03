@@ -7,6 +7,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import BlockedListScreen from "../screens/BlockedListScreen";
 import DataPrivacyScreen from "../screens/DataPrivacyScreen";
 import colors from "../config/colors";
+import DeleteAccount from "../screens/DeleteAccount";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +59,16 @@ const SettingsNavigator = () => (
       component={DataPrivacyScreen}
       options={{
         title: "Data & Privacy",
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="deleteAccount"
+      component={DeleteAccount}
+      options={{
+        title: "Delete Account",
         headerStyle: {
           backgroundColor: colors.primaryDark,
         },

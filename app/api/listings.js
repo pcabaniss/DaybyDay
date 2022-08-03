@@ -1709,6 +1709,56 @@ background-color: #f6f6f6;
       }, */
 };
 
+const deleteAccount = async (ps, onPress) => {
+  const myEmail = firebase.default.auth().currentUser.email;
+
+  const emailCred = firebase.default.auth.EmailAuthProvider.credential(
+    myEmail,
+    ps
+  );
+
+  await firebase.default
+    .auth()
+    .currentUser.reauthenticateWithCredential(emailCred)
+    .then(() => {
+      return Alert.alert(
+        "Are you absolutely sure?",
+        "Last chance to change your mind.",
+        [
+          { text: "Bye!", onPress: onPress },
+          { text: "Wait!", style: "cancel" },
+        ]
+      );
+    })
+    .catch((error) => {
+      console.log("Error: " + error);
+      return Alert.alert(
+        "Something went wrong.",
+        "Usually this happens due to a wrong password or a network issue. Please try again.",
+        [{ text: "OK", style: "cancel" }]
+      );
+    });
+};
+
+const removeUser = () => {
+  const myEmail = firebase.default.auth().currentUser.email;
+  const safeEmail = safetyFirst(myEmail);
+
+  try {
+    firebase.default.database().ref("users/").child(safeEmail).remove();
+    firebase.default.database().ref("reviews/").child(safeEmail).remove();
+    firebase.default
+      .storage()
+      .ref(myEmail + "/")
+      .delete();
+    firebase.default.firestore().collection(myEmail).doc().delete();
+    firebase.default.auth().currentUser.delete();
+  } catch (error) {
+    console.log("Error occured while deleting user: " + myEmail);
+    console.log(error);
+  }
+};
+
 export default {
   getListings,
   addListing,
@@ -1762,4 +1812,6 @@ export default {
   checkIfVerified,
   sendVerificationEmail,
   sendEmail,
+  deleteAccount,
+  removeUser,
 };
