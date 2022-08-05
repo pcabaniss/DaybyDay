@@ -143,7 +143,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
     return null;
   };
   const emptyDate = () => {
-    Alert.alert("Looks like they're closed.", "Please try another date.", [
+    Alert.alert("Looks like they are closed.", "Please try another date.", [
       { text: "OK", style: "cancel" },
     ]);
   };

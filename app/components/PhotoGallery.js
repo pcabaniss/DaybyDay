@@ -77,7 +77,7 @@ function PhotoGallery({ email, isUser, gallery }) {
           {isUser ? <View /> : <AddImages email={email} />}
           {isOpen ? (
             <Modal
-              transparent={false}
+              transparent={true}
               animationType={"fade"}
               visible={isOpen}
               onRequestClose={() => {

@@ -8,8 +8,6 @@
  * implement necessary changes for settings, still need data and privacy and
  * contact screen.
  *
- * Figure out why reminders are not being deleted in Firestore
- *
  * Fix website, it says "Melanie Baldi" on tab name
  *
  * Add edit username functionality

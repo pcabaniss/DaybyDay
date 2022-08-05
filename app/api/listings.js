@@ -914,6 +914,7 @@ const getAcceptedRequests = async (business, day, time) => {
         }
       });
     });
+
   return count;
 };
 
@@ -1134,6 +1135,9 @@ const getRatings = async (business) => {
 
 const getReminders = async (email) => {
   const safeEmail = safetyFirst(email);
+
+  const today = new Date();
+
   await firebase.default
     .firestore()
     .collection(safeEmail)
@@ -1144,6 +1148,15 @@ const getReminders = async (email) => {
       reminder.forEach((item) => {
         const data = item.data();
         if (item.exists) {
+          if (data.date < today) {
+            firebase.default
+              .firestore()
+              .collection(safeEmail)
+              .doc("Reminders")
+              .collection("Scheduled")
+              .doc(item.id)
+              .delete();
+          }
           if (data.isImmediate == true) {
             Notifications.sendImmediateNotification(data.title, data.body);
           } else {

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
   StyleSheet,
   Text,
   SafeAreaView,
   FlatList,
   Alert,
   TouchableOpacity,
+  ScrollView,
+  Button,
 } from "react-native";
-import { useIsFocused } from "@react-navigation/core";
 import colors from "../config/colors";
 import moment from "moment";
 import SpaceSeperator from "../components/SpaceSeperator";
@@ -18,36 +18,28 @@ import Notifications from "../api/Notifications";
 function AvailabilityScreen({ route, navigation }) {
   const { day, hours, business, duration, picture } = route.params;
 
-  const [dayHours, setDayHours] = useState(hours);
   const [pendingArray, setPendingArray] = useState([]);
   const [accepted, setAcceptedArray] = useState([]);
-  const [pic, setPic] = useState(picture);
-
-  const isFocused = useIsFocused();
 
   useEffect(() => {
-    const refresh = navigation.addListener("focus", () => {
-      var arg = [];
-      var accept = [];
-      hours.forEach(async (time) => {
-        var pending = await listings.getPendingRequests(
-          business,
-          day.dateString,
-          time.time
-        );
-        var availiableSpots = await listings.getAcceptedRequests(
-          business,
-          day.dateString,
-          time.time
-        );
-        arg.push(pending);
-        accept.push(availiableSpots);
-      });
-      setPendingArray(arg);
-      setAcceptedArray(accept);
+    var arg = [];
+    var accept = [];
+    hours.forEach(async (time) => {
+      const pending = await listings.getPendingRequests(
+        business,
+        day.dateString,
+        time.time
+      );
+      const availiableSpots = await listings.getAcceptedRequests(
+        business,
+        day.dateString,
+        time.time
+      );
+
+      setPendingArray((pendingArray) => [...pendingArray, pending]);
+      setAcceptedArray((accepted) => [...accepted, availiableSpots]);
     });
-    return refresh;
-  }, [isFocused]);
+  }, []);
 
   //find a way to get profile info to send message
   const dateString = moment(day.timestamp)
@@ -60,6 +52,8 @@ function AvailabilityScreen({ route, navigation }) {
       return colors.danger;
     } else if (total <= slots) {
       return colors.green;
+    } else {
+      return colors.primaryLight;
     }
   };
 
@@ -72,7 +66,7 @@ function AvailabilityScreen({ route, navigation }) {
       business,
       currentTime,
       duration,
-      pic
+      picture
     );
     //Send notification to business device
 
@@ -129,46 +123,55 @@ function AvailabilityScreen({ route, navigation }) {
 
   //checkDate will be called onClick and return an array of con
 
+  const getSlots = (avail, taken) => {
+    if (taken == undefined) {
+      const total = avail - 0;
+      return total;
+    } else {
+      const other = avail - taken;
+      return other;
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.date}>{dateString}</Text>
-      <FlatList
-        data={dayHours}
-        scrollEnabled
-        ItemSeparatorComponent={SpaceSeperator}
-        renderItem={({ item }) => {
-          //Needs a function here checking the date for any matching times.
-          return (
+      <ScrollView>
+        <Button
+          title="Go back"
+          color={colors.primaryLight}
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.date}>{dateString}</Text>
+        {hours.map((item) => (
+          <>
             <TouchableOpacity
-              onPress={() =>
-                onPressTime(item.time, item.slots, accepted[item.key])
+              onPress={
+                () => console.log(accepted, pendingArray)
+                //onPressTime(item.time, item.slots, accepted[item.key])
               }
+              style={{
+                backgroundColor: highlighter(item.slots, accepted[item.key]),
+                alignSelf: "center",
+                height: 75,
+                borderWidth: 2,
+                borderColor: colors.black,
+                width: "98%",
+                alignContent: "center",
+                justifyContent: "center",
+                borderRadius: 20,
+              }}
             >
-              <View
-                style={{
-                  backgroundColor: highlighter(item.slots, accepted[item.key]),
-                  alignSelf: "center",
-                  height: 75,
-                  borderWidth: 2,
-                  borderColor: colors.black,
-                  width: "98%",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  borderRadius: 20,
-                }}
-              >
-                <Text style={styles.header}>{item.time}</Text>
-                <Text style={styles.footer}>
-                  Available slots: {item.slots - accepted[item.key]}
-                </Text>
-                <Text style={styles.footer}>
-                  Pending requests: {pendingArray[item.key]}
-                </Text>
-              </View>
+              <Text style={styles.header}>{item.time}</Text>
+              <Text style={styles.footer}>
+                Available slots: {item.slots - accepted[item.key]}
+              </Text>
+              <Text style={styles.footer}>
+                Pending requests: {pendingArray[item.key]}
+              </Text>
             </TouchableOpacity>
-          );
-        }}
-      />
+            <SpaceSeperator />
+          </>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }

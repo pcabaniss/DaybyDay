@@ -118,58 +118,8 @@ const sendImmediateNotification = async (title, body) => {
     },
   });
 };
+const today = new Date();
 
-const loadAllNotifications = async (email) => {
-  // Go through all notifications in DB and re-schedule them
-  const semail = email.replace(".", "-");
-  const safeEmail = semail.replace("@", "-");
-
-  await firebase.default
-    .firestore()
-    .collection(safeEmail)
-    .doc("Reminders")
-    .collection("Scheduled")
-    .get()
-    .then((reminder) => {
-      reminder.forEach((item) => {
-        const data = item.data();
-        if (item.exists) {
-          if (data.isImmediate == true) {
-            sendImmediateNotification(data.title, data.body);
-          } else {
-            scheduleNotification(data.title, data.body, -data.date, false);
-          }
-        }
-      });
-    })
-    .then(
-      firebase.default
-        .firestore()
-        .collection(safeEmail)
-        .doc("Reminders")
-        .collection("Scheduled")
-        .get()
-        .then((reminder) => {
-          reminder.forEach((item) => {
-            const data = item.data();
-            if (item.exists) {
-              if (data.isImmediate == true)
-                firebase.default
-                  .firestore()
-                  .collection(safeEmail)
-                  .doc("Reminders")
-                  .collection("Scheduled")
-                  .doc(item.id)
-                  .delete();
-            }
-          });
-        })
-    );
-  const messageBadge = await getMessageBadges();
-  const requestBadge = await getRequestBadges();
-
-  addBadge(messageBadge + requestBadge);
-};
 /*async function sendPushNotification(expoPushToken) {
   const message = {
     to: expoPushToken,
@@ -193,7 +143,6 @@ const loadAllNotifications = async (email) => {
 export default {
   scheduleNotification,
   deleteAllNotifications,
-  loadAllNotifications,
   sendImmediateNotification,
   sendNotification,
   checkBadges,
