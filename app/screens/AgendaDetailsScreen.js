@@ -19,6 +19,7 @@ import Screen from "../components/Screen";
 import listingsApi from "../api/listings";
 import UploadScreen from "./UploadScreen";
 import listings from "../api/listings";
+import TestPicker from "../components/TestPicker";
 
 const timeFormatter = (date) => {
   console.log(date);
@@ -39,37 +40,27 @@ function AgendaDetailsScreen({ navigation, route }) {
 
   const currentDate = timeFormatter(day);
   const [dateStart, setStartDate] = useState(timeStart);
-  const [dateEnd, setEndDate] = useState(new Date(timeEnd));
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
+  const [dateEnd, setEndDate] = useState(timeEnd);
+  const [isShowingStart, setIsShowingStart] = useState(false);
+  const [isShowingEnd, setIsShowingEnd] = useState(false);
 
-  console.log(day);
+  const showPickerStart = () => {
+    setIsShowingStart(true);
+  };
+
+  const showPickerEnd = () => {
+    setIsShowingEnd(true);
+  };
 
   const onChangeStart = async (event, selectedDate) => {
-    const startDate = selectedDate;
-    setShow(Platform.OS === "ios");
-    setStartDate(startDate);
-    console.log("Changed date to: " + startDate);
+    setIsShowingStart(false);
+    console.log("Changed date to: " + selectedDate);
+    setStartDate(selectedDate);
   };
 
   const onChangeEnd = (event, selectedDate) => {
-    const endDate = selectedDate;
-    setShow(Platform.OS === "ios");
-    setShow(Platform.OS === "android");
-    setEndDate(endDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showTimepicker = () => {
-    showMode("time");
+    setIsShowingEnd(false);
+    setEndDate(selectedDate);
   };
 
   const alertBox = () => {
@@ -117,7 +108,7 @@ function AgendaDetailsScreen({ navigation, route }) {
     }
   };
 
-  const handleUpdate = async (listing) => {
+  const handleUpdate = (listing) => {
     Notifications.scheduleNotification(
       listing.title,
       listing.description,
@@ -127,13 +118,20 @@ function AgendaDetailsScreen({ navigation, route }) {
 
     setProgress(0);
     setUploadVisible(true);
+
     listing.timeStart = dateStart.toString();
     listing.timeFinish = dateEnd.toString();
     listing.dateClicked = day;
     listing.id = id;
-    const result = await listingsApi.updateListing({ ...listing }, (progress) =>
-      setProgress(progress)
-    );
+
+    var bus = "";
+    if (isCustom) {
+      bus = "Custom";
+    } else {
+      bus = "Not Custom";
+    }
+
+    const result = listingsApi.updateListing({ ...listing }, bus);
 
     if (result.ok) {
       setUploadVisible(false);
@@ -173,27 +171,48 @@ function AgendaDetailsScreen({ navigation, route }) {
 
         {isCustom ? (
           <View style={styles.date}>
-            <Text style={styles.text}>Start: </Text>
-            <DateTimePicker
-              name="timeStart"
-              value={dateStart}
-              mode={"time"}
-              is24Hour={true}
-              display="default"
-              onChange={onChangeStart}
-              style={styles.picker}
-            />
-            <Text style={styles.text}>Finish: </Text>
-            <DateTimePicker
-              name="timeFinish"
-              value={dateEnd}
-              mode={"time"}
-              is24Hour={true}
-              display="default"
-              onChange={onChangeEnd}
-              textColor={colors.black}
-              style={styles.picker}
-            />
+            {Platform.OS == "android" ? (
+              <>
+                <Text style={styles.text}>Start: </Text>
+                <TestPicker
+                  dateProp={dateStart}
+                  isShowing={isShowingStart}
+                  onChange={onChangeStart}
+                  showPicker={showPickerStart}
+                />
+                <Text style={styles.text}>Finish: </Text>
+                <TestPicker
+                  dateProp={dateEnd}
+                  isShowing={isShowingEnd}
+                  onChange={onChangeEnd}
+                  showPicker={showPickerEnd}
+                />
+              </>
+            ) : (
+              <>
+                <Text style={styles.text}>Start: </Text>
+                <DateTimePicker
+                  name="timeStart"
+                  value={dateStart}
+                  mode={"time"}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeStart}
+                  style={styles.picker}
+                />
+                <Text style={styles.text}>Finish: </Text>
+                <DateTimePicker
+                  name="timeFinish"
+                  value={dateEnd}
+                  mode={"time"}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeEnd}
+                  textColor={colors.black}
+                  style={styles.picker}
+                />
+              </>
+            )}
           </View>
         ) : (
           //Need to add optionality to cancel request here.

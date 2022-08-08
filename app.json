@@ -11,7 +11,7 @@
       ]
     ],
     "slug": "PracticingCode",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./app/assets/appIcon.png",
     "splash": {
@@ -33,6 +33,7 @@
         "foregroundImage": "./app/assets/appIcon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "versionCode": 2,
       "googleServicesFile": "./google-services.json",
       "package": "com.pcabaniss93.PracticingCode"
       
@@ -40,6 +41,6 @@
     "web": {
       "favicon": "./assets/iconSmall.png"
     },
-    "description": "Schedule some peace of mind"
+    "description": "Schedule some peace of mind."
   }
 }

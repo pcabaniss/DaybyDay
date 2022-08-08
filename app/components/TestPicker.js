@@ -47,6 +47,7 @@ function TestPicker({ dateProp, onChange, isShowing, showPicker }) {
 const styles = StyleSheet.create({
   btnCont: {
     width: 110,
+    height: 50,
   },
   // This only works on iOS
   picker: {

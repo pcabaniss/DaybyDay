@@ -23,7 +23,6 @@ function PhotoGallery({ email, isUser, gallery }) {
   const [imageuri, setImageuri] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [isEmpty, setISEmpty] = useState(false);
-  const [refresh, setRefresh] = useState(false);
 
   const showModalFunction = (visible, downloadURL, imageURL) => {
     //handler to handle the click on image of Grid
@@ -37,7 +36,7 @@ function PhotoGallery({ email, isUser, gallery }) {
     return (
       <View style={styles.empty}>
         <Text style={{ alignSelf: "center" }}>
-          This business has no uploaded pictures yet.
+          This business has not uploaded pictures yet.
         </Text>
         <Text style={{ alignSelf: "center" }}>
           So enjoy this adorable picture of a puppy.
@@ -120,7 +119,7 @@ function PhotoGallery({ email, isUser, gallery }) {
             <View style={styles.container}>
               <FlatList
                 data={images}
-                extraData={refresh}
+                horizontal={false}
                 contentContainerStyle={{ padding: 5 }}
                 renderItem={({ item }) => {
                   return (

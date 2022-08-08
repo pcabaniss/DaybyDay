@@ -213,7 +213,7 @@ const addListing = (listing, business) => {
   }
 };
 
-const updateListing = (listing) => {
+const updateListing = (listing, bus) => {
   const data = new FormData();
   data.append("title", listing.title);
 
@@ -224,17 +224,25 @@ const updateListing = (listing) => {
       .get()
       .then((doc) => {
         doc.forEach((snapshot) => {
+          console.log(snapshot.id);
           if (snapshot.data().id == listing.id) {
-            getUser()
-              .doc(listing.dateClicked)
-              .collection("listing")
-              .doc(snapshot.id)
-              .update({
-                title: listing.title,
-                timeStart: listing.timeStart,
-                timeFinish: listing.timeFinish,
-                description: listing.description,
-              });
+            console.log("Im in this bitchhhhhhh");
+            try {
+              getUser()
+                .doc(listing.dateClicked)
+                .collection("listing")
+                .doc(snapshot.id)
+                .update({
+                  title: listing.title,
+                  timeStart: listing.timeStart,
+                  timeFinish: listing.timeFinish,
+                  description: listing.description,
+                  business: bus,
+                  id: listing.id,
+                });
+            } catch (error) {
+              console.log("Error updating request: " + error);
+            }
           } else {
             return;
           }
