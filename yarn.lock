@@ -7247,7 +7247,7 @@ expo-modules-autolinking@~0.5.1:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
 
-expo-modules-core@0.9.2:
+expo-modules-core@0.9.2, expo-modules-core@~0.9.2:
   version "0.9.2"
   resolved "https://registry.npmjs.org/expo-modules-core/-/expo-modules-core-0.9.2.tgz"
   integrity sha512-p/C0GJxFIIDGwmrWi70Q0ggfsgeUFS25ZkkBgoaHT7MVgiMjlKA/DCC3D6ZUkHl/JlzUm0aTftIGS8LWXsnZBw==
@@ -16500,6 +16500,11 @@ unimodules-app-loader@~3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/unimodules-app-loader/-/unimodules-app-loader-3.0.1.tgz"
   integrity sha512-iyE7Nx6XNgDjJQ92S3GiZhUiWYO2BrF2ETQq9yhpJ9FkE7yxlenNx+HE21yrSzGEkW48hqHfG1+2kk3hnNa9aQ==
+
+unimodules-task-manager-interface@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/unimodules-task-manager-interface/-/unimodules-task-manager-interface-7.1.1.tgz#1d48585012018971a0f0b62bc5ac53508a7addb4"
+  integrity sha512-vvtxJO3O6fJXvSc9qvgB2FS9xJk2nWG4NOvwCMmTmfblmvzGPFcTheOKzV7Z1dvjlqTZZ+TDqd5XOGa+0+NXVA==
 
 unimodules-task-manager-interface@~7.0.0:
   version "7.0.3"

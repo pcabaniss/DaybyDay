@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Day by Day",
+    "name": "Day by Day Connect",
     "plugins": [
       [
         "expo-notifications",
@@ -11,7 +11,7 @@
       ]
     ],
     "slug": "PracticingCode",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./app/assets/appIcon.png",
     "splash": {
@@ -33,9 +33,10 @@
         "foregroundImage": "./app/assets/appIcon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 2,
+      "versionCode": 3,
       "googleServicesFile": "./google-services.json",
-      "package": "com.pcabaniss93.PracticingCode"
+      "package": "com.pcabaniss93.PracticingCode",
+      "displayName": "Day by Day Connect"
       
     },
     "web": {

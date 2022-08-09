@@ -10,6 +10,8 @@
  *
  * Fix website, it says "Melanie Baldi" on tab name
  *
+ * Clicking on time in availiablility screen isnt responding
+ *
  * Add edit username functionality
  *
  * Fix gallery in profile and stop auto refreshing.
