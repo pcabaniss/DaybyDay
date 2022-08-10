@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import { useIsFocused } from "@react-navigation/core";
 import listings from "../api/listings";
 import colors from "../config/colors";
@@ -67,9 +72,11 @@ function BusRequestScreen({ navigation, route }) {
 
   return (
     <KeyboardAvoidingView style={styles.pending}>
-      {BusRequestFlatList(pendingArray, "Pending", navigation)}
-      {BusRequestFlatList(acceptedArray, "Accepted", pic)}
-      {BusRequestFlatList(deniedArray, "Denied", pic)}
+      <ScrollView>
+        {BusRequestFlatList(pendingArray, "Pending", navigation)}
+        {BusRequestFlatList(acceptedArray, "Accepted", pic)}
+        {BusRequestFlatList(deniedArray, "Denied", pic)}
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

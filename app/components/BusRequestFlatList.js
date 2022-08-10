@@ -10,12 +10,12 @@ import {
 import colors from "../config/colors";
 import ListItem from "./ListItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
 import Seperator from "./Seperator";
 
 function BusRequestFlatList(data, status, navigation) {
   const [statusPressed, setStatusPressed] = useState(true);
+
   const colorSelect = () => {
     if (status == "Pending") {
       return colors.primaryLight;
@@ -70,7 +70,7 @@ function BusRequestFlatList(data, status, navigation) {
         <>
           <FlatList
             data={data}
-            scrollEnabled
+            scrollEnabled={false}
             ItemSeparatorComponent={Seperator}
             renderItem={({ item }) => {
               const userName =

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,7 +18,7 @@ function AnswerScreen({ route, navigation }) {
 
   const [background, setbackground] = useState(colors.primary);
   const [about, setAbout] = useState(" ");
-  const [response, setResponse] = useState(" ");
+  const [response, setResponse] = useState("null");
 
   const onPressAccept = () => {
     setbackground(colors.greenCheck);
@@ -34,6 +35,12 @@ function AnswerScreen({ route, navigation }) {
   const submitPressed = (text, response) => {
     //Set a reminder here to be sent to user.
     //put in function that checks if answer is pressed.
+
+    if (response == "null") {
+      return Alert.alert("Hold on!", "You must make a selection.", [
+        { text: "Ok", style: "cancel" },
+      ]);
+    }
     listings.updateRequest(text, response, item);
     console.log("Going to save " + text + " and  " + response);
     navigation.goBack();

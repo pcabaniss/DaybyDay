@@ -9,9 +9,7 @@ import {
 import colors from "../config/colors";
 import ListItem from "./ListItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ListItemSeperator from "./ListItemSeperator";
 import moment from "moment";
-import listings from "../api/listings";
 import Seperator from "./Seperator";
 
 function RequestFlatList(data, status) {
@@ -62,7 +60,7 @@ function RequestFlatList(data, status) {
         <>
           <FlatList
             data={data}
-            scrollEnabled
+            scrollEnabled={false}
             ItemSeparatorComponent={Seperator}
             renderItem={({ item }) => {
               const businessName =

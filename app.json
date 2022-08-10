@@ -35,8 +35,7 @@
       },
       "versionCode": 3,
       "googleServicesFile": "./google-services.json",
-      "package": "com.pcabaniss93.PracticingCode",
-      "displayName": "Day by Day Connect"
+      "package": "com.pcabaniss93.PracticingCode"
       
     },
     "web": {

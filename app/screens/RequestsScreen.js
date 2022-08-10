@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/core";
 import listings from "../api/listings";
 import RequestFlatList from "../components/RequestFlatList";
 import colors from "../config/colors";
+import { ScrollView } from "react-native-gesture-handler";
 
 //Update to show a flatlist of current requests. On the business
 //profile make sure you are allowed to edit the requests and go from there
@@ -68,11 +69,11 @@ function RequestScreen({ navigation, route }) {
    */
 
   return (
-    <View style={styles.pending}>
+    <ScrollView style={styles.pending}>
       {RequestFlatList(pendingArray, "Pending", pic)}
       {RequestFlatList(acceptedArray, "Accepted")}
       {RequestFlatList(deniedArray, "Denied")}
-    </View>
+    </ScrollView>
   );
 }
 

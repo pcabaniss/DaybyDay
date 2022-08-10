@@ -144,9 +144,8 @@ function AvailabilityScreen({ route, navigation }) {
         {hours.map((item) => (
           <>
             <TouchableOpacity
-              onPress={
-                () => console.log(accepted, pendingArray)
-                //onPressTime(item.time, item.slots, accepted[item.key])
+              onPress={() =>
+                onPressTime(item.time, item.slots, accepted[item.key])
               }
               style={{
                 backgroundColor: highlighter(item.slots, accepted[item.key]),
