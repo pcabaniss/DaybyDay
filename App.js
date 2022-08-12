@@ -15,6 +15,7 @@ import AuthContext from "./app/auth/context";
 import { firebase } from "./app/auth/firebaseConfig";
 import colors from "./app/config/colors";
 import listings from "./app/api/listings";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [user, setUser] = useState();
