@@ -158,13 +158,14 @@ function RegisterScreen() {
 
   const requestLibraryPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted)
-      alert("You need to enable permissions to access the library.");
+
+    return granted;
   };
 
   const requestCameraPermission = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
-    if (!granted) alert("You need to enable permissions to access the Camera.");
+
+    return granted;
   };
 
   const handlePress = () => {
@@ -177,22 +178,29 @@ function RegisterScreen() {
   };
 
   const takePhoto = async () => {
-    requestCameraPermission().then(async () => {
-      try {
-        const result = await ImagePicker.launchCameraAsync({
-          allowsEditing: true,
-          mediaTypes: "Images",
-        });
-        setImage(result.uri);
-        console.log(result.uri);
-      } catch (error) {
-        console.log("Error taking picture.");
-      }
-    });
+    const request = await requestCameraPermission();
+    if (!request) {
+      return alert("You need to enable permissions to access the Camera.");
+    }
+
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        mediaTypes: "Images",
+      });
+      setImage(result.uri);
+      console.log(result.uri);
+    } catch (error) {
+      console.log("Error taking picture.");
+    }
   };
 
   const selectImage = async () => {
-    requestLibraryPermission().then(async () => {
+    const result = await requestLibraryPermission();
+
+    if (!result) {
+      return alert("You need to enable permissions to access the library.");
+    } else {
       try {
         const result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: "Images",
@@ -206,7 +214,7 @@ function RegisterScreen() {
       } catch (error) {
         console.log("Error reading image" + error);
       }
-    });
+    }
   };
 
   const alertButton = () => {

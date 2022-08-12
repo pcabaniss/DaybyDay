@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "Day by Day Connect",
+    "name": "Day by Day",
     "plugins": [
       [
         "expo-notifications",
         {
           "icon": "./app/assets/appIcon.png", 
-          "color": "#ffffff"
+          "color": "#ffffff",
+          "mode": "production"
         }
       ]
     ],
@@ -35,7 +36,8 @@
       },
       "versionCode": 3,
       "googleServicesFile": "./google-services.json",
-      "package": "com.pcabaniss93.PracticingCode"
+      "package": "com.pcabaniss93.PracticingCode",
+      "useNextNotificationsApi": true
       
     },
     "web": {

@@ -174,13 +174,14 @@ function RegisterScreen() {
 
   const requestLibraryPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!granted)
-      alert("You need to enable permissions to access the library.");
+
+    return granted;
   };
 
   const requestCameraPermission = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
-    if (!granted) alert("You need to enable permissions to access the Camera.");
+
+    return granted;
   };
 
   const handlePress = () => {
@@ -192,24 +193,36 @@ function RegisterScreen() {
       ]);
   };
 
-  const takePhoto = () => {
-    requestCameraPermission().then(async () => {
+  const takePhoto = async () => {
+    const request = await requestCameraPermission();
+    if (!request) {
+      return alert("You need to enable permissions to access the Camera.");
+    } else {
       try {
         const result = await ImagePicker.launchCameraAsync({
           allowsEditing: true,
           mediaTypes: "Images",
         });
         console.log("Got picture from camera: " + result);
-        setImage(result.uri);
+        const source = result.uri;
+        if (Platform.OS === "ios") {
+          source.replace("file://", "");
+        }
+        listings.replaceImage(email, source);
+        setImage(source);
         console.log(result.uri);
       } catch (error) {
         console.log("Error taking picture.");
       }
-    });
+    }
   };
 
-  const selectImage = () => {
-    requestLibraryPermission().then(async () => {
+  const selectImage = async () => {
+    const result = await requestLibraryPermission();
+
+    if (!result) {
+      return alert("You need to enable permissions to access the library.");
+    } else {
       try {
         const result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: "Images",
@@ -221,13 +234,13 @@ function RegisterScreen() {
         if (Platform.OS === "ios") {
           source.replace("file://", "");
         }
-
+        listings.replaceImage(email, source);
         //Send a promise to save the picture to storage once register button is clicked
         if (!result.cancelled) setImage(source);
       } catch (error) {
         console.log("Error reading image" + error);
       }
-    });
+    }
   };
 
   const alertButton = () => {

@@ -28,21 +28,38 @@ function AddImages({ email, pic }) {
     ]);
   };
 
+  const requestLibraryPermission = async () => {
+    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    return granted;
+  };
+
+  const requestCameraPermission = async () => {
+    const { granted } = await ImagePicker.requestCameraPermissionsAsync();
+
+    return granted;
+  };
+
   const takePhoto = async () => {
-    try {
-      const result = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        mediaTypes: "Images",
-      });
-      console.log("Got picture from camera: " + result);
-      const source = result;
-      if (Platform.OS === "ios") {
-        source.replace("file://", "");
+    const request = await requestCameraPermission();
+    if (!request) {
+      return alert("You need to enable permissions to access the Camera.");
+    } else {
+      try {
+        const result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          mediaTypes: "Images",
+        });
+        console.log("Got picture from camera: " + result);
+        const source = result;
+        if (Platform.OS === "ios") {
+          source.replace("file://", "");
+        }
+        setImage(source);
+        console.log(result.uri);
+      } catch (error) {
+        console.log("Error taking picture.");
       }
-      setImage(source);
-      console.log(result.uri);
-    } catch (error) {
-      console.log("Error taking picture.");
     }
   };
 
@@ -58,24 +75,30 @@ function AddImages({ email, pic }) {
   };
 
   const selectImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "Images",
-        allowsEditing: true,
-        //aspect: [4,3],
-        quality: 1,
-      });
-      const jpg = getFileName(result.uri);
-      const path = getPlatformPath(result).value;
-      //console.log(path);
-      listings.saveImages(email, jpg, path);
+    const result = await requestLibraryPermission();
 
-      await listings.getImages(email);
+    if (!result) {
+      return alert("You need to enable permissions to access the library.");
+    } else {
+      try {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: "Images",
+          allowsEditing: true,
+          //aspect: [4,3],
+          quality: 1,
+        });
+        const jpg = getFileName(result.uri);
+        const path = getPlatformPath(result).value;
+        //console.log(path);
+        listings.saveImages(email, jpg, path);
 
-      //Send a promise to save the picture to storage once register button is clicked
-      if (!result.cancelled) setImage(path);
-    } catch (error) {
-      console.log("Error reading image" + error);
+        await listings.getImages(email);
+
+        //Send a promise to save the picture to storage once register button is clicked
+        if (!result.cancelled) setImage(path);
+      } catch (error) {
+        console.log("Error reading image" + error);
+      }
     }
   };
 

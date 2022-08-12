@@ -39,7 +39,12 @@ export default function App() {
         console.log("Failed to get push token for push notification!");
         return;
       }
+
+      //const deviceToken = await Notifications.getDevicePushTokenAsync();
       token = (await Notifications.getExpoPushTokenAsync()).data;
+
+      console.log("This is your token:");
+      console.log(token);
     } else {
       console.log("Must use physical device for Push Notifications");
     }
@@ -59,9 +64,7 @@ export default function App() {
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
-    );
-
-    // This listener is fired whenever a notification is received while the app is foregrounded
+    ); // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);

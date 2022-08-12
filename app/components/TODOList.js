@@ -12,6 +12,8 @@
  *
  * Clicking on time in availiablility screen isnt responding
  *
+ * Doesnt ask for notification permission on Android
+ *
  * Add edit username functionality
  *
  * Fix gallery in profile and stop auto refreshing.
