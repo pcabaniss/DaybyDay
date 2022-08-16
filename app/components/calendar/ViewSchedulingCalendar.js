@@ -160,7 +160,7 @@ function ViewSchedulingCalendar({ navigation, email }) {
     }
        */
     //Check if day has already passed and block if true
-    setDaySelected(new Date(day.timestamp));
+    setDaySelected(new Date(day.timestamp).toString());
     const dayOf = moment(day.timestamp).day();
     const sched = await getSchedule(dayString(dayOf));
 

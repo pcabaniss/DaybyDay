@@ -339,7 +339,7 @@ const saveImages = async (email, jpg, filePath) => {
 
   const response = await fetch(filePath);
   const blob = await response.blob();
-  var ref = firebase
+  var ref = firebase.default
     .storage()
     .ref()
     .child(email + "/images/gallery/" + jpg);

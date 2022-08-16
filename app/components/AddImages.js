@@ -4,9 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import listings from "../api/listings";
 
-function AddImages({ email, pic }) {
-  const [image, setImage] = useState(pic);
-
+function AddImages({ email }) {
   const alertButton = () => {
     Alert.alert("Upload picture from where?", "", [
       {
@@ -55,8 +53,12 @@ function AddImages({ email, pic }) {
         if (Platform.OS === "ios") {
           source.replace("file://", "");
         }
-        setImage(source);
-        console.log(result.uri);
+        const jpg = getFileName(result.uri);
+        const path = getPlatformPath(result).value;
+        //console.log(path);
+        listings.saveImages(email, jpg, path);
+
+        if (!result.cancelled) return;
       } catch (error) {
         console.log("Error taking picture.");
       }
@@ -95,7 +97,7 @@ function AddImages({ email, pic }) {
         await listings.getImages(email);
 
         //Send a promise to save the picture to storage once register button is clicked
-        if (!result.cancelled) setImage(path);
+        if (!result.cancelled) return;
       } catch (error) {
         console.log("Error reading image" + error);
       }

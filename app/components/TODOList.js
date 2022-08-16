@@ -10,8 +10,6 @@
  *
  * Fix website, it says "Melanie Baldi" on tab name
  *
- * Clicking on time in availiablility screen isnt responding
- *
  * Doesnt ask for notification permission on Android
  *
  * Add edit username functionality
@@ -23,4 +21,7 @@
  * Bugs found:
  *       Bug when setting up account and miss credentials (so far just profile picture
  * but may be for every variable)
+ *
+ * Projects to persue:
+ * Make the image loading a activity indicator
  */

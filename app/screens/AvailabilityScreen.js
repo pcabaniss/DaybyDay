@@ -141,9 +141,10 @@ function AvailabilityScreen({ route, navigation }) {
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.date}>{dateString}</Text>
-        {hours.map((item) => (
+        {hours.map((item, index) => (
           <>
             <TouchableOpacity
+              key={index}
               onPress={() =>
                 onPressTime(item.time, item.slots, accepted[item.key])
               }

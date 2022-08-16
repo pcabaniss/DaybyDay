@@ -4,25 +4,29 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  FlatList,
+  Dimensions,
   Image,
   Modal,
   Alert,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 
 import colors from "../config/colors";
 import listings from "../api/listings";
 import AddImages from "./AddImages";
 
-import { useIsFocused } from "@react-navigation/core";
-
 function PhotoGallery({ email, isUser, gallery }) {
-  //const [indexSelected, setIndexSelected] = useState(0);
-  const [images, setImages] = useState(gallery);
   const [isOpen, setIsOpen] = useState(false);
   const [imageuri, setImageuri] = useState("");
   const [imageURL, setImageURL] = useState("");
-  const [isEmpty, setISEmpty] = useState(false);
+
+  const checkIfEmpty = () => {
+    if (gallery.length == 0) {
+      return true;
+    }
+    return false;
+  };
 
   const showModalFunction = (visible, downloadURL, imageURL) => {
     //handler to handle the click on image of Grid
@@ -34,7 +38,7 @@ function PhotoGallery({ email, isUser, gallery }) {
 
   const renderEmtyGallery = () => {
     return (
-      <View style={styles.empty}>
+      <View scrollEnabled style={styles.empty}>
         <Text style={{ alignSelf: "center" }}>
           This business has not uploaded pictures yet.
         </Text>
@@ -59,7 +63,7 @@ function PhotoGallery({ email, isUser, gallery }) {
         {
           text: "I'm sure",
           onPress: () => {
-            listings.deleteImage(imageURL);
+            listings.deleteImage(pic);
             setIsOpen(false);
           },
         },
@@ -69,112 +73,101 @@ function PhotoGallery({ email, isUser, gallery }) {
 
   return (
     <>
-      {isEmpty ? (
+      {checkIfEmpty() ? (
         renderEmtyGallery()
       ) : (
-        <View style={styles.container}>
-          {isUser ? <View /> : <AddImages email={email} />}
-          {isOpen ? (
-            <Modal
-              transparent={true}
-              animationType={"fade"}
-              visible={isOpen}
-              onRequestClose={() => {
-                showModalFunction(!isOpen, "");
-              }}
-            >
-              <View style={styles.modelStyle}>
-                <Image
-                  style={styles.fullImageStyle}
-                  source={{ uri: imageuri }}
-                  resizeMethod={"resize"}
-                />
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={styles.closeButtonStyle}
-                  onPress={() => {
-                    showModalFunction(!isOpen, "");
-                  }}
-                >
+        <ScrollView>
+          <View style={styles.container}>
+            {isUser ? <View /> : <AddImages email={email} />}
+            {isOpen ? (
+              <Modal
+                transparent={true}
+                animationType={"fade"}
+                visible={isOpen}
+                onRequestClose={() => {
+                  showModalFunction(!isOpen, "");
+                }}
+              >
+                <View style={styles.modelStyle}>
                   <Image
-                    source={{
-                      uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/close.png",
-                    }}
-                    style={{ width: 35, height: 35 }}
+                    style={styles.fullImageStyle}
+                    source={{ uri: imageuri }}
+                    resizeMethod={"resize"}
                   />
-                </TouchableOpacity>
-                {isUser ? (
-                  <View></View>
-                ) : (
-                  <Text
-                    style={styles.deleteButton}
-                    onPress={() => deletePicture(imageURL)}
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={styles.closeButtonStyle}
+                    onPress={() => {
+                      showModalFunction(!isOpen, "");
+                    }}
                   >
-                    Delete?
-                  </Text>
-                )}
-              </View>
-            </Modal>
-          ) : (
-            <View style={styles.container}>
-              <FlatList
-                data={images}
-                horizontal={false}
-                contentContainerStyle={{ padding: 5 }}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                      style={styles.imageContainerStyle}
-                      onPress={() => {
-                        showModalFunction(
-                          true,
-                          item.downloadURL,
-                          item.imageURL
-                        );
+                    <Image
+                      source={{
+                        uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/close.png",
                       }}
-                      onLongPress={() => console.log("Long tap!")}
+                      style={{ width: 35, height: 35 }}
+                    />
+                  </TouchableOpacity>
+                  {isUser ? (
+                    <View></View>
+                  ) : (
+                    <Text
+                      style={styles.deleteButton}
+                      onPress={() => deletePicture(imageURL)}
                     >
-                      <Image
-                        style={styles.image}
-                        source={{ uri: item.downloadURL }}
-                        //resizeMode={"center"}
-                        resizeMethod={"resize"}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-                key={Math.random()}
-                numColumns={3}
-                keyExtractor={(item) => {
-                  item.key;
-                }}
-              />
-            </View>
-          )}
-        </View>
+                      Delete?
+                    </Text>
+                  )}
+                </View>
+              </Modal>
+            ) : (
+              <>
+                {gallery.map((item) => (
+                  <TouchableOpacity
+                    style={styles.imageContainerStyle}
+                    onPress={() => {
+                      showModalFunction(true, item.downloadURL, item.imageURL);
+                    }}
+                    onLongPress={() => console.log("Long tap!")}
+                  >
+                    <Image
+                      style={styles.image}
+                      source={{ uri: item.downloadURL }}
+                      //resizeMode={"center"}
+                      defaultSource={require("../assets/defaultImage.png")}
+                      resizeMethod={"resize"}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </>
+            )}
+          </View>
+        </ScrollView>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  activityIndicator: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    //marginTop: 5,
+    flexDirection: "row",
+    flexWrap: "wrap",
     backgroundColor: "white",
   },
   image: {
-    height: 120,
-    width: "100%",
+    height: 150,
+    width: Dimensions.get("screen").width / 3.33,
     borderColor: colors.black,
     borderWidth: 1,
     //borderRadius: 300,
   },
   imageContainerStyle: {
-    flex: 1,
-    flexDirection: "column",
     margin: 1,
-    backgroundColor: colors.medium,
+    padding: 5,
   },
   titleStyle: {
     padding: 16,
