@@ -4,7 +4,7 @@
     "slug": "PracticingCode",
     "version": "1.0.8",
     "orientation": "portrait",
-    "icon": "./app/assets/appIcon.png",
+ 
     "plugins": [
       [
         
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/appIcon.png",
+       
         "backgroundColor": "#FFFFFF"
       },
       "versionCode": 3,
@@ -31,10 +31,7 @@
       "useNextNotificationsApi": true
       
     },
-    "splash": {
-      "image": "./app/assets/iconSmall.png",
-      "backgroundColor": "#0277bd"
-    },
+    
     "updates": {
       "fallbackToCacheTimeout": 0
     },
