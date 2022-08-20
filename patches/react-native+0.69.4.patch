@@ -1,16 +1,8 @@
-diff --git a/node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.npmignore b/node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.gitignore
-similarity index 100%
-rename from node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.npmignore
-rename to node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.gitignore
-diff --git a/node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.npmignore b/node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.gitignore
-similarity index 100%
-rename from node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.npmignore
-rename to node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.gitignore
 diff --git a/node_modules/react-native/index.js b/node_modules/react-native/index.js
-index d59ba34..1bc8c9d 100644
+index d59ba34..f71b3cd 100644
 --- a/node_modules/react-native/index.js
 +++ b/node_modules/react-native/index.js
-@@ -435,32 +435,16 @@ module.exports = {
+@@ -435,32 +435,19 @@ module.exports = {
    },
    // Deprecated Prop Types
    get ColorPropType(): $FlowFixMe {
@@ -28,6 +20,7 @@ index d59ba34..1bc8c9d 100644
 -        "EdgeInsetsPropType exported from 'deprecated-react-native-prop-types'.",
 -    );
 +    return require('deprecated-react-native-prop-types').EdgeInsetsPropType;
++
    },
    get PointPropType(): $FlowFixMe {
 -    invariant(
@@ -36,6 +29,7 @@ index d59ba34..1bc8c9d 100644
 -        "PointPropType exported from 'deprecated-react-native-prop-types'.",
 -    );
 +    return require('deprecated-react-native-prop-types').PointPropType;
++
    },
    get ViewPropTypes(): $FlowFixMe {
 -    invariant(
@@ -44,6 +38,7 @@ index d59ba34..1bc8c9d 100644
 -        "ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
 -    );
 +    return require('deprecated-react-native-prop-types').ViewPropTypes;
++
    },
  };
  

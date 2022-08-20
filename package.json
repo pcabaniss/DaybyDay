@@ -34,7 +34,7 @@
     "deprecated-react-native-prop-types": "^2.3.0",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.2.0",
-    "eas-cli": "^0.55.1",
+    "eas-cli": "^0.60.0",
     "events": "^1.1.1",
     "expo": "^46.0.6",
     "expo-app-loading": "~2.1.0",
