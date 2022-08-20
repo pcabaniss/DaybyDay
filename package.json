@@ -109,7 +109,6 @@
     "react-native-swiper": "^1.6.0",
     "react-native-tcp": "^3.3.2",
     "react-native-udp": "^2.7.0",
-    "react-native-unimodules": "^0.14.10",
     "react-native-web": "~0.18.7",
     "react-native-webview": "11.23.0",
     "react-navigation-tabs": "^2.11.1",

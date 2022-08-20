@@ -15,8 +15,7 @@
 		77D419A902634A0CBF89266B /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8ABCB6D40E64FDCBB1DF68D /* noop-file.swift */; };
 		891AB1A4F223E684D0B73893 /* Pods_PracticingCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB818C33B86E2D7AF4F3F84 /* Pods_PracticingCode.framework */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		BFA22CB7289243400051958A /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
-		BFDC50DF27F439B8002568B6 /* GoogleService-Info-3.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFDC50DE27F439B8002568B6 /* GoogleService-Info-3.plist */; };
+		BFDC50DF27F439B8002568B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFDC50DE27F439B8002568B6 /* GoogleService-Info.plist */; };
 		F113D3DF5AE595E5364E946E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B91A936C30C8032FA4FEEA9 /* ExpoModulesProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,8 +36,8 @@
 		B8ABCB6D40E64FDCBB1DF68D /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "PracticingCode/noop-file.swift"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		BF33506228AF5550007DD465 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
-		BFDC50DE27F439B8002568B6 /* GoogleService-Info-3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info-3.plist"; path = "../../Library/Mobile Documents/com~apple~CloudDocs/GoogleService-Info-3.plist"; sourceTree = "<group>"; };
-		BFE7CCE327F43E6C0049F2AB /* GoogleService-Info-3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-3.plist"; sourceTree = "<group>"; };
+		BFDC50DE27F439B8002568B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Library/Mobile Documents/com~apple~CloudDocs/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BFE7CCE327F43E6C0049F2AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C69A57F657CF074A56F244CF /* Pods-PracticingCode.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PracticingCode.debug.xcconfig"; path = "Target Support Files/Pods-PracticingCode/Pods-PracticingCode.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -67,11 +66,11 @@
 		13B07FAE1A68108700A75B9A /* PracticingCode */ = {
 			isa = PBXGroup;
 			children = (
-				BFE7CCE327F43E6C0049F2AB /* GoogleService-Info-3.plist */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				BFE7CCE327F43E6C0049F2AB /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
@@ -104,7 +103,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				BFDC50DE27F439B8002568B6 /* GoogleService-Info-3.plist */,
+				BFDC50DE27F439B8002568B6 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* PracticingCode */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -217,9 +216,8 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				BFA22CB7289243400051958A /* main.jsbundle in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				BFDC50DF27F439B8002568B6 /* GoogleService-Info-3.plist in Resources */,
+				BFDC50DF27F439B8002568B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +236,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-constants/scripts/get-app-config-ios.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
+			shellScript = "export NODE_BINARY=/usr/local/opt/node/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-constants/scripts/get-app-config-ios.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
 		0F62C5B887EDE0667B60F2F8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -283,11 +281,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PracticingCode/Pods-PracticingCode-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXUpdates/EXUpdates.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-ionicons/fonts/Ionicons.ttf",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXUpdates.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +302,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PracticingCode/Pods-PracticingCode-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ASN1Decoder/ASN1Decoder.framework",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
@@ -365,6 +366,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ASN1Decoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
@@ -527,6 +529,7 @@
 				CODE_SIGN_ENTITLEMENTS = PracticingCode/PracticingCode.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7TSVUN2DR3;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PracticingCode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
