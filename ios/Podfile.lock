@@ -464,7 +464,6 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - TcpSockets (3.3.2):
     - React-Core
-  - UMAppLoader (2.2.0)
   - UMTaskManagerInterface (7.1.1):
     - ExpoModulesCore
   - Yoga (1.14.0)
@@ -549,7 +548,6 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - TcpSockets (from `../node_modules/react-native-tcp`)
-  - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -726,8 +724,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   TcpSockets:
     :path: "../node_modules/react-native-tcp"
-  UMAppLoader:
-    :path: "../node_modules/unimodules-app-loader/ios"
   UMTaskManagerInterface:
     :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
@@ -825,7 +821,6 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   TcpSockets: 72e67b3552c7c223751ea07f0bd18d7e1e401688
-  UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMTaskManagerInterface: 3184c93ecc290bd422c6e344badc89b601e9c29b
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
 
