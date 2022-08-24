@@ -2,7 +2,7 @@
   "expo": {
     "name": "Day by Day",
     "slug": "PracticingCode",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "orientation": "portrait",
  
     "plugins": [
@@ -21,11 +21,8 @@
       "bundleIdentifier": "com.pcabaniss93.PracticingCode"
     },
     "android": {
-      "adaptiveIcon": {
-       
-        "backgroundColor": "#FFFFFF"
-      },
-      "versionCode": 3,
+
+      "versionCode": 4,
       "googleServicesFile": "./google-services.json",
       "package": "com.pcabaniss93.PracticingCode",
       "useNextNotificationsApi": true

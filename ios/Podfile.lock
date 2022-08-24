@@ -1,4 +1,5 @@
 PODS:
+  - Analytics (4.0.4)
   - ASN1Decoder (1.8.0)
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
@@ -38,6 +39,9 @@ PODS:
     - React-Core
     - ReactCommon/turbomodule/core
   - EXSecureStore (11.3.0):
+    - ExpoModulesCore
+  - EXSegment (11.2.1):
+    - Analytics (= 4.0.4)
     - ExpoModulesCore
   - EXSplashScreen (0.16.1):
     - ExpoModulesCore
@@ -489,6 +493,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
+  - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
@@ -553,6 +558,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Analytics
     - ASN1Decoder
     - Firebase
     - FirebaseCore
@@ -608,6 +614,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-modules-core/ios"
   EXSecureStore:
     :path: "../node_modules/expo-secure-store/ios"
+  EXSegment:
+    :path: "../node_modules/expo-analytics-segment/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   EXStructuredHeaders:
@@ -730,6 +738,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Analytics: 231b01fdaa9704105881dc82def7b7b1d6571edb
   ASN1Decoder: 6110fdeacfdb41559b1481457a1645be716610aa
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -751,6 +760,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 0e8f18142e71bbf2c7f6aa66ebed249ba1420320
   ExpoModulesCore: 8303cc952788be09fc6eab62815d257016ae6dec
   EXSecureStore: ac4b3c89dd5810528074d9422d5fed5a9e684467
+  EXSegment: aefdf506b520917c73d2c5920c83b49e2cffa7cf
   EXSplashScreen: 31ab6df6d23e97e074d1330224741979943f1d82
   EXStructuredHeaders: 5d86829469399370a9fc7cb1e4391b09de87681d
   EXUpdates: 784c8c593f6649d0640e81cede66613703e3c267

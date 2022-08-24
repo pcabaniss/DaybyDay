@@ -6519,6 +6519,11 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+expo-analytics-segment@^11.2.1:
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/expo-analytics-segment/-/expo-analytics-segment-11.2.1.tgz#6e2973bee865b2d7fa369dead5fd03e9c7d8b714"
+  integrity sha512-c0rQxWIGw8DuJCMNZTRLPxSWj94veJmRzQTzck5JY0ueoDGv7TODFhbG27qgB3rlS9yW6wRWbr1bmdhNDo+Eng==
+
 expo-app-loading@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/expo-app-loading/-/expo-app-loading-2.1.0.tgz#536d89ae70bdd23f1ad48897333edc7f60d91a7d"
@@ -9187,6 +9192,11 @@ jetifier@^1.6.2:
   version "1.6.8"
   resolved "https://registry.npmjs.org/jetifier/-/jetifier-1.6.8.tgz"
   integrity sha512-3Zi16h6L5tXDRQJTb221cnRoVG9/9OvreLdLU2/ZjRv/GILL+2Cemt0IKvkowwkDpvouAU1DQPOJ7qaiHeIdrw==
+
+jetifier@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-2.0.0.tgz#699391367ca1fe7bc4da5f8bf691eb117758e4cb"
+  integrity sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ==
 
 jimp-compact@0.16.1:
   version "0.16.1"
@@ -13092,7 +13102,7 @@ react-native-notifications@^4.2.4:
 
 react-native-os@^1.2.6:
   version "1.2.6"
-  resolved "https://registry.npmjs.org/react-native-os/-/react-native-os-1.2.6.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-os/-/react-native-os-1.2.6.tgz#1bb16d78ccad1143972183a04f443cf1af9fbefa"
   integrity sha512-OlT+xQAcvkcnf7imgXiu+myMkqDt4xw2bP5SlVo19hEn5XHBkPMLX7dk3sSGxxncH/ToMDsf1KLyrPabNVtadA==
 
 react-native-paper@^4.9.2:
