@@ -36,7 +36,7 @@
     "domain-browser": "^1.2.0",
     "eas-cli": "^0.60.0",
     "events": "^1.1.1",
-    "expo": "^46.0.6",
+    "expo": "^46.0.9",
     "expo-analytics-segment": "^11.2.1",
     "expo-app-loading": "~2.1.0",
     "expo-blur": "~11.2.0",
