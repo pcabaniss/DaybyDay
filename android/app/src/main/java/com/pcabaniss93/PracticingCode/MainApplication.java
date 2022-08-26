@@ -14,7 +14,6 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.facebook.react.shell.MainReactPackage;
 
 import expo.modules.constants.ConstantsPackage;
 import expo.modules.permissions.PermissionsPackage;
@@ -74,12 +73,12 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-    ApplicationLifecycleDispatcher.onConfigurationChanged(this);
+    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
 
   }
 
   @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+  public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
