@@ -4,6 +4,7 @@
     "slug": "PracticingCode",
     "version": "1.0.9",
     "orientation": "portrait",
+    "icon": "./app/assets/appIcon.png",
  
     "plugins": [
       [

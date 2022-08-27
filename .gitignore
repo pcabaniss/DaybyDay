@@ -70,12 +70,18 @@ buck-out/
 # Bundle artifacts
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 # Expo
 .expo/
 web-build/
 dist/
+
+**/fastlane/report.xml	
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # @end expo-cliapp/api/privateAPIs.js
