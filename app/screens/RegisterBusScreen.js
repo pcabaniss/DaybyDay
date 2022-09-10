@@ -234,7 +234,7 @@ function RegisterScreen() {
         if (Platform.OS === "ios") {
           source.replace("file://", "");
         }
-        listings.replaceImage(email, source);
+        //listings.replaceImage(email, source);
         //Send a promise to save the picture to storage once register button is clicked
         if (!result.cancelled) setImage(source);
       } catch (error) {

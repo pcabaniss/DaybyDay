@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import { Platform } from "react-native";
-import { KeyboardAvoidingView, LogBox, StyleSheet } from "react-native";
+import {
+  KeyboardAvoidingView,
+  LogBox,
+  StyleSheet,
+  PermissionsAndroid,
+} from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
@@ -15,7 +20,6 @@ import AuthContext from "./app/auth/context";
 import { firebase } from "./app/auth/firebaseConfig";
 import colors from "./app/config/colors";
 import listings from "./app/api/listings";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [user, setUser] = useState();
@@ -28,6 +32,7 @@ export default function App() {
   const registerForPushNotificationsAsync = async () => {
     let token;
     if (Device.isDevice) {
+      await requestAndroidPermissions();
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -59,6 +64,26 @@ export default function App() {
     }
 
     return token;
+  };
+
+  const requestAndroidPermissions = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Day by Day",
+          message:
+            "Day by Day collects your location data to determine your time zone and send reminders even when the appis closed or not in use.",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location.");
+      } else {
+        console.log("Denied location access.");
+      }
+    } catch (error) {
+      console.log("Error requesting location: " + error);
+    }
   };
 
   useEffect(() => {

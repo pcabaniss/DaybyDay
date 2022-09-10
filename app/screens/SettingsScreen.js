@@ -15,7 +15,7 @@ const settingItems = [
   //Display current notification settings. Instructions on how to turn off.
   {
     title: "Notifications",
-    subTitle: "Manage how your'e notified.",
+    subTitle: "Manage how you're notified.",
     targetScreen: "notifications",
   },
 

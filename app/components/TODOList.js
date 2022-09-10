@@ -22,6 +22,8 @@
  *       Bug when setting up account and miss credentials (so far just profile picture
  * but may be for every variable)
  *
+ *      No add image button in edit business profile
+ *
  * Projects to persue:
  * Make the image loading a activity indicator
  */
