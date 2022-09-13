@@ -111,7 +111,7 @@ function ProfileSettingsScreen({ route, navigation }) {
   const takePhoto = async () => {
     const request = await requestCameraPermission();
     if (!request) {
-      return alert("You need to enable permissions to access the Camera.");
+      return alert("Day by Day needs permission to access your pictures.");
     } else {
       try {
         const result = await ImagePicker.launchCameraAsync({
@@ -136,7 +136,7 @@ function ProfileSettingsScreen({ route, navigation }) {
     const result = await requestLibraryPermission();
 
     if (!result) {
-      return alert("You need to enable permissions to access the library.");
+      return alert("Day by Day needs permission to access your pictures.");
     } else {
       try {
         const result = await ImagePicker.launchImageLibraryAsync({

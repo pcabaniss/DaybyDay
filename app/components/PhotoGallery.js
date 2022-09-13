@@ -8,7 +8,6 @@ import {
   Image,
   Modal,
   Alert,
-  ActivityIndicator,
   ScrollView,
 } from "react-native";
 

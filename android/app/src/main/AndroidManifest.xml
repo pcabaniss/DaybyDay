@@ -1,10 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.pcabaniss93.PracticingCode" xmlns:tools="http://schemas.android.com/tools" >
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" 
-  tools:node="remove" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" 
-  tools:node="remove" />
-  <uses-permission android:name="android.permission..ACCESS_FINE_LOCATION" 
-  tools:node="remove" />
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission..ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CAMERA"/>

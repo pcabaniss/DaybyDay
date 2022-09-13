@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import {
   KeyboardAvoidingView,
   LogBox,
@@ -68,15 +68,25 @@ export default function App() {
 
   const requestAndroidPermissions = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Day by Day",
-          message:
-            "Day by Day collects your location data to determine your time zone and send reminders even when the appis closed or not in use.",
-        }
+      const check = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+      if (!check) {
+        Alert.alert(
+          "Why does Day by Day need location permissions?",
+          "Day by Day collects your location data to enable scheduling and reminders even when the app is closed or not in use.",
+          [{ text: "ok", style: "cancel" }]
+        );
+      }
+
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+      ]);
+
+      if (granted == PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location.");
       } else {
         console.log("Denied location access.");
