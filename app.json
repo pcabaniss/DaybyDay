@@ -2,7 +2,7 @@
   "expo": {
     "name": "Day by Day",
     "slug": "PracticingCode",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "orientation": "portrait",
     "icon": "./app/assets/appIcon.png",
  
@@ -23,7 +23,7 @@
     },
     "android": {
 
-      "versionCode": 8,
+      "versionCode": 9,
       "googleServicesFile": "./google-services.json",
       "package": "com.pcabaniss93.PracticingCode",
       "useNextNotificationsApi": true

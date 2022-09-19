@@ -20,19 +20,37 @@ import AuthContext from "./app/auth/context";
 import { firebase } from "./app/auth/firebaseConfig";
 import colors from "./app/config/colors";
 import listings from "./app/api/listings";
+import { requestBackgroundPermissionsAsync } from "expo-location";
 
 export default function App() {
   const [user, setUser] = useState();
   const [isReady, setIsReady] = useState(false);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
+  // const [result, setResult] = useState();
+  // const [bgResult, setBGResult] = useState();
   const notificationListener = useRef();
   const responseListener = useRef();
 
   const registerForPushNotificationsAsync = async () => {
     let token;
     if (Device.isDevice) {
-      await requestAndroidPermissions();
+      const result = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+
+      const bgResult = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
+      );
+
+      if (result != true) {
+        requestAndroidPermissions();
+      }
+
+      //if (result == true && bgResult == false) {
+      //  requestBGPermission();
+      //}
+
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -48,8 +66,6 @@ export default function App() {
 
       //const deviceToken = await Notifications.getDevicePushTokenAsync();
       token = (await Notifications.getExpoPushTokenAsync()).data;
-
-      console.log("This is your token:");
     } else {
       console.log("Must use physical device for Push Notifications");
     }
@@ -68,38 +84,39 @@ export default function App() {
 
   const requestAndroidPermissions = async () => {
     try {
-      const check = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-
-      if (!check) {
-        Alert.alert(
-          "Why does Day by Day need location permissions?",
-          "Day by Day collects your location data to enable scheduling and reminders even when the app is closed or not in use.",
-          [{ text: "ok", style: "cancel" }]
-        );
-      }
-
-      const granted = await PermissionsAndroid.requestMultiple([
+      await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
-      ]);
-
-      if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location.");
-      } else {
-        console.log("Denied location access.");
-      }
+        {
+          title: "Location disclosure",
+          message:
+            "Day by Day uses location data to enable notifications and keep track of the correct time-zone. None of this data is stored.",
+          buttonNeutral: "I understand.",
+        }
+      );
     } catch (error) {
       console.log("Error requesting location: " + error);
     }
   };
 
+  const requestBGPermission = () => {
+    Alert.alert(
+      "Background location disclosure:",
+      "Day by Day collects your location data to enable more accurate scheduling and reminders even when the app is closed or not in use.",
+      [
+        {
+          text: "I understand.",
+          onPress: () => requestBackgroundPermissionsAsync(),
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
-    ); // This listener is fired whenever a notification is received while the app is foregrounded
+    );
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);

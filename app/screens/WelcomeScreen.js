@@ -1,11 +1,43 @@
-import React from "react";
-import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  PermissionsAndroid,
+  Alert,
+} from "react-native";
 import LottieView from "lottie-react-native";
+import { requestBackgroundPermissionsAsync } from "expo-location";
 
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 
 function WelcomeScreen({ navigation }) {
+  const requestBGPermission = () => {
+    Alert.alert(
+      "Background location disclosure:",
+      "Day by Day collects your location data to enable more accurate scheduling and reminders even when the app is closed or not in use. None of this data is stored.",
+      [
+        {
+          text: "I understand.",
+          onPress: () => requestBackgroundPermissionsAsync(),
+        },
+      ]
+    );
+  };
+
+  const getPermissions = async (screenName) => {
+    const bgResult = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
+    );
+
+    if (bgResult == false) {
+      requestBGPermission();
+    }
+
+    navigation.navigate(screenName);
+  };
+
   return (
     <View style={styles.background}>
       <Text style={styles.tagline}>Schedule some peace of mind</Text>
@@ -20,12 +52,12 @@ function WelcomeScreen({ navigation }) {
       <View style={styles.buttonContainer}>
         <AppButton
           title="Login"
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => getPermissions("Login")}
           color={colors.primaryDark}
         />
         <AppButton
           title="Register"
-          onPress={() => navigation.navigate("Registration")}
+          onPress={() => getPermissions("Registration")}
           color={colors.green}
         />
       </View>
