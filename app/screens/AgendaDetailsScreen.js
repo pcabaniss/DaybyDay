@@ -12,7 +12,7 @@ import {
 
 import AppButton from "../components/AppButton";
 import Notifications from "../api/Notifications";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
@@ -64,7 +64,7 @@ function AgendaDetailsScreen({ navigation, route }) {
   };
 
   const alertBox = () => {
-    Alert.alert("Cannot edit times from requests. ");
+    Alert.alert("Cannot edit times from scheduled appointments. ");
   };
 
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -150,6 +150,13 @@ function AgendaDetailsScreen({ navigation, route }) {
         onDone={() => setUploadVisible(false)}
         progress={progress}
         visible={uploadVisible}
+      />
+      <MaterialCommunityIcons
+        name="close"
+        size={30}
+        color={colors.black}
+        style={styles.icon}
+        onPress={() => navigation.goBack()}
       />
       <View style={styles.header}>
         <Text style={styles.headerText}>{currentDate}</Text>
@@ -252,6 +259,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     backgroundColor: colors.blue,
+  },
+  icon: {
+    alignSelf: "flex-start",
   },
   date: {
     flexDirection: "row",

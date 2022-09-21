@@ -1,7 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment from "moment";
 import React, { useState, useEffect } from "react";
-import listingsApi from "../../api/listings";
 import {
   Alert,
   StyleSheet,
@@ -13,6 +10,9 @@ import {
 } from "react-native";
 // @ts-expect-error
 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import listingsApi from "../../api/listings";
+import moment from "moment";
 import { Agenda } from "react-native-calendars";
 import colors from "../../config/colors";
 import CalendarSeperator from "../CalendarSeperator";
@@ -48,9 +48,12 @@ const WeekCalendar = ({ navigation }) => {
     id,
     isCustom
   ) => {
-    const newDate = new Date(day);
-    const currentDate = new Date();
-    if (newDate <= currentDate) {
+    const newDate = new Date(day).getTime().toPrecision();
+    const newTime = new Date(timeStart).getTime().toPrecision();
+
+    const currentDate = new Date().getTime().toPrecision();
+
+    if (newDate <= currentDate && newTime <= currentDate) {
       Alert.alert("Cannot edit past events.");
     } else {
       navigation.navigate("View", {

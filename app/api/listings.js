@@ -177,12 +177,12 @@ const addListing = (listing, business) => {
 
   const currentUser = firebase.default.auth().currentUser.email;
 
-  if (listing.business == "Custom") {
+  if (business == "Custom") {
     sendEmail(
       currentUser,
       "New calendar event.",
-      "You have successfully scheduled your custom event with us!" +
-        "We set your notification and added it to your in-app agenda."
+      "You have successfully scheduled your custom event with us!",
+      "We set your notification and added it to your in-app agenda."
     );
   } else {
     sendEmail(
@@ -738,16 +738,17 @@ const getSearchResults = async (text = "null") => {
   var count = 0;
 
   const blockedList = await getBlockedList();
-
   await currentUser()
     .ref()
     .child("users/")
     .get()
     .then((name) => {
+      console.log(name);
       name.forEach((user) => {
         const email = user.child("UserInfo/email").val();
         const name = user.child("UserInfo/name").val();
         const pic = user.child("profilePicture/profilePicture").val();
+
         if (
           email.toLowerCase().includes(text.toLowerCase()) ||
           name.toLowerCase().includes(text.toLowerCase())
@@ -1703,7 +1704,6 @@ background-color: #f6f6f6;
                     Log in to your account to review the details. 
                   </td>
                 </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    <a href="http://www.mailgun.com" class="btn-primary" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Launch Day by Day</a>
                   </td>
                 </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
                     Thanks for using Day by Day.
@@ -1718,6 +1718,8 @@ background-color: #f6f6f6;
 </html>`,
       },
     })
+    //   visit app button: <a href="http://www.mailgun.com" class="btn-primary" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">Launch Day by Day</a>
+    //Goes above 'thanks for using day by day'
     .catch((error) => {
       console.log("Error sending email: " + error);
     })

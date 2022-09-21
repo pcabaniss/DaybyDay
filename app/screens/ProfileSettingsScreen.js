@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     borderWidth: 1,
     overflow: "hidden",
+    backgroundColor: colors.white,
   },
   nameText: {
     fontSize: 30,

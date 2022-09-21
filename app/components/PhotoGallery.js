@@ -37,7 +37,9 @@ function PhotoGallery({ email, isUser, gallery }) {
 
   const renderEmtyGallery = () => {
     return (
-      <View scrollEnabled style={styles.empty}>
+      <View style={styles.empty}>
+        {isUser ? <View /> : <AddImages email={email} />}
+
         <Text style={{ alignSelf: "center" }}>
           This business has not uploaded pictures yet.
         </Text>
@@ -205,6 +207,7 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   empty: {
+    flex: 1,
     width: "95%",
     height: 500,
     alignSelf: "center",

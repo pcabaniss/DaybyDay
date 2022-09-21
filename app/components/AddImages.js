@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import listings from "../api/listings";
+import colors from "../config/colors";
 
 function AddImages({ email }) {
   const alertButton = () => {
@@ -106,7 +107,7 @@ function AddImages({ email }) {
 
   return (
     <View style={styles.container}>
-      <Button title="Upload image" onPress={alertButton} />
+      <Button title="Upload image" onPress={alertButton} color={colors.blue} />
     </View>
   );
 }

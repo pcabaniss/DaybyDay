@@ -42,7 +42,7 @@ function HelpAndSupport(props) {
       <AppButton
         title={"Visit the site"}
         color={colors.green}
-        onPress={() => testing()}
+        onPress={() => openWebsite()}
       />
       <LottieView
         source={require("../assets/animations/questions.json")}

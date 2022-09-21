@@ -83,32 +83,21 @@ export default function App() {
   };
 
   const requestAndroidPermissions = async () => {
-    try {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Location disclosure",
-          message:
-            "Day by Day uses location data to enable notifications and keep track of the correct time-zone. None of this data is stored.",
-          buttonNeutral: "I understand.",
-        }
-      );
-    } catch (error) {
-      console.log("Error requesting location: " + error);
+    if (Platform.OS == "android") {
+      try {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Location disclosure",
+            message:
+              "Day by Day uses location data to enable notifications and keep track of the correct time-zone. None of this data is stored.",
+            buttonNeutral: "I understand.",
+          }
+        );
+      } catch (error) {
+        console.log("Error requesting location: " + error);
+      }
     }
-  };
-
-  const requestBGPermission = () => {
-    Alert.alert(
-      "Background location disclosure:",
-      "Day by Day collects your location data to enable more accurate scheduling and reminders even when the app is closed or not in use.",
-      [
-        {
-          text: "I understand.",
-          onPress: () => requestBackgroundPermissionsAsync(),
-        },
-      ]
-    );
   };
 
   useEffect(() => {

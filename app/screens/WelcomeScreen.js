@@ -5,6 +5,7 @@ import {
   Text,
   PermissionsAndroid,
   Alert,
+  Platform,
 } from "react-native";
 import LottieView from "lottie-react-native";
 import { requestBackgroundPermissionsAsync } from "expo-location";
@@ -27,12 +28,14 @@ function WelcomeScreen({ navigation }) {
   };
 
   const getPermissions = async (screenName) => {
-    const bgResult = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
-    );
+    if (Platform.OS == "android") {
+      const bgResult = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
+      );
 
-    if (bgResult == false) {
-      requestBGPermission();
+      if (bgResult == false) {
+        requestBGPermission();
+      }
     }
 
     navigation.navigate(screenName);
