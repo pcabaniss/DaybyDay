@@ -106,7 +106,7 @@ function RegisterScreen() {
     {
       key: "k5",
       title: "Enjoy",
-      text: "Schedule some peace of mind and enjoy having more orginization in your daily life.",
+      text: "Schedule some peace of mind and enjoy having more organization in your daily life.",
       icon: "robot-happy",
       lottie: require("../assets/animations/relax.json"),
       titleStyle: styles.title,

@@ -4,6 +4,8 @@ import LottieView from "lottie-react-native";
 
 import colors from "../config/colors";
 import AppButton from "../components/AppButton";
+import listings from "../api/listings";
+import moment from "moment";
 
 function HelpAndSupport(props) {
   const website = "https://dxdapp.net";
@@ -22,12 +24,6 @@ function HelpAndSupport(props) {
     }
   };
 
-  const testing = () => {
-    const test = "phillip.cabaniss@gmail.com";
-
-    const temp = test.split(".").join("-");
-    console.log(temp);
-  };
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
@@ -54,10 +50,28 @@ function HelpAndSupport(props) {
           justifyContent: "center",
         }}
       />
+      <AppButton
+        title={"Test the event rig"}
+        color={colors.red}
+        onPress={() =>
+          console.log(
+            moment("2022-09-30T03:54").format("YYYY-MM-DDTHH:mm:ss.sssZ")
+          )
+        }
+      />
     </View>
   );
 }
-
+/**
+  Object {
+  "dateClicked": "2022-09-28",
+  "description": "Fdsafdasfsafadsf",
+  "timeFinish": "Mon Sep 26 2022 04:13:00 GMT-0500 (CDT)",
+  "timeStart": "Mon Sep 26 2022 03:15:00 GMT-0500 (CDT)",
+  "title": "Fsfdsfadsffdsaf",
+}
+03:15 AM
+   */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -15,7 +15,6 @@ import {
 } from "../components/forms/index";
 import useAuth from "../auth/useAuth";
 import colors from "../config/colors";
-import Notifications from "../api/Notifications";
 
 //With Yup we can set the scheme for each of our text fields easily since
 //it is intigrated with Formik

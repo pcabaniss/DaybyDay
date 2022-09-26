@@ -1,13 +1,10 @@
 import client from "./client";
 import { firebase } from "../auth/firebaseConfig";
-import moment from "moment";
+import moment, { calendarFormat } from "moment";
 import Notifications from "./Notifications";
-import { Linking } from "react-native";
-import { WebView } from "react-native-webview";
-import apis from "../api/privateAPIs";
+import { Linking, Alert, Platform } from "react-native";
 import qs from "qs";
-
-import { Alert } from "react-native";
+import * as Calendar from "expo-calendar";
 
 const endPoint = "/listings";
 
@@ -168,12 +165,94 @@ const deleteListing = (listing) => {
     });
 };
 
+async function getDefaultCalendarSource() {
+  console.log("inside get default");
+  for (const source of await Calendar.getSourcesAsync()) {
+    if (
+      source.type === Calendar.SourceType.CALDAV &&
+      source.name === "iCloud"
+    ) {
+      console.log("Got it!");
+      return source;
+    } else {
+      const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+      console.log("ran default");
+      return defaultCalendar;
+    }
+  }
+}
+
+const createCalendar = async () => {
+  console.log("inside create");
+  const defaultCalendarSource =
+    Platform.OS === "ios"
+      ? await getDefaultCalendarSource()
+      : { isLocalAccount: true, name: "Day by Day" };
+
+  if (Platform.OS === "ios") {
+    return defaultCalendarSource.id;
+  } else {
+    const newCalendarId = await Calendar.createCalendarAsync({
+      title: "Day by Day",
+      color: "blue",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.sourceId,
+      source: defaultCalendarSource.source,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+    return newCalendarId;
+  }
+};
+
+// test function
+
+//dateClicked + "T" + startTime + ":00Z"
+//Date format: "YYYY-MM-DD'T'HH:mm:ss.sssZ"
+const addEventToDevice = async (
+  title,
+  startTime,
+  endTime,
+  dateClicked,
+  allDay
+) => {
+  const { status } = await Calendar.requestCalendarPermissionsAsync();
+  const { remind } = await Calendar.requestRemindersPermissionsAsync();
+  console.log(remind);
+  console.log(dateClicked + "T" + startTime);
+  //2022-09-28T00:00:00.000-05:00
+  //2022-09-28T03:49:40.4040-05:00
+  const start = dateClicked + "T" + startTime;
+  const end = dateClicked + "T" + endTime;
+  if (status == "granted") {
+    console.log("Starting......");
+    const iffy = await createCalendar();
+    console.log("Got  id: " + iffy);
+    await Calendar.createEventAsync(iffy, {
+      title: title,
+      startDate: start,
+      endDate: end,
+      allDay: allDay,
+    });
+    console.log("Your new calendar ID is: " + iffy);
+  }
+};
+
 const addListing = (listing, business) => {
   //content-type are specific lines to tell the server what data we are sending
   //for JSON its 'application/json'
   //for picture or video its 'multipart/form-data'
 
+  //Format for adding to device calendar: momentInUTC.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+  // the string may look eg. like this: '2017-09-25T08:00:00.000Z'.
+
   const startingTime = moment(listing.timeStart).format("hh:mm A");
+
+  const st = moment(listing.timeStart).format("HH:mm:ss.sssZ");
+  const et = moment(listing.timeFinish).format("HH:mm:ss.sssZ");
+
+  addEventToDevice(listing.title, st, et, listing.dateClicked, false);
 
   const currentUser = firebase.default.auth().currentUser.email;
 
@@ -192,6 +271,7 @@ const addListing = (listing, business) => {
       "We set your notification and added it to your in-app agenda."
     );
   }
+
   try {
     getUser()
       .doc(listing.dateClicked)
@@ -208,7 +288,7 @@ const addListing = (listing, business) => {
 
     return true;
   } catch (error) {
-    console.log("Error in addLisintings: " + error);
+    console.log("Error in addListings: " + error);
     return false;
   }
 };
@@ -1837,4 +1917,5 @@ export default {
   sendEmail,
   deleteAccount,
   removeUser,
+  addEventToDevice,
 };

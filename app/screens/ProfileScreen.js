@@ -88,9 +88,14 @@ function ProfileScreen({ route, navigation }) {
       total = total + item.rating;
     });
 
-    const totalStars = (total / count).toFixed(1);
+    if (total == 0) {
+      const totalStars = 0;
+      setRating(totalStars);
+    } else {
+      const totalStars = (total / count).toFixed(1);
+      setRating(totalStars);
+    }
     //console.log(totalStars);
-    setRating(totalStars);
   };
 
   const pullAboutInfo = async (email) => {

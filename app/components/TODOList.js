@@ -19,6 +19,8 @@
  *
  *      Make it to where you cant set a date over 24 hours in advance
  *
+ *      Wrong password crashes the app
+ *
  *      No add image button in edit business profile
  *
  * Projects to persue:
