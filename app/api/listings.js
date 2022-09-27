@@ -166,43 +166,56 @@ const deleteListing = (listing) => {
 };
 
 async function getDefaultCalendarSource() {
-  console.log("inside get default");
   for (const source of await Calendar.getSourcesAsync()) {
     if (
       source.type === Calendar.SourceType.CALDAV &&
       source.name === "iCloud"
     ) {
-      console.log("Got it!");
       return source;
     } else {
       const defaultCalendar = await Calendar.getDefaultCalendarAsync();
-      console.log("ran default");
       return defaultCalendar;
     }
   }
 }
 
+const getAndroidCalendarSource = async () => {
+  let temp = {};
+  await Calendar.getCalendarsAsync().then((calendar) => {
+    calendar.map((cal) => {
+      if (cal.accessLevel == "owner") {
+        temp = cal;
+      }
+    });
+  });
+
+  return temp;
+};
+
 const createCalendar = async () => {
-  console.log("inside create");
   const defaultCalendarSource =
     Platform.OS === "ios"
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: "Day by Day" };
+      : await getAndroidCalendarSource();
+
+  console.log("This is calendarSource: ");
+  console.log(defaultCalendarSource);
 
   if (Platform.OS === "ios") {
     return defaultCalendarSource.id;
   } else {
-    const newCalendarId = await Calendar.createCalendarAsync({
-      title: "Day by Day",
-      color: "blue",
-      entityType: Calendar.EntityTypes.EVENT,
-      sourceId: defaultCalendarSource.sourceId,
-      source: defaultCalendarSource.source,
-      name: "internalCalendarName",
-      ownerAccount: "personal",
-      accessLevel: Calendar.CalendarAccessLevel.OWNER,
-    });
-    return newCalendarId;
+    //const newCalendarId = await Calendar.createCalendarAsync({
+    //  title: "Day by Day",
+    //  color: "blue",
+    //  entityType: Calendar.EntityTypes.EVENT,
+    //  sourceId: defaultCalendarSource.id,
+    //  source: defaultCalendarSource.source,
+    //  name: "Day by Day account",
+    //  ownerAccount: "personal",
+    //  accessLevel: Calendar.CalendarAccessLevel.OWNER,
+
+    //});
+    return defaultCalendarSource.id;
   }
 };
 
@@ -217,26 +230,46 @@ const addEventToDevice = async (
   dateClicked,
   allDay
 ) => {
-  const { status } = await Calendar.requestCalendarPermissionsAsync();
-  const { remind } = await Calendar.requestRemindersPermissionsAsync();
-  console.log(remind);
-  console.log(dateClicked + "T" + startTime);
+  //const { remind } = await Calendar.requestRemindersPermissionsAsync();
+  //console.log(remind);
+
   //2022-09-28T00:00:00.000-05:00
   //2022-09-28T03:49:40.4040-05:00
-  const start = dateClicked + "T" + startTime;
-  const end = dateClicked + "T" + endTime;
-  if (status == "granted") {
-    console.log("Starting......");
-    const iffy = await createCalendar();
-    console.log("Got  id: " + iffy);
-    await Calendar.createEventAsync(iffy, {
-      title: title,
-      startDate: start,
-      endDate: end,
-      allDay: allDay,
-    });
-    console.log("Your new calendar ID is: " + iffy);
+  console.log(dateClicked + "T" + startTime);
+  let start = "";
+  let end = "";
+  if (Platform.OS == "ios") {
+    start = dateClicked + "T" + startTime;
+    end = dateClicked + "T" + endTime;
+  } else {
+    start = moment(dateClicked + "T" + startTime).toDate();
+    end = moment(dateClicked + "T" + endTime).toDate();
   }
+  await Calendar.requestCalendarPermissionsAsync().then(async (value) => {
+    if (value.status == "granted") {
+      console.log("Starting......");
+      const iffy = await createCalendar();
+      console.log("Got  id: " + iffy);
+      await Calendar.createEventAsync(iffy, {
+        title: title,
+        startDate: start,
+        endDate: end,
+        allDay: allDay,
+      });
+    }
+  });
+  //if (status == "granted") {
+  //  console.log("Starting......");
+  //  const iffy = await createCalendar();
+  //  console.log("Got  id: " + iffy);
+  //  await Calendar.createEventAsync(iffy, {
+  //    title: title,
+  //    startDate: start,
+  //    endDate: end,
+  //    allDay: allDay,
+  //  });
+  //  console.log("Your new calendar ID is: " + iffy);
+  //}
 };
 
 const addListing = (listing, business) => {
@@ -306,7 +339,6 @@ const updateListing = (listing, bus) => {
         doc.forEach((snapshot) => {
           console.log(snapshot.id);
           if (snapshot.data().id == listing.id) {
-            console.log("Im in this bitchhhhhhh");
             try {
               getUser()
                 .doc(listing.dateClicked)
@@ -823,7 +855,6 @@ const getSearchResults = async (text = "null") => {
     .child("users/")
     .get()
     .then((name) => {
-      console.log(name);
       name.forEach((user) => {
         const email = user.child("UserInfo/email").val();
         const name = user.child("UserInfo/name").val();
@@ -1694,8 +1725,6 @@ const checkIfVerified = () => {
 };
 
 const sendVerificationEmail = () => {
-  console.log("this is the way: ");
-  console.log(firebase.default.auth().currentUser.email);
   firebase.default
     .auth()
     .currentUser.sendEmailVerification()

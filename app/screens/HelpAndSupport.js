@@ -50,15 +50,6 @@ function HelpAndSupport(props) {
           justifyContent: "center",
         }}
       />
-      <AppButton
-        title={"Test the event rig"}
-        color={colors.red}
-        onPress={() =>
-          console.log(
-            moment("2022-09-30T03:54").format("YYYY-MM-DDTHH:mm:ss.sssZ")
-          )
-        }
-      />
     </View>
   );
 }
