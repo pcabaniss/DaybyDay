@@ -43,15 +43,20 @@ function WelcomeScreen({ navigation }) {
 
   return (
     <View style={styles.background}>
-      <Text style={styles.tagline}>Schedule some peace of mind</Text>
       <View style={styles.logoContainer}>
         <LottieView
           source={require("../assets/animations/loginAnim.json")}
           loop
           autoPlay
-          style={{ width: 400, height: 400, justifyContent: "center" }}
+          style={{
+            width: 400,
+            height: 400,
+            justifyContent: "center",
+            paddingLeft: 5,
+          }}
         />
       </View>
+      <Text style={styles.tagline}>Schedule some peace of mind</Text>
       <View style={styles.buttonContainer}>
         <AppButton
           title="Login"
@@ -74,6 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: colors.primary,
+    paddingBottom: 40,
   },
   buttonContainer: {
     padding: 20,
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#00171f",
     fontSize: 25,
     fontWeight: "700",
-    paddingBottom: 50,
+    paddingTop: 10,
     //paddingVertical: 20,
   },
 });

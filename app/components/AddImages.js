@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import listings from "../api/listings";
 import colors from "../config/colors";
+import AppButton from "./AppButton";
 
 function AddImages({ email }) {
   const alertButton = () => {
@@ -107,13 +108,19 @@ function AddImages({ email }) {
 
   return (
     <View style={styles.container}>
-      <Button title="Upload image" onPress={alertButton} color={colors.blue} />
+      <AppButton
+        title="Upload image"
+        onPress={alertButton}
+        color={colors.blue}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: "100%",
+  },
   image: {
     width: "50%",
     height: "50%",

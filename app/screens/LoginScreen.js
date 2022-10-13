@@ -32,7 +32,6 @@ function LoginScreen({ navigation }) {
 
   const handleSubmit = async ({ email, password }) => {
     setProgress(0);
-    setUploadVisible(true);
 
     await firebase.default
       .auth()
@@ -56,14 +55,13 @@ function LoginScreen({ navigation }) {
       setUploadVisible(false);
 
       return setLoginFailed(true);
+    } else {
+      setUploadVisible(true);
     }
     setLoginFailed(false);
     logIn(result.data);
   };
 
-  const forgottenPassword = () => {
-    navigation.navigate("Forgot");
-  };
   return (
     <Screen style={styles.container}>
       <UploadScreen
@@ -104,7 +102,7 @@ function LoginScreen({ navigation }) {
           Forgotten anything?{" "}
           <Text
             style={{ textDecorationLine: "underline" }}
-            onPress={() => forgottenPassword()}
+            onPress={() => navigation.navigate("Forgot")}
           >
             Click here.
           </Text>

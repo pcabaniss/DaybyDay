@@ -61,7 +61,7 @@ function RegisterScreen() {
   const slides = [
     {
       key: "k1",
-      title: "Customer!",
+      title: "Customer",
       text: "You have chosen to create a customer profile. This means you will be using the app to search for, and schedule appointments with existing businesses. ",
       icon: "account-cash",
       lottie: require("../assets/animations/customer.json"),
@@ -73,7 +73,7 @@ function RegisterScreen() {
     {
       key: "k2",
       title: "Agenda",
-      text: "See your scheduled appointments, schedule custom appointments, and keep track of daily life with the agenda.",
+      text: "See your scheduled appointments, schedule custom appointments, and keep track of daily life with the in-app agenda.",
       icon: "notebook",
       lottie: require("../assets/animations/agenda.json"),
       titleStyle: styles.title,
@@ -94,7 +94,7 @@ function RegisterScreen() {
     },
     {
       key: "k4",
-      title: "Profile",
+      title: "Your space",
       text: "Keep your information up to date and keep track of in-app settings, requests, and messages",
       icon: "account-cog",
       lottie: require("../assets/animations/profile.json"),
@@ -105,7 +105,7 @@ function RegisterScreen() {
     },
     {
       key: "k5",
-      title: "Enjoy",
+      title: "Relax",
       text: "Schedule some peace of mind and enjoy having more organization in your daily life.",
       icon: "robot-happy",
       lottie: require("../assets/animations/relax.json"),
@@ -401,6 +401,7 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     backgroundColor: colors.primary,
+    paddingTop: 55,
   },
   tutorialTitle: {
     fontSize: 40,

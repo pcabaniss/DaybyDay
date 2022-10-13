@@ -446,7 +446,7 @@ function CurrentSchedule({ navigation }) {
           </View>
         </>
       ) : (
-        <Text style={styles.titleText}>Closed For the Day!</Text>
+        <Text style={styles.titleText}>Closed for the day.</Text>
       )}
       <AppButton
         title="Save Schedule"
@@ -464,6 +464,10 @@ function CurrentSchedule({ navigation }) {
         }
         color={colors.green}
       />
+      <Text style={styles.lastly}>
+        *Remember, you have to click "Save" or else the information will not be
+        saved.
+      </Text>
     </>
   );
 }
@@ -534,6 +538,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  lastly: {
+    fontSize: 12,
+    alignSelf: "center",
+    padding: 10,
+    textAlign: "center",
+    color: colors.yellow,
+    fontWeight: "bold",
   },
 });
 

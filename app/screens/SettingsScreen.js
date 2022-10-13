@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   container: {
-    marginTop: 15,
     padding: 10,
+    paddingTop: 40,
     backgroundColor: colors.primary,
     width: "100%",
   },

@@ -96,7 +96,14 @@ function MessageScreen({ navigation, route }) {
           </Text>
         </View>
       ) : (
-        <View style={{ backgroundColor: colors.primary, padding: 5 }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: colors.primary,
+            padding: 5,
+            paddingTop: 10,
+          }}
+        >
           <FlatList
             data={inbox}
             //keyExtractor={(message) => message.id.toString()}

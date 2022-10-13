@@ -23,8 +23,9 @@ const AccountNavigator = () => (
       name="Account"
       component={AccountScreen}
       options={{
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
-          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -36,6 +37,9 @@ const AccountNavigator = () => (
       name="Edit Profile"
       component={ProfileSettingsScreen}
       options={{
+        headerBackTitle: " ",
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
           backgroundColor: colors.primaryDark,
           borderColor: colors.black,
@@ -54,7 +58,7 @@ const AccountNavigator = () => (
       name="Dates"
       component={BusRequestScreen}
       options={{
-        title: "Requests",
+        headerShown: false,
         headerStyle: {
           backgroundColor: colors.primaryDark,
           borderColor: colors.black,

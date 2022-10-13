@@ -33,9 +33,7 @@ function ProfileScreen({ route, navigation }) {
   useEffect(() => {
     const getEmail = listings.returnEmail();
 
-    const ver = listings.checkIfVerified();
-
-    setVerified(ver);
+    getVerificationStatus();
 
     setMyEmail(getEmail);
 
@@ -55,6 +53,12 @@ function ProfileScreen({ route, navigation }) {
 
     getInfo();
   }, [myEmail]);
+
+  const getVerificationStatus = async () => {
+    const status = await listings.checkIfUserVerified(email);
+
+    setVerified(status);
+  };
 
   const isVerified = () => {
     return (
@@ -103,7 +107,7 @@ function ProfileScreen({ route, navigation }) {
     if (data != undefined || data != null) {
       setAbout(data);
     } else {
-      setAbout("No information yet!");
+      setAbout("Welcome to my page!");
     }
   };
 

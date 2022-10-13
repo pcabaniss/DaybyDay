@@ -1712,7 +1712,11 @@ const checkIfUserVerified = async (email) => {
     .child("UserInfo/verified")
     .get();
 
-  return node.val();
+  if (node.val() == null) {
+    return false;
+  } else {
+    return node.val();
+  }
 };
 
 const checkIfVerified = () => {

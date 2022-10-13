@@ -79,6 +79,7 @@ function RequestScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   pending: {
+    paddingTop: 60,
     flex: 1,
     backgroundColor: colors.primary,
   },

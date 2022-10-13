@@ -7,6 +7,7 @@ import { AirbnbRating, Rating } from "react-native-ratings";
 import PercentageBar from "../components/PercentageBar";
 import SpaceSeperator from "../components/SpaceSeperator";
 import listings from "../api/listings";
+import AppButton from "../components/AppButton";
 
 //This screen will show the overall review rating and give option to leave
 //a review if you are a user (only once).
@@ -81,7 +82,11 @@ function ReviewScreen({ navigation, business, isUser }) {
     setFiveStar(fiveStar);
 
     const totalStars = (total / count).toFixed(1);
-    setTotalRating(totalStars);
+    if (totalStars == "NaN") {
+      setTotalRating(0);
+    } else {
+      setTotalRating(totalStars);
+    }
   };
 
   return (
@@ -139,7 +144,7 @@ function ReviewScreen({ navigation, business, isUser }) {
           percentage={totalStars(total, onesStar)}
         />
       </View>
-      <Button
+      <AppButton
         title="See what people are saying"
         color={colors.blue}
         onPress={() => navigation.navigate("ViewReview", { reviews: reviews })}

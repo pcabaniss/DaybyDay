@@ -82,8 +82,8 @@ function RegisterScreen() {
     },
     {
       key: "k3",
-      title: "Profile creation",
-      text: "Let your customers know all about your business with your customizable profile.",
+      title: "Profile customization",
+      text: "Let your customers know all about your business with your pages bio, gallery, and profile picture.",
       icon: "card-account-details-star",
       lottie: require("../assets/animations/profile.json"),
       titleStyle: styles.title,
@@ -97,17 +97,6 @@ function RegisterScreen() {
       text: "Keep track of all your custom or scheduled appointments with in the agenda tab.",
       icon: "notebook",
       lottie: require("../assets/animations/agenda.json"),
-      titleStyle: styles.title,
-      textStyle: styles.text,
-      imageStyle: styles.image,
-      backgroundColor: "#644EE2",
-    },
-    {
-      key: "k5",
-      title: "Settings",
-      text: "Check on your messages, requests, and notifications in the account settings tab.",
-      icon: "cog",
-      lottie: require("../assets/animations/bell.json"),
       titleStyle: styles.title,
       textStyle: styles.text,
       imageStyle: styles.image,
@@ -135,7 +124,7 @@ function RegisterScreen() {
     const safeEmail = email.replace("@", "-");
     userInfo.safeEmail = safeEmail;
     userInfo.image = image;
-    const result = await registerApi.request(userInfo);
+    await registerApi.request(userInfo);
     console.log("Working..........");
     console.log(image);
     const { data: authToken } = await loginApi.request(
@@ -429,6 +418,7 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     backgroundColor: colors.primary,
+    paddingTop: 55,
   },
   tutorialTitle: {
     fontSize: 40,

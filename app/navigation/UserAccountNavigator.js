@@ -16,8 +16,9 @@ const UserAccountNavigator = () => (
       name="Account"
       component={AccountScreen}
       options={{
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
-          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -29,8 +30,10 @@ const UserAccountNavigator = () => (
       name="Edit Profile"
       component={UserProfileSettingsScreen}
       options={{
+        headerBackTitle: " ",
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
-          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -41,6 +44,7 @@ const UserAccountNavigator = () => (
     <Stack.Screen
       options={{
         headerShown: false,
+
         headerStyle: {
           backgroundColor: colors.primaryDark,
           borderColor: colors.black,
@@ -70,6 +74,7 @@ const UserAccountNavigator = () => (
       name="Dates"
       component={MyDatesScreen}
       options={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: colors.primaryDark,
           borderColor: colors.black,

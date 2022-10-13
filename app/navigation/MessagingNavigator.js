@@ -17,6 +17,7 @@ function MessagingNavigator({ route }) {
         initialParams={{ name: name, email: email }}
         options={{
           headerTitle: "Inbox",
+          headerBackTitle: " ",
           headerStyle: {
             backgroundColor: colors.primaryDark,
             borderColor: colors.black,
@@ -32,6 +33,9 @@ function MessagingNavigator({ route }) {
         //Find a way to pass in the user clicked to be the title
         name="Chat"
         component={ChatScreen}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );

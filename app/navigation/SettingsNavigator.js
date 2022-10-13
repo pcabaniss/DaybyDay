@@ -13,7 +13,15 @@ const Stack = createStackNavigator();
 
 const SettingsNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Settings" component={SettingsScreen} />
+    <Stack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        headerStyle: {
+          backgroundColor: colors.primaryDark,
+        },
+      }}
+    />
     <Stack.Screen
       name="notifications"
       component={NavigationSettings}

@@ -71,7 +71,7 @@ function ProfileSettingsScreen({ route, navigation }) {
     if (data != undefined || data != null) {
       setAbout(data);
     } else {
-      setAbout("No information yet!");
+      setAbout("Welcome to my page!");
     }
   };
   pullAboutInfo(email);
@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     //width: "100%",
     padding: 5,
     backgroundColor: colors.primary,
+    paddingTop: 100,
   },
   profilePic: {
     height: 120,

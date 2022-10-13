@@ -20,9 +20,10 @@ const AuthNavigator = () => (
       name="Login"
       component={LoginScreen}
       options={{
-        headerTintColor: colors.black,
+        headerBackTitle: " ",
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
-          backgroundColor: colors.primaryDark,
           borderColor: colors.black,
           elevation: 0,
           shadowOpacity: 0,
@@ -34,8 +35,10 @@ const AuthNavigator = () => (
       name="Registration"
       component={RegisterNavigator}
       options={{
+        headerBackTitle: " ",
+        headerTitle: "",
+        headerTransparent: true,
         headerStyle: {
-          backgroundColor: colors.primaryDark,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,

@@ -8,7 +8,7 @@ function SceduleScreen({ navigation }) {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.header}>Set your schedule.</Text>
+        <Text style={styles.header}>Set your schedule</Text>
         <Text style={styles.subText}>
           Let your customers know when you're availiable.
         </Text>

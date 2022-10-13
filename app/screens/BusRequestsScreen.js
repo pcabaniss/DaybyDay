@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   pending: {
     flex: 1,
     backgroundColor: colors.primary,
+    paddingTop: 60,
   },
 });
 
